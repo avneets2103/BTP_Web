@@ -4,11 +4,17 @@
 
 @layer base {
   :root {
-    --primary-color: #D6223A;
+    /* purple */
+    --primary-color: #D6223A; 
+    /* green */
     --secondary-color: #242424;
+    /* #E9EBF6 */
     --bg-color: #ECECEC;
+    /* 666666 */
     --text-color-light: #A4A4A4;
+    /* white */
     --color-1: #FFFFFF;
+    /*  */
     --color-2: #D9D9D9;
 
     --background: 0 0% 100%;
