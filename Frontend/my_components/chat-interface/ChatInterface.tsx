@@ -1,7 +1,9 @@
 // components/ChatInterface.tsx
 import React, { useState } from 'react';
 // import 'chatinterface.css';
-// import {profilePic} from 'Frontend\public\images\anita-dixit-potrait.png'
+// import profilePic from '@\public\images\anita-dixit-potrait.png'
+import profilePic from '@/public/images/anita-dixit-potrait.png';
+import Image from 'next/image';
 
 interface Message {
   text: string;
@@ -28,7 +30,7 @@ const ChatInterface: React.FC = () => {
   return (
     <div className="sn-chat-container">
       <div className="sn-chat-header">
-        <img src="../public/images/anita-dixit-potrait.png" alt="Doctor's Profile" className="sn-doctor-profile" />
+        <Image src={profilePic} alt="Doctor's Profile" className="sn-doctor-profile" />
         <span className="sn-doctor-name">Dr. Anita Dixit</span>
         <button className="sn-close-button  ml-auto mr-4 ">✖</button>
       </div>
@@ -45,7 +47,7 @@ const ChatInterface: React.FC = () => {
             <input
             type="text"
             placeholder="Type a message..."
-            className="sn-chat-input w-[94%] "
+            className="sn-chat-input w-[94%] text-black "
             value={input}
             onChange={(e) => setInput(e.target.value)}
             />
