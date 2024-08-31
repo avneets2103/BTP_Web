@@ -4,7 +4,7 @@ import { ToastErrors, ToastInfo } from "./toastError";
 import Cookies from "js-cookie";
 
 const validateEmail = (value: string): boolean => 
-  /^\+?(\d{1,3})?[-.\s]?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})$/.test(value);
+  /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(value);
 
 
 function passIsValid(password: string): boolean {
@@ -15,7 +15,7 @@ const handleLogin = async(isInvalid: boolean, password: string, email: string, s
     if(!isInvalid && (password.length >= minPassLength)) {
         try {
             const user = {
-                phone_number: email.trim(),
+                email: email.trim(),
                 password: password,
             };
             const loginRes = await axios.post(`${BACKEND_URI}/auth/login`, user); 
@@ -63,7 +63,7 @@ const handleForgotPass = (setForgotPass: Function, setOtpPage: Function, setPass
 const handleGenerateNewPassword = async (email: string, setForgotPass: Function, setOTP: Function) => {
   try {
     const body = {
-      "phone_number": email
+      "email": email
     }
     await axios.post(`${RENDER_BACKEND_URI}/users/generateNewPassword`, body);
     ToastInfo("New password generated");

@@ -4,12 +4,7 @@ import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
     {
-        isDoctor: {
-            type: Boolean,
-            default: false,
-            required: true,
-        },
-        phone_number: {
+        email: {
             type: String,
             required: true,
             unique: true,
@@ -18,6 +13,18 @@ const userSchema = new mongoose.Schema(
         password: {
             type: String,
             required: [true, 'Password required']
+        },
+        isDoctor: {
+            type: Boolean,
+            default: false,
+        },
+        doctorDetails: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Doctor',
+        },
+        patientDetails: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Patient',
         },
         refreshToken: {
             type: String,
@@ -44,7 +51,7 @@ userSchema.methods.generateAccessToken = function(){
     const token = jwt.sign(
         {
             _id: this._id,
-            phone_number: this.phone_number,
+            email: this.email,
             isDoctor: this.isDoctor
         },
         process.env.ACCESS_TOKEN_SECRET,

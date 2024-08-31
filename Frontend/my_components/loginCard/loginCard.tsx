@@ -88,7 +88,7 @@ function LoginCard() {
             return;
         }else{
             const verifyBody = {
-                "phone_number": Cookies.get("email") || "",
+                "email": Cookies.get("email") || "",
                 "enteredOTP": OTP,
             }
             try {
@@ -123,6 +123,7 @@ function LoginCard() {
             justify-evenly
             p-[0.75rem]
             georama-r
+            shadow-ourBoxShadow
             '>
                 <img src="./icons/logo.png" alt="logo"
                 className='w-[50px]' 
@@ -138,15 +139,15 @@ function LoginCard() {
                         value={email}
                         isInvalid={isInvalid}
                         color={isInvalid ? "danger" : "default"}
-                        errorMessage="Please enter a valid Phone Number"
+                        errorMessage="Please enter a valid Email"
                         onValueChange={setEmail}
                         isClearable
                         isRequired
                         size='sm' 
                         radius='lg'
-                        type="phone" 
+                        type="email" 
                         variant='bordered' 
-                        label="Phone Number"
+                        label="Email"
                         labelPlacement="inside"
                         onKeyPress={handleKeyPress}
                         />
@@ -201,6 +202,7 @@ function LoginCard() {
             justify-evenly
             p-[0.75rem]
             georama-r
+            shadow-ourBoxShadow
             '>
                 <Link href="/login">
                     <img src="./icons/back.png" alt="back" 
@@ -224,15 +226,15 @@ function LoginCard() {
                     value={email}
                     isInvalid={isInvalid}
                     color={isInvalid ? "danger" : "default"}
-                    errorMessage="Please enter a valid Phone Number"
+                    errorMessage="Please enter a valid Email"
                     onValueChange={setEmail}
                     isClearable
                     isRequired
                     size='sm' 
                     radius='lg'
-                    type="phone" 
+                    type="email" 
                     variant='bordered' 
-                    label="Phone Number"
+                    label="Email"
                     labelPlacement="inside"
                     onKeyPress={forgetEmailKeyPress}
                     />
@@ -270,6 +272,7 @@ function LoginCard() {
         justify-evenly
         p-[0.75rem]
         georama-r
+        shadow-ourBoxShadow
         '>
             <Link href="/login">
                 <img src="./icons/back.png" alt="back" 
@@ -284,7 +287,7 @@ function LoginCard() {
             />
             <div className='flex flex-col items-center justify-center'>
                 <p className='georama-b text-xl'>Hey</p>
-                <p className='georama-l text-xs'>Pls enter OTP sent on your Phone Number</p>
+                <p className='georama-l text-xs'>Pls enter OTP sent on your Email</p>
             </div>
             <div className='w-full'>
             <div className='otpArea flex items-center justify-center'>

@@ -24,8 +24,11 @@ const config = {
       },
     },
     extend: {
+      boxShadow: {
+        'ourBoxShadow': '-5px 5px 10px rgba(0, 0, 0, 0.25)',
+      },
       dropShadow: {
-        'ourDropShadow': '0px 8px 6px rgba(0, 0, 0, 0.25)',  
+        'ourDropShadow': '-5px 5px 10px rgba(0, 0, 0, 0.25)',  
       },
       colors: {
         fixedPrimaryColor: "var(--fixed-primary-color)",

@@ -3,10 +3,11 @@ import ApiError from '../Utils/ApiError.js'
 import ApiResponse from '../Utils/ApiResponse.js'
 import { User } from '../Models/user.model.js'
 import jwt from 'jsonwebtoken'
-import {sendWAMessage} from '../Utils/messagingService.js'
+import {sendingMail} from '../Utils/messagingService.js'
 import speakeasy from 'speakeasy';
 import { randomString, generateOTP } from '../Utils/helpers.js'
 let otpExpiry = 0;
+import {emailOTP, emailNewPassword} from '../constants.js'
 
 const generateAccessAndRefreshToken = async (userId) => {
     try {
@@ -28,14 +29,14 @@ const generateAccessAndRefreshToken = async (userId) => {
 
 const registerLoginUser = asyncHandler(async (req, res) => {
     try {
-        const { phone_number, password } = req.body
-        if (phone_number.trim().length == 0 || password.trim().length == 0) {
+        const { email, password } = req.body
+        if (email.trim().length == 0 || password.trim().length == 0) {
             throw new ApiError(400, 'All fields required')
         }
 
         // check if already exist
         const exsistingUser = await User.findOne({
-            $or: [{ phone_number }],
+            $or: [{ email }],
         })
         
         // otp creation
@@ -48,9 +49,8 @@ const registerLoginUser = asyncHandler(async (req, res) => {
             if (!passValid) {
                 throw new ApiError(401, 'Unauthorized access')
             }
-
-            sendWAMessage(exsistingUser.phone_number, otp);
-
+            sendingMail(exsistingUser.email, 'OTP', 'Welcome!', emailOTP(otp));
+            
             const sendingUser = await User.findById(exsistingUser._id).select("-password -refreshToken");
             return res
                 .status(200)
@@ -65,7 +65,7 @@ const registerLoginUser = asyncHandler(async (req, res) => {
             // save to db
             const user = await User.create({
                 password: password,
-                phone_number: phone_number,
+                email: email,
             })
 
             const check = await User.findById(user._id).select(
@@ -76,7 +76,7 @@ const registerLoginUser = asyncHandler(async (req, res) => {
                 throw new ApiError(500, 'User not saved')
             }
     
-            sendWAMessage(exsistingUser.phone_number, otp);
+            sendingMail(user.email, 'OTP', 'Welcome!', emailOTP(otp)); 
 
             return res
                 .status(200)
@@ -183,14 +183,14 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     } catch (error) {}
 })
 
-const deleteUserByPhone = asyncHandler(async (req, res) => {
-    const { phone_number } = req.body
+const deleteUserByEmail = asyncHandler(async (req, res) => {
+    const { email } = req.body
 
-    if (!phone_number || phone_number.trim().length === 0) {
+    if (!email || email.trim().length === 0) {
         throw new ApiError(400, 'Email is required')
     }
 
-    const user = await User.findOneAndDelete({ phone_number })
+    const user = await User.findOneAndDelete({ email })
 
     if (!user) {
         throw new ApiError(404, 'User not found')
@@ -202,15 +202,15 @@ const deleteUserByPhone = asyncHandler(async (req, res) => {
             new ApiResponse(
                 200,
                 null,
-                `User with email ${phone_number} deleted successfully`
+                `User with email ${email} deleted successfully`
             )
         )
 })
 
 const verifyOTP = asyncHandler(async (req, res) => {
     try {
-        const {enteredOTP, phone_number} = req.body; 
-        if (phone_number.trim().length == 0 || enteredOTP.trim().length == 0) {
+        const {enteredOTP, email} = req.body; 
+        if (email.trim().length == 0 || enteredOTP.trim().length == 0) {
             throw new ApiError(400, 'OTP or email not sent')
         }
         
@@ -237,7 +237,7 @@ const verifyOTP = asyncHandler(async (req, res) => {
         });
 
         const user = await User.findOne({
-            $or: [{ phone_number }],
+            $or: [{ email }],
         })
         if(!user){
             throw new ApiError(400, 'User not found');
@@ -274,13 +274,13 @@ const verifyOTP = asyncHandler(async (req, res) => {
 })
 
 const resendOTP = asyncHandler(async (req, res) => {
-    const { phone_number } = req.body;
+    const { email } = req.body;
     try {
-        if (phone_number.trim().length == 0 ) {
+        if (email.trim().length == 0 ) {
             throw new ApiError(400, 'Email not sent')
         }
         const user = await User.findOne({
-            $or: [{ phone_number }],
+            $or: [{ email }],
         })
         if(!user){
             throw new ApiError(400, 'User not found');
@@ -290,14 +290,14 @@ const resendOTP = asyncHandler(async (req, res) => {
         let otp = generateOTP(secretBase32);
         otpExpiry = Date.now() + (60000*5);
         
-        sendWAMessage(exsistingUser.phone_number, otp);
+        sendingMail(user.email, "OTP", 'Welcome!', emailOTP(otp));
         return res
             .status(200)
             .json(
                 new ApiResponse(
                     200,
                     null,
-                    `OTP sent to ${phone_number}`
+                    `OTP sent to ${email}`
                 )
             )
     } catch (error) {
@@ -307,14 +307,14 @@ const resendOTP = asyncHandler(async (req, res) => {
 
 const generateNewPassword = asyncHandler(async (req, res) => {
     try {
-        const { phone_number } = req.body;
-        if (phone_number.trim().length == 0) {
-            throw new ApiError(400, 'Phone Number required')
+        const { email } = req.body;
+        if (email.trim().length == 0) {
+            throw new ApiError(400, 'Email required')
         }
 
         // check if already exist
         const exsistingUser = await User.findOne({
-            $or: [{ phone_number }],
+            $or: [{ email }],
         })
         if(!exsistingUser){
             throw new ApiError(400, 'User not found');
@@ -325,7 +325,7 @@ const generateNewPassword = asyncHandler(async (req, res) => {
         exsistingUser.password = newPassword;
         await exsistingUser.save({ validateBeforeSave: false })
 
-        await sendWAMessage(exsistingUser.phone_number, otp);
+        await sendingMail(exsistingUser.email, 'New Password', 'New Password Generated', emailNewPassword(newPassword));
     
         return res
             .status(200)
@@ -350,12 +350,12 @@ const verifyAccessToken = asyncHandler(async (req, res) => {
 
 const setDoctor = asyncHandler(async (req, res) => {
     try {
-        const {phone_number} = req.body;
-        if (phone_number.trim().length == 0 ) {
-            throw new ApiError(400, 'Phone Number not sent')
+        const {email} = req.body;
+        if (email.trim().length == 0 ) {
+            throw new ApiError(400, 'Email not sent')
         }   
         const user = await User.findOne({
-            $or: [{ phone_number }],
+            $or: [{ email }],
         })
         if(!user){
             throw new ApiError(400, 'User not found');
@@ -368,7 +368,7 @@ const setDoctor = asyncHandler(async (req, res) => {
                 new ApiResponse(
                     200,
                     null,
-                    `User with phone number ${phone_number} set as doctor successfully`
+                    `User with email ${email} set as doctor successfully`
                 )
             )
     }
@@ -382,7 +382,7 @@ export {
     logoutUser,
     refreshAccessToken,
     changeCurrentPassword,
-    deleteUserByPhone,
+    deleteUserByEmail,
     verifyOTP,
     resendOTP,
     generateNewPassword,

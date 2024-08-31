@@ -8,7 +8,7 @@ import {
     verifyAccessToken,
     logoutUser,
     changeCurrentPassword,
-    deleteUserByPhone,
+    deleteUserByEmail,
     setDoctor,
  } from "../Controllers/user.controller.js";
 import { verifyJWT } from "../Middlewares/auth.middleware.js";
@@ -21,11 +21,11 @@ router.route("/resendOTP").post(resendOTP);
 router.route("/generateNewPassword").post(generateNewPassword);
 router.route("/refreshAccessToken").post(refreshAccessToken);
 router.route("/setDoctor").post(setDoctor);
+router.route("/deleteUser").post(deleteUserByEmail);
 
 // secured routs
 router.route("/verifyAccessToken").post(verifyJWT, verifyAccessToken);
 router.route("/logout").post(verifyJWT, logoutUser);
 router.route("/changePassword").post(verifyJWT, changeCurrentPassword);
-router.route("/deleteUser").post(verifyJWT, deleteUserByPhone);
 
 export default router;
