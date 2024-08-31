@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 
 
-export const DocLayout = ({
+export const DocViewLayout = ({
   className,
   children,
 }: {
@@ -31,24 +31,34 @@ export const DocLayout = ({
   );
 };
 
-export const DocLayoutItem = ({
-  id,
-  name,
-  speciality,
-  img,
-  qualification,
-  experience,
-  patientsList,
-}: {
-  id?: string;
-  name?: string;
-  speciality?: string;
-  img?: string;
-  qualification?: string;
-  experience?: string;
-  patientsList?: Array<string> | any;
-}) => {
-
+export const DocViewLayoutItem = ({
+    id,
+    name,
+    sex,
+    age,
+    img,
+    currentCondition,
+    bloodGroup,
+    medicalHistorySummary,
+    currentSymptomsSummary,
+    assistiveDiagnosis,
+    reportsList,
+    doctorsList,
+  }: {
+      id?: string;
+      name?: string;
+      sex?: string;
+      age?: string;
+      img?: string;
+      currentCondition?: string;
+      bloodGroup?: string;
+      medicalHistorySummary?: string;
+      currentSymptomsSummary?: string;
+      assistiveDiagnosis?: string;
+      reportsList?: any;
+      doctorsList?: any;
+  }) => {
+  
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <div
@@ -60,20 +70,17 @@ export const DocLayoutItem = ({
       <div className="z-10 mt-0 pl-4 pt-4 font-bold text-[--fixed-bg-color]">
         {name}
       </div>
-      <div className="relative -top-4 w-[30rem] transition duration-200 group-hover/bento:translate-x-2">
+      <div className="relative -top-6 w-[30rem] transition duration-200 group-hover/bento:translate-x-2">
         <img
           src={img}
           alt=""
           className="-z-10 -ml-3 -mt-16 h-[19rem] md:w-[rem]"
         />
         <div className="z-10 -mt-20 pl-4 font-sans font-bold text-[--fixed-bg-color] dark:text-neutral-200">
-          {speciality}
+          {sex}
         </div>
         <div className="z-10 pl-4 font-sans text-xs font-normal text-[--fixed-bg-color] dark:text-neutral-300">
-          {qualification}
-        </div>
-        <div className="z-10 pl-4 font-sans text-xs font-normal text-[--fixed-bg-color] dark:text-neutral-300">
-          {experience}yrs Experience
+          {age}
         </div>
       </div>
 
@@ -84,7 +91,7 @@ export const DocLayoutItem = ({
             <>
               {/* <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader> */}
               <ModalBody>
-                <ChatInterface name={name} img={img} />
+                {/* <ChatInterface name={name} img={img} /> */}
               </ModalBody>
               {/* <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>

@@ -1,5 +1,6 @@
 export interface PatientSchema{
     id?: string;
+    name: string;
     sex?: string;
     age?: string;
     img?: string;
@@ -11,12 +12,11 @@ export interface PatientSchema{
     reportsList?: any;
     doctorsList?: any;
 }
-
 export const PatientData: PatientSchema[] = [
     {
         id: "p1",
         sex: "Male",
-        age: "25",
+        age: "25yo",
         img: "/images/marij1.png",
         currentCondition: "Hypertension",
         bloodGroup: "O+",
@@ -25,11 +25,12 @@ export const PatientData: PatientSchema[] = [
         assistiveDiagnosis: "Hypertension",
         reportsList: [],
         doctorsList: ["d1", "d2"],
+        name: "John Doe"
     },
     {
         id: "p2",
         sex: "Female",
-        age: "30",
+        age: "30yo",
         img: "/images/marij2.png",
         currentCondition: "Diabetes",
         bloodGroup: "AB+",
@@ -38,11 +39,12 @@ export const PatientData: PatientSchema[] = [
         assistiveDiagnosis: "Diabetes",
         reportsList: [],
         doctorsList: ["d3", "d4"],
+        name: "Jane Smith"
     },
     {
         id: "p3",
         sex: "Male",
-        age: "45",
+        age: "45yo",
         img: "/images/marij3.png",
         currentCondition: "Asthma",
         bloodGroup: "A+",
@@ -51,11 +53,12 @@ export const PatientData: PatientSchema[] = [
         assistiveDiagnosis: "Asthma",
         reportsList: [],
         doctorsList: ["d1", "d3"],
+        name: "Michael Johnson"
     },
     {
         id: "p4",
         sex: "Female",
-        age: "50",
+        age: "50yo",
         img: "/images/marij4.png",
         currentCondition: "Osteoporosis",
         bloodGroup: "B+",
@@ -64,5 +67,6 @@ export const PatientData: PatientSchema[] = [
         assistiveDiagnosis: "Osteoporosis",
         reportsList: [],
         doctorsList: ["d2", "d4"],
+        name: "Emily Davis"
     }
 ]

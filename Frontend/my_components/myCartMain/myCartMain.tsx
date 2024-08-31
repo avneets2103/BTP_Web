@@ -2,7 +2,6 @@ import React from 'react'
 import CartTop from '../cartTop/cartTop'
 import DocHero from '../DocHero/DocHero'
 import { DocData } from '@/Data/DocData'
-import { setCurrentPage } from "@/RTK/features/sidebar";
 // import CartHero from '../cartHero/cartHero'
 
 
