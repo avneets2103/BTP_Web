@@ -6,14 +6,14 @@ const doctorSchema = new mongoose.Schema({
         trim: true
     },
     qualifications: {
-        type: [String],
+        type: String,
         required: true,
     },
     imageLink: {
         type: String,
     },
     experience: {
-        type: Number,
+        type: String,
         required: true,
     },
     patientsList: [

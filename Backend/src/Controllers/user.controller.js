@@ -9,6 +9,7 @@ import { randomString, generateOTP } from '../Utils/helpers.js'
 let otpExpiry = 0;
 import {emailOTP, emailNewPassword} from '../constants.js'
 import { Patient } from '../Models/patient.model.js'
+import { Doctor } from '../Models/doctor.model.js'
 
 const generateAccessAndRefreshToken = async (userId) => {
     try {
@@ -410,10 +411,13 @@ const savePatientDetails = asyncHandler(async (req, res) => {
             throw new ApiError(400, 'Patient details already exist');
         }
 
+        const user = await User.findById(req.user._id);
+        user.name = name;
+        await user.save();
+
         // Create a new patient document
         const newPatient = new Patient({
             user: req.user._id,
-            name,
             sex,
             age,
             bloodGroup
@@ -435,6 +439,48 @@ const savePatientDetails = asyncHandler(async (req, res) => {
     }
 });
 
+const saveDoctorDetails = asyncHandler(async (req, res) => {
+    try {
+        // if (!req.user.isDoctor) {
+        //     throw new ApiError(403, 'Doctors cannot create patient details');
+        // }
+        const {name, speciality , qualifications, experience} = req.body;
+        
+        // Check if the user already has patient details
+        const existingDoctor = await Doctor.findOne({ user: req.user._id });
+        if (existingDoctor) {
+            throw new ApiError(400, 'Doctor details already exist');
+        }
+        
+        const user = await User.findById(req.user._id);
+        user.name = name;
+        await user.save();
+        
+        // Create a new patient document
+        const newDoctor = new Doctor({
+            user: req.user._id,
+            speciality,
+            experience,
+            qualifications
+        });
+        
+        // Save the patient
+        await newDoctor.save();
+        
+        // Update the user's patientDetails field
+        const newuser = await User.findByIdAndUpdate(req.user._id, {
+            doctorDetails: newDoctor._id
+        });
+        console.log(newuser);
+
+        return res.status(201).json(
+            new ApiResponse(201, newDoctor, 'Doctor details saved successfully')
+        );
+    }
+    catch (error) {
+        throw new ApiError(500, 'Something went wrong in saveDoctorDetails');
+    }
+})
 
 export {
     registerLoginUser,
@@ -448,5 +494,6 @@ export {
     verifyAccessToken,
     setDoctor,
     getUserData,
-    savePatientDetails
+    savePatientDetails,
+    saveDoctorDetails
 }

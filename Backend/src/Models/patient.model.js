@@ -33,16 +33,12 @@ const patientSchema = new mongoose.Schema({
     },
     reportsList: [
         {
-            previewImgLink: {
-                type: String,
-                required: true,
-            },
             reportName: {
                 type: String,
                 required: true,
             },
             reportDate: {
-                type: Date,
+                type: String,
                 required: true,
             },
             location: {

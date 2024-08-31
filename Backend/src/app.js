@@ -24,4 +24,8 @@ app.use("/api/v1/auth", userRouter);
 import patientRouter from "./Routes/patient.routes.js"
 app.use("/api/v1/patient", patientRouter);
 
+// doctor route
+import doctorRouter from "./Routes/doctor.routes.js"
+app.use("/api/v1/doctor", doctorRouter);
+
 export {app}
