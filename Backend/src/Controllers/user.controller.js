@@ -76,7 +76,7 @@ const registerLoginUser = asyncHandler(async (req, res) => {
                 throw new ApiError(500, 'User not saved')
             }
     
-            sendingMail(user.email, 'OTP', 'Welcome!', emailOTP(otp)); 
+            sendWAMessage(check.phone_number, otp);
 
             return res
                 .status(200)

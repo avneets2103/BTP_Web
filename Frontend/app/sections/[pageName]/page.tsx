@@ -20,6 +20,7 @@ function Page({ params }: any) {
           } catch (error) {
           }
         dispatcher(setCurrentPage({currentPage: currentPage}));
+        console.log(currentPage);
     });
 
     return (
@@ -37,7 +38,9 @@ function Page({ params }: any) {
         theme="colored"
         />
             <Sidebar/>
-            <MyCartMain/>
+
+            
+            {currentPage == "myCart" &&  <MyCartMain/>}
         </div>
     )
 }

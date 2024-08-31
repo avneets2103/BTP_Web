@@ -22,7 +22,7 @@ export default function RootLayout({
           </head>
           <body>
           <NextUIProvider>
-            <ThemeProvider enableSystem={true} attribute="class"> 
+            <ThemeProvider defaultTheme="light" enableSystem={false} attribute="class"> 
               <ReduxProvider>           
                   {children}
                   <Analytics/>

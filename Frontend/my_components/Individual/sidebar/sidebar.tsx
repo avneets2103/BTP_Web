@@ -72,7 +72,7 @@ const Sidebar: React.FC = () => {
               className="w-full p-[5px]"
             />
           </div>
-          <div className="flex w-full flex-col items-center justify-center gap-[0.8rem] rounded-[25px] bg-color1 py-[1rem] drop-shadow-md">
+          {/* <div className="flex w-full flex-col items-center justify-center gap-[0.8rem] rounded-[25px] bg-color1 py-[1rem] drop-shadow-md">
             <Popover
               placement="bottom-start"
               showArrow
@@ -221,7 +221,7 @@ const Sidebar: React.FC = () => {
                 setTheme(theme === "light" ? "dark" : "light");
               }}
             />
-          </div>
+          </div> */}
           <div className="flex w-full flex-col items-center justify-center rounded-[25px] bg-color1 py-[0.2rem] drop-shadow-md">
             {sidebarMenu.map((item: sidebarMenuItems, index: number) => {
               if (item.path === currentPage) {
