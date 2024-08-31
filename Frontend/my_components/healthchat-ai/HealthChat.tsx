@@ -41,7 +41,7 @@ const HealthChat: React.FC = () => {
             <input
             type="text"
             placeholder="Type a message..."
-            className="sn-chat-input w-[94%] "
+            className="sn-chat-input w-[94%] text-black "
             value={input}
             onChange={(e) => setInput(e.target.value)}
             />

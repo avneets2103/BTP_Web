@@ -5,7 +5,9 @@ const AddReportForm: React.FC = () => {
   const [when, setWhen] = useState<string>('');
   const [from, setFrom] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
-  const [value, setValue] = useState<string>('');
+  const [valueOne, setValueOne] = useState<string>('');
+  const [valueTwo, setValueTwo] = useState<string>('');
+  const [valueThree, setValueThree] = useState<string>('');
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -20,7 +22,9 @@ const AddReportForm: React.FC = () => {
       what,
       when,
       from,
-      value,
+      valueOne,
+      valueTwo,
+      valueThree,
     });
   };
 
@@ -44,22 +48,6 @@ const AddReportForm: React.FC = () => {
       </div>
       <div className="sn-details-input">
         <p>Enter Details:</p>
-        <div className='sn-inputs' >
-            <input
-            type="text"
-            placeholder="What?"
-            className="sn-input-field1"
-            value={what}
-            onChange={(e) => setWhat(e.target.value)}
-            />
-            <input
-            type="text"
-            placeholder="Value"
-            className="sn-input-field2"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            />
-        </div>
         <div className='sn-inputs'>
             <input
             type="text"
@@ -72,24 +60,24 @@ const AddReportForm: React.FC = () => {
             type="text"
             placeholder="Value"
             className="sn-input-field2"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
+            value={valueOne}
+            onChange={(e) => setValueOne(e.target.value)}
             />
         </div>
         <div className='sn-inputs'>
             <input
             type="text"
-            placeholder="What?"
+            placeholder="When?"
             className="sn-input-field1"
-            value={what}
-            onChange={(e) => setWhat(e.target.value)}
+            value={when}
+            onChange={(e) => setWhen(e.target.value)}
             />
             <input
             type="text"
             placeholder="Value"
             className="sn-input-field2"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
+            value={valueTwo}
+            onChange={(e) => setValueTwo(e.target.value)}
             />
         </div>
         <div className='sn-inputs'>
@@ -104,12 +92,12 @@ const AddReportForm: React.FC = () => {
             type="text"
             placeholder="Value"
             className="sn-input-field2"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
+            value={valueThree}
+            onChange={(e) => setValueThree(e.target.value)}
             />
         </div>
       </div>
-      <div className="sn-add-report-footer">
+      <div className="sn-add-report-footer pr-2 ">
         <button className="sn-add-report-button" onClick={handleSubmit}>
           Add Report
         </button>
