@@ -1,10 +1,17 @@
-'use client';
+"use client";
 import ChatInterface from "@/components/ChatInterface";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
-  return(
-    <div>
-      <ChatInterface></ChatInterface>
-    </div>
+  const Router = useRouter();
+  useEffect(() => {
+    Router.push("/notification");
+  })
+  return (
+    <>
+    <ChatInterface></ChatInterface>
+    </>
   );
 }
