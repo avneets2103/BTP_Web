@@ -8,6 +8,7 @@ import speakeasy from 'speakeasy';
 import { randomString, generateOTP } from '../Utils/helpers.js'
 let otpExpiry = 0;
 import {emailOTP, emailNewPassword} from '../constants.js'
+import { Patient } from '../Models/patient.model.js'
 
 const generateAccessAndRefreshToken = async (userId) => {
     try {
@@ -43,7 +44,7 @@ const registerLoginUser = asyncHandler(async (req, res) => {
         const secretBase32 = process.env.otp_secret_key;  
         let otp = generateOTP(secretBase32);
         otpExpiry = Date.now() + (60000*5);
-        
+
         if (exsistingUser) {
             const passValid = await exsistingUser.isPasswordCorrect(password)
             if (!passValid) {
@@ -377,6 +378,64 @@ const setDoctor = asyncHandler(async (req, res) => {
     }
 })
 
+const getUserData = asyncHandler(async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id)
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(
+                    200,
+                    user,
+                    'User data successfully'
+                )
+            )
+    }catch (error) {
+        throw new ApiError(500, 'Something went wrong in getUser')
+    }
+})
+
+const savePatientDetails = asyncHandler(async (req, res) => {
+    try {
+        // Ensure the user is not a doctor
+        if (req.user.isDoctor) {
+            throw new ApiError(403, 'Doctors cannot create patient details');
+        }
+
+        const { name, sex, age, bloodGroup } = req.body;
+
+        // Check if the user already has patient details
+        const existingPatient = await Patient.findOne({ user: req.user._id });
+        if (existingPatient) {
+            throw new ApiError(400, 'Patient details already exist');
+        }
+
+        // Create a new patient document
+        const newPatient = new Patient({
+            user: req.user._id,
+            name,
+            sex,
+            age,
+            bloodGroup
+        });
+
+        // Save the patient
+        await newPatient.save();
+
+        // Update the user's patientDetails field
+        await User.findByIdAndUpdate(req.user._id, {
+            patientDetails: newPatient._id
+        });
+
+        return res.status(201).json(
+            new ApiResponse(201, newPatient, 'Patient details saved successfully')
+        );
+    } catch (error) {
+        throw new ApiError(500, 'Something went wrong in savePatientDetails');
+    }
+});
+
+
 export {
     registerLoginUser,
     logoutUser,
@@ -387,5 +446,7 @@ export {
     resendOTP,
     generateNewPassword,
     verifyAccessToken,
-    setDoctor
+    setDoctor,
+    getUserData,
+    savePatientDetails
 }

@@ -6,8 +6,7 @@ import ApiError from "../Utils/ApiError.js";
 const verifyJWT = asyncHandler(async (req, res, next)=> {
     try {
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
-        console.log(req);
-        console.log("token"+token);
+        console.log("token: "+token);
         if(!token){
             throw new ApiError(401, "Unauthorized request");
         }
@@ -17,7 +16,6 @@ const verifyJWT = asyncHandler(async (req, res, next)=> {
         if(!user){
             throw new ApiError(401, "Invalid access token");
         }
-    
         req.user = user;
         next()
     } catch (error) {

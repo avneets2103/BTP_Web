@@ -10,6 +10,8 @@ import {
     changeCurrentPassword,
     deleteUserByEmail,
     setDoctor,
+    getUserData,
+    savePatientDetails,
  } from "../Controllers/user.controller.js";
 import { verifyJWT } from "../Middlewares/auth.middleware.js";
 
@@ -27,5 +29,7 @@ router.route("/deleteUser").post(deleteUserByEmail);
 router.route("/verifyAccessToken").post(verifyJWT, verifyAccessToken);
 router.route("/logout").post(verifyJWT, logoutUser);
 router.route("/changePassword").post(verifyJWT, changeCurrentPassword);
+router.route("/getUserData").post(verifyJWT, getUserData);
+router.route("/savePatientDetails").post(verifyJWT, savePatientDetails);
 
 export default router;

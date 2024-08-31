@@ -20,4 +20,8 @@ app.use(cookieParser());
 import userRouter from "./Routes/user.routes.js"
 app.use("/api/v1/auth", userRouter);
 
+// patient route
+import patientRouter from "./Routes/patient.routes.js"
+app.use("/api/v1/patient", patientRouter);
+
 export {app}
