@@ -9,6 +9,10 @@ import "react-toastify/dist/ReactToastify.css";
 import MyCartMain from '@/my_components/myCartMain/myCartMain';
 import axios from '@/utils/axios';
 import { RENDER_BACKEND_URI } from '@/CONSTANTS';
+import ReportMain from '@/my_components/reportMain/ReportMain';
+import VitalsMain from '@/my_components/vitalsMain/VitalsMain';
+import SupportMain from '@/my_components/SupportMain/SupportMain';
+import DocViewMain from '@/my_components/DocViewMain/DocViewMain';
 
 function Page({ params }: any) {
     const dispatcher = useDispatch();
@@ -20,6 +24,7 @@ function Page({ params }: any) {
           } catch (error) {
           }
         dispatcher(setCurrentPage({currentPage: currentPage}));
+        console.log(currentPage);
     });
 
     return (
@@ -37,7 +42,12 @@ function Page({ params }: any) {
         theme="colored"
         />
             <Sidebar/>
-            <MyCartMain/>
+
+            {currentPage == "myCart" &&  <MyCartMain/>}
+            {currentPage === "history" && <ReportMain/>}
+            {currentPage == "expenses" &&  <VitalsMain/>}
+            {currentPage == "wishlist" &&  <SupportMain/>}
+            {currentPage == "priceTracker" &&  <DocViewMain/>}
         </div>
     )
 }

@@ -14,34 +14,34 @@ const refreshTokenExpiration = 60 * 60 * 24 * 200; // 30 days
 
 const sidebarMenu:Array<sidebarMenuItems>= [
     {
-        name: "My Cart",
+        name: "My Doctors",
         path: "myCart",
-        iconS: "../icons/cart.S.png",
-        iconNS: "../icons/cart.NS.png",
+        iconS: "../icons/doc.s.png",
+        iconNS: "../icons/doc.ns.png",
     },
     {
-        name: "History",
+        name: "My Reports",
         path: "history",
-        iconS: "../icons/history.S.png",
-        iconNS: "../icons/history.NS.png",
+        iconS: "../icons/rep.s.png",
+        iconNS: "../icons/rep.ns.png",
     },
     {
-        name: "Expenses",
+        name: "Health Vitals",
         path: "expenses",
-        iconS: "../icons/expenses.S.png",
-        iconNS: "../icons/expenses.NS.png",
+        iconS: "../icons/vitals.s.png",
+        iconNS: "../icons/vitals.ns.png",
     },
     {
-        name: "Wishlist",
+        name: "24x7 Support",
         path: "wishlist",
-        iconS: "../icons/wishlist.S.png",
-        iconNS: "../icons/wishlist.NS.png",
+        iconS: "../icons/sup.s.png",
+        iconNS: "../icons/sup.ns.png",
     },
     {
-        name: "Price Tracker",
+        name: "My Patients",
         path: "priceTracker",
-        iconS: "../icons/priceTracker.S.svg",
-        iconNS: "../icons/priceTracker.NS.svg",
+        iconS: "../icons/doc.s.png",
+        iconNS: "../icons/doc.ns.png",
     },
 ]
 

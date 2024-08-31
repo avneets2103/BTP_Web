@@ -5,12 +5,17 @@ import React, { useState } from 'react';
 import profilePic from '@/public/images/anita-dixit-potrait.png';
 import Image from 'next/image';
 
+interface Props {
+  name: string | any;
+  img: string | any;
+}
+
 interface Message {
   text: string;
   sender: 'doctor' | 'user';
 }
 
-const ChatInterface: React.FC = () => {
+const ChatInterface = ({name, img}: Props) => {
   const [messages, setMessages] = useState<Message[]>([
     { text: 'Good afternoon, Naren', sender: 'doctor' },
     { text: 'I wanted to know if you are allergic to paracetamol?', sender: 'doctor' },
@@ -28,11 +33,11 @@ const ChatInterface: React.FC = () => {
   };
 
   return (
-    <div className="sn-chat-container">
+    <div className="">
       <div className="sn-chat-header">
-        <Image src={profilePic} alt="Doctor's Profile" className="sn-doctor-profile" />
-        <span className="sn-doctor-name">Dr. Anita Dixit</span>
-        <button className="sn-close-button  ml-auto mr-4 ">✖</button>
+        <Image src={img} alt="Doctor's Profile" className="sn-doctor-profile" width={15} height={15} />
+        <span className="sn-doctor-name">{name}</span>
+        {/* <button className="sn-close-button  ml-auto mr-4 ">✖</button> */}
       </div>
       <div className="sn-chat-body">
         <p className='sn-convo-start-date m-auto font-bold ' >Today</p>
@@ -43,7 +48,7 @@ const ChatInterface: React.FC = () => {
         ))}
       </div>
       <div className="sn-chat-footer flex-col ">
-        <div className='sn-text-input w-[100%] p-1 ' >
+        <div className='sn-text-input w-[100%] p-1 flex flex-row' >
             <input
             type="text"
             placeholder="Type a message..."
@@ -55,7 +60,7 @@ const ChatInterface: React.FC = () => {
             ➤
             </button>
         </div>
-        <div className='sn-functionality-buttons self-end p-1 px-5 ' >
+        <div className='sn-functionality-buttons self-end p-1 px-5 mt-4' >
             <button className="sn-action-button sn-remove-doctor">Remove Doctor</button>
             <button className="sn-action-button sn-book-appointment">Book appointment</button>
         </div>

@@ -142,7 +142,7 @@ function CartTop() {
 
   const getModalHeader = () => {
     if (addProductModalIsOpen) {
-      return "Add product to cart using product link";
+      return "Add Doctor By Code";
     } else if (filterModalIsOpen) {
       return "Filter products";
     } else if (utiltyModalIsOpen) {
@@ -180,7 +180,7 @@ function CartTop() {
       <div className="flex gap-4">
         <SectionDisplay />
         <div className="flex items-center rounded-[10px] bg-color1">
-          <div
+          {/* <div
             className={
               selectedTab
                 ? "m-[2px] mr-0 w-[7rem] rounded-[10px] p-2 pr-2 text-center text-sm text-textColorDark"
@@ -203,7 +203,7 @@ function CartTop() {
             }}
           >
             Customized
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="flex h-[7vh] items-end gap-2">
@@ -211,7 +211,7 @@ function CartTop() {
           ref={inputRef}
           isClearable
           radius="sm"
-          placeholder="Search anything"
+          placeholder="Search Doctors"
           startContent={
             <div>
               <img src="../icons/search.png" className="w-[15px]" alt="logo" />
@@ -247,7 +247,7 @@ function CartTop() {
           >
             <img src="../icons/additionH.png" className="w-[15px]" alt="logo" />
           </div>
-          <div
+          {/* <div
             className="flex h-9 w-9 items-center justify-center rounded-full bg-secondaryColor"
             onClick={() => {
               onOpen();
@@ -257,7 +257,7 @@ function CartTop() {
             }}
           >
             <img src="../icons/filterH.png" className="w-[15px]" alt="logo" />
-          </div>
+          </div> */}
         </div>
         <Modal
           isOpen={isOpen}
@@ -283,7 +283,7 @@ function CartTop() {
                             ref={inputRef}
                             isClearable
                             radius="sm"
-                            placeholder="Enter product link"
+                            placeholder="Enter Unique Code"
                             startContent={
                               <div>
                                 <img
@@ -296,7 +296,7 @@ function CartTop() {
                             value={productLink}
                             onChange={(e) => setProductLink(e.target.value)}
                           />
-                          <p>Add Custom fields</p>
+                          {/* <p>Add Custom fields</p>
                           <div className="flex gap-2">
                             <Input
                               ref={keyInputRef}
@@ -367,10 +367,10 @@ function CartTop() {
                                 </Button>
                               </div>
                             ))}
-                          </div>
+                          </div> */}
                         </>
                       )}
-                      {filterModalIsOpen && (
+                      {/* {filterModalIsOpen && (
                         <>
                           <div className="flex max-h-[50vh] flex-col gap-3 overflow-auto">
                             {Cols.map((col) => {
@@ -601,7 +601,7 @@ function CartTop() {
                             })}
                           </div>
                         </>
-                      )}
+                      )} */}
                     </>
                   )}
                 </ModalBody>
@@ -609,6 +609,7 @@ function CartTop() {
                   {addProductModalIsOpen && (
                     <>
                       <Button
+                        className="mx-auto"
                         color="danger"
                         variant="flat"
                         onPress={async () => {
@@ -626,7 +627,7 @@ function CartTop() {
                             setKey("");
                             setValue("");
                             setProductLink("");
-                            ToastInfo("Product added to cart");
+                            ToastInfo("Doctor added succussfully");
                             const loadCart = async () => {
                               const cartRes = await axios.post(`${BACKEND_URI}/list/getListData`, {
                                 listId: listId,
@@ -643,13 +644,13 @@ function CartTop() {
                             }
                             onClose();
                           } catch (e) {
-                            ToastErrors("Add product to cart failed");
+                            ToastErrors("Add Doctor Failed");
                           } finally {
                             setLoading(false);
                           }
                         }}
                       >
-                        Add to cart
+                        Add Doctor
                       </Button>
                     </>
                   )}
