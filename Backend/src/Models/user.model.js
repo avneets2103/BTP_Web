@@ -4,11 +4,15 @@ import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
     {
-        email: {
+        isDoctor: {
+            type: Boolean,
+            default: false,
+            required: true,
+        },
+        phone_number: {
             type: String,
             required: true,
             unique: true,
-            lowercase: true,
             trim: true
         },
         password: {
@@ -23,12 +27,16 @@ const userSchema = new mongoose.Schema(
 )
 
 userSchema.pre("save", async function (next){
-    if(!this.isModified("password")){return next();}
-    this.password = await bcrypt.hash(this.password, 10);
+    if (this.password && this.isModified("password")) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
     next();
 })
 
 userSchema.methods.isPasswordCorrect = async function(password){
+    if (!this.password) {
+        throw new Error("Password not set for this user.");
+    }
     return await bcrypt.compare(password, this.password);
 }
 
@@ -36,9 +44,8 @@ userSchema.methods.generateAccessToken = function(){
     const token = jwt.sign(
         {
             _id: this._id,
-            email: this.email,
-            username: this.username,
-            fullName: this.fullName
+            phone_number: this.phone_number,
+            isDoctor: this.isDoctor
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
@@ -52,8 +59,7 @@ userSchema.methods.generateRefreshToken = function(){
         {
             _id: this._id,
             email: this.email,
-            username: this.username,
-            fullName: this.fullName
+            isDoctor: this.isDoctor
         },
         process.env.REFRESH_TOKEN_SECRET,
         {
@@ -63,3 +69,5 @@ userSchema.methods.generateRefreshToken = function(){
 }
 
 export const User = mongoose.model('User', userSchema)
+
+
