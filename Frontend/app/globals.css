@@ -482,3 +482,25 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555; /* Color when hovering over the scrollbar thumb */
 }
+
+
+
+/* medical report of patient  */
+
+.sn-tab{
+  padding: 0.5rem;
+}
+
+.sn-title{
+  font-size: 20px;
+  font-weight: 500;
+  color: #4b4b4b;
+  margin-top: 1rem;
+}
+
+.sn-tab-active{
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 20px;
+  margin: 0.5rem;
+}
