@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const patientSchema = new mongoose.Schema({
     sex: {
@@ -31,8 +31,8 @@ const patientSchema = new mongoose.Schema({
         type: String,
         trim: true,
     },
-    reportsList: {
-        type: [{
+    reportsList: [
+        {
             previewImgLink: {
                 type: String,
                 required: true,
@@ -49,18 +49,18 @@ const patientSchema = new mongoose.Schema({
                 type: String,
                 required: true,
             },
-            reportPDFLink:{
+            reportPDFLink: {
                 type: String,
                 required: true,
             }
-        }]
-    },
+        }
+    ],
     doctorsList: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Doctor',
         }
     ],
-}, {timestamps:true})
+}, { timestamps: true });
 
-export const User = mongoose.model('Patient', patientSchema)
+export const Patient = mongoose.models.Patient || mongoose.model('Patient', patientSchema);
