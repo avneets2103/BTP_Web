@@ -123,44 +123,53 @@ body {
 }
 
 
+
 /* chat-interface  */
 
 /* components/ChatInterface.module.css */
-.chat-container {
+.sn-chat-container {
   background-color: #ffffff;
-  width: 400px;
+  width: 75%;
+  height: 70%;
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  margin: auto;
+  margin-top: 6rem;
 }
 
-.chat-header {
+.sn-chat-header {
   display: flex;
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #e6e6e6;
+  /* border-bottom: 1px solid #e6e6e6; */
 }
 
-.doctor-profile {
+.sn-doctor-profile {
   border-radius: 50%;
   width: 40px;
   height: 40px;
   margin-right: 10px;
 }
 
-.doctor-name {
+.sn-doctor-name {
   font-weight: bold;
   font-size: 16px;
+  color: black;
 }
 
-.chat-body {
+.sn-chat-body {
   padding: 15px;
   flex: 1;
   overflow-y: auto;
+  color: #666666;
+  display: flex;
+  flex-direction: column;
+  max-height: 400px;
 }
 
-.chat-message {
+.sn-chat-message {
   display: flex;
   margin-bottom: 10px;
   padding: 10px;
@@ -168,33 +177,34 @@ body {
   max-width: 70%;
 }
 
-.doctor-message {
+.sn-doctor-message {
   background-color: #e6f7e6;
   align-self: flex-start;
 }
 
-.user-message {
-  background-color: #f1f1f1;
+.sn-user-message {
+  background-color: #e9ebf7;
   align-self: flex-end;
 }
 
-.chat-footer {
+.sn-chat-footer {
   display: flex;
   align-items: center;
   padding: 10px;
-  border-top: 1px solid #e6e6e6;
+  /* border-top: 1px solid #e6e6e6; */
 }
 
-.chat-input {
+.sn-chat-input {
   flex: 1;
   padding: 10px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   border-radius: 20px;
   margin-right: 10px;
+  background-color: #e9ebf7;
 }
 
-.send-button {
-  background-color: #007bff;
+.sn-send-button {
+  background-color: #7478ff;
   color: #ffffff;
   border: none;
   padding: 10px;
@@ -203,9 +213,9 @@ body {
   font-size: 16px;
 }
 
-.action-button {
+.sn-action-button {
   background-color: #f1f1f1;
-  color: #000;
+  color: #7478ff;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
@@ -214,8 +224,8 @@ body {
   font-size: 14px;
 }
 
-.book-appointment {
-  background-color: #007bff;
+.sn-book-appointment {
+  background-color: #7478ff;
   color: #ffffff;
 ::-webkit-scrollbar {
   width: 5px;
@@ -229,4 +239,5 @@ body {
   border-radius: 10px;
   background: rgba(235, 235, 235, 0.265);
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.155);
+}
 }
