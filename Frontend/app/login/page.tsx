@@ -100,19 +100,20 @@ function Page() {
             left-0
             '>
                 <div 
-                className="
-                relative
-                loginGlass
-                z-0
-                bg-color2
-                w-10/12 h-5/6  
-                rounded-[20px] 
-                drop-shadow-ourDropShadow
-                flex
-                items-center
-                justify-between
-                px-[5rem]
-                ">
+                  className="
+                  relative
+                  loginGlass
+                  z-0
+                  bg-color2
+                  w-10/12 h-5/6  
+                  rounded-[20px] 
+                  shadow-ourBoxShadow
+                  flex
+                  items-center
+                  justify-between
+                  px-[5rem]
+                  "
+                >
                     <LoginCard />
                     <DemoCard/>
                     <img src="./icons/HeartImg.svg" alt="questionMark" className='m-[-1rem] min-w-40 w-[25%] hide-on-small'/>                </div> 
