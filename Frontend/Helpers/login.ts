@@ -15,11 +15,10 @@ const handleLogin = async(isInvalid: boolean, password: string, email: string, s
     if(!isInvalid && (password.length >= minPassLength)) {
         try {
             const user = {
-                email: email.trim(),
+                phone_number: email.trim(),
                 password: password,
             };
-            const loginRes = await axios.post(`${RENDER_BACKEND_URI}/users/registerLogin`, user); 
-            Cookies.set("avatarNumber", loginRes.data.data.user.avatarNumber, { expires: 60 * 60 * 24 * 30 });
+            const loginRes = await axios.post(`${BACKEND_URI}/auth/login`, user); 
             setOtpPage(true);
           } catch (error: any) {
             ToastErrors("Invalid Login Credentials!");
@@ -64,7 +63,7 @@ const handleForgotPass = (setForgotPass: Function, setOtpPage: Function, setPass
 const handleGenerateNewPassword = async (email: string, setForgotPass: Function, setOTP: Function) => {
   try {
     const body = {
-      "email": email
+      "phone_number": email
     }
     await axios.post(`${RENDER_BACKEND_URI}/users/generateNewPassword`, body);
     ToastInfo("New password generated");

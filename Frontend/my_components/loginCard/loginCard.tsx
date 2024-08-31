@@ -88,12 +88,12 @@ function LoginCard() {
             return;
         }else{
             const verifyBody = {
-                "email": Cookies.get("email") || "",
+                "phone_number": Cookies.get("email") || "",
                 "enteredOTP": OTP,
             }
             try {
                 const res = await axios.post(
-                    `${RENDER_BACKEND_URI}/users/verifyOTP`, 
+                    `${BACKEND_URI}/auth/verifyOTP`, 
                     verifyBody
                 );
                 tokenCookies(res.data.data.accessToken, res.data.data.refreshToken);

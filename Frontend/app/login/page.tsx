@@ -17,37 +17,36 @@ import { tokenCookies } from '@/Helpers/cookieHandling'
 function Page() {
     const Router = useRouter();
     const { theme, setTheme } = useTheme();
-    // TODO: When backend is live
-    // useEffect(()=>{
-    //     const checkTokens = async ()=>{
-    //         try {
-    //           // Verify access token
-    //           const accessTokenResponse = await axios.post(`${BACKEND_URI}/users/verifyAccessToken`);
-    //           if (accessTokenResponse.status === 200) {
-    //             Router.push('/sections/myCart');
-    //             return;
-    //           }
-    //         } catch (error) {
-    //           console.log('Access token invalid, trying refresh token...');
-    //         }
+    useEffect(()=>{
+        const checkTokens = async ()=>{
+            try {
+              // Verify access token
+              const accessTokenResponse = await axios.post(`${BACKEND_URI}/users/verifyAccessToken`);
+              if (accessTokenResponse.status === 200) {
+                Router.push('/sections/myCart');
+                return;
+              }
+            } catch (error) {
+              console.log('Access token invalid, trying refresh token...');
+            }
       
-    //         try {
-    //           // Refresh access token
-    //           const refreshTokenResponse = await axios.post(`${BACKEND_URI}/users/refreshAccessToken`, {
-    //             refreshToken: Cookies.get("refreshToken")
-    //           });
-    //           if (refreshTokenResponse.status === 200) {
-    //             tokenCookies(refreshTokenResponse.data.data.accessToken, refreshTokenResponse.data.data.refreshToken);
-    //             Router.push('/sections/myCart');
-    //             return;
-    //           }
-    //         } catch (error) {
-    //           console.log('Refresh token invalid.');
-    //         }
-    //       };
+            try {
+              // Refresh access token
+              const refreshTokenResponse = await axios.post(`${BACKEND_URI}/users/refreshAccessToken`, {
+                refreshToken: Cookies.get("refreshToken")
+              });
+              if (refreshTokenResponse.status === 200) {
+                tokenCookies(refreshTokenResponse.data.data.accessToken, refreshTokenResponse.data.data.refreshToken);
+                Router.push('/sections/myCart');
+                return;
+              }
+            } catch (error) {
+              console.log('Refresh token invalid.');
+            }
+          };
       
-    //       checkTokens();
-    // }, [Router])
+          checkTokens();
+    }, [Router])
 
     return (
         <>
