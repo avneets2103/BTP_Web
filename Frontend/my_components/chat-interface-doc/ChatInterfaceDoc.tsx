@@ -24,10 +24,10 @@ interface Message {
 const ChatInterfaceDoc: React.FC = () => {
 
     const [messages, setMessages] = useState<Message[]>([
-        { text: 'Good afternoon, Naren', sender: 'doctor' },
-        { text: 'I wanted to know if you are allergic to paracetamol?', sender: 'doctor' },
-        { text: 'It can be causing your rashes', sender: 'doctor' },
-        { text: 'If yes, then replace it with Advil', sender: 'doctor' },
+        { text: 'Good afternoon, Naren', sender: 'user' },
+        { text: 'I wanted to know if you are allergic to paracetamol?', sender: 'user' },
+        { text: 'It can be causing your rashes', sender: 'user' },
+        { text: 'If yes, then replace it with Advil', sender: 'user' },
     ]);
 
     const [input, setInput] = useState<string>('');
