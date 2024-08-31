@@ -1,6 +1,6 @@
-// components/ChatInterface.tsx
+// components/HealthChat.tsx
 import React, { useState } from 'react';
-// import 'chatinterface.css';
+// import 'HealthChat.css';
 // import {profilePic} from 'Frontend\public\images\anita-dixit-potrait.png'
 
 interface Message {
@@ -8,7 +8,7 @@ interface Message {
   sender: 'doctor' | 'user';
 }
 
-const ChatInterface: React.FC = () => {
+const HealthChat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     { text: 'Good afternoon, Naren', sender: 'doctor' },
     { text: 'I wanted to know if you are allergic to paracetamol?', sender: 'doctor' },
@@ -27,13 +27,9 @@ const ChatInterface: React.FC = () => {
 
   return (
     <div className="sn-chat-container">
-      <div className="sn-chat-header">
-        <img src="../public/images/anita-dixit-potrait.png" alt="Doctor's Profile" className="sn-doctor-profile" />
-        <span className="sn-doctor-name">Dr. Anita Dixit</span>
-        <button className="sn-close-button  ml-auto mr-4 ">✖</button>
-      </div>
       <div className="sn-chat-body">
-        <p className='sn-convo-start-date m-auto font-bold ' >Today</p>
+        <p className='sn-convo-start-date m-auto font-bold ' >HealthChat AI</p>
+        <p className='sn-convo-start-date m-auto ' >Powered</p>
         {messages.map((message, index) => (
           <div key={index} className={`sn-chat-message sn-${message.sender}-message`}>
             <span>{message.text}</span>
@@ -54,7 +50,7 @@ const ChatInterface: React.FC = () => {
             </button>
         </div>
         <div className='sn-functionality-buttons self-end p-1 px-5 ' >
-            <button className="sn-action-button sn-remove-doctor">Remove Doctor</button>
+            <button className="sn-action-button sn-remove-doctor">Call Ambulance</button>
             <button className="sn-action-button sn-book-appointment">Book appointment</button>
         </div>
       </div>
@@ -62,4 +58,4 @@ const ChatInterface: React.FC = () => {
   );
 };
 
-export default ChatInterface;
+export default HealthChat;
