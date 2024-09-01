@@ -21,10 +21,9 @@ export const DocLayout = ({
   return (
     <div
       className={cn(
-        "mx-auto grid max-w-7xl gap-4 md:auto-rows-[18rem] md:grid-cols-6",
+        "mx-auto grid md:auto-rows-[18rem] md:grid-cols-6",
         className,
       )}
-      // style={{ gridTemplateColumns: "repeat(auto-fit, minmax(8rem, 1fr))" }}
     >
       {children}
     </div>
@@ -53,17 +52,17 @@ export const DocLayoutItem = ({
   return (
     <div
       className={cn(
-        "group/bento row-span-1 flex cursor-pointer flex-col justify-between space-y-4 overflow-clip rounded-xl border border-transparent bg-white p-0 shadow-input transition duration-200 hover:shadow-xl dark:border-white/[0.2] dark:bg-black dark:shadow-none",
+        "br-black w-[13.4vw] group/bento row-span-1 flex cursor-pointer flex-col justify-between space-y-4 overflow-clip rounded-xl border border-transparent bg-white p-0 shadow-input transition duration-200 hover:shadow-xl dark:border-white/[0.2] dark:bg-black dark:shadow-none ",
       )}
       onClick={onOpen}
     >
-      <div className="z-10 mt-0 pl-4 pt-4 font-bold text-[--fixed-bg-color]">
+      <div className="z-10 mt-0 pl-4 pt-4 font-medium text-[--fixed-bg-color]">
         {name}
       </div>
-      <div className="relative -top-4 w-[30rem] transition duration-200 group-hover/bento:translate-x-2">
+      <div className="relative -top-4 w-[20rem]">
         <img
           src={img}
-          alt=""
+          alt="doctor image"
           className="-z-10 -ml-3 -mt-16 h-[19rem] md:w-[rem]"
         />
         <div className="z-10 -mt-20 pl-4 font-sans font-bold text-[--fixed-bg-color] dark:text-neutral-200">

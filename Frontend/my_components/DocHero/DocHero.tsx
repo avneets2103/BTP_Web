@@ -8,7 +8,7 @@ interface Props {
 
 function DocHero({data}: Props) {
     return (
-        <DocLayout className='w-full'>
+        <DocLayout className='w-full h-full'> 
             {data.map(({ id, name, speciality, qualifications, imageLink, experience, patientsList }) => (
             <DocLayoutItem
                key={id}

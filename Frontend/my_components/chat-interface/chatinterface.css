@@ -1,6 +1,7 @@
 /* chat-interface  */
 
 /* components/ChatInterface.module.css */
+
 .chat-container {
     background-color: #ffffff;
     width: 75%;
@@ -34,7 +35,6 @@
   .chat-body {
     padding: 15px;
     flex: 1;
-    overflow-y: auto;
     color: black;
     display: flex;
     flex-direction: column;

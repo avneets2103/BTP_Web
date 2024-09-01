@@ -13,7 +13,6 @@ function SupportMain(props: Props) {
         <div className='flex-grow flex flex-col width-full h-full mr-6'>
             <SupportTop/>
             <SupportHero />
-            <HealthChat></HealthChat>
         </div>
     )
 }

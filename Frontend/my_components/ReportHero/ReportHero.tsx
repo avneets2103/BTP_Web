@@ -6,13 +6,6 @@ interface Props {
   data: ReportsSchema[];
 }
 
-// id?: string;
-//     previewImgLink?: string;
-//     reportName?: string;
-//     reportDate?: string;
-//     location?: string;
-//     reportPDFLink: string;
-
 function ReportHero({ data }: Props) {
   return (
     <ReportLayout className="w-full">

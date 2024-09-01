@@ -21,10 +21,9 @@ export const ReportLayout = ({
   return (
     <div
       className={cn(
-        "mx-auto grid max-w-7xl gap-4 md:auto-rows-[18rem] md:grid-cols-4",
+        "mx-auto gap-3 grid md:auto-rows-[14rem] md:grid-cols-4",
         className,
       )}
-      // style={{ gridTemplateColumns: "repeat(auto-fit, minmax(8rem, 1fr))" }}
     >
       {children}
     </div>
@@ -52,18 +51,18 @@ export const ReportLayoutItem = ({
 return (
     <div
         className={cn(
-            "group/bento row-span-1 flex cursor-pointer flex-col justify-between space-y-4 overflow-clip rounded-xl border border-transparent bg-[--fixed-bg-color] p-0 shadow-input transition duration-200 hover:shadow-xl dark:border-white/[0.2] dark:bg-black dark:shadow-none",
+            "group/bento w-[21vw] row-span-1 flex cursor-pointer flex-col justify-between space-y-4 overflow-clip rounded-xl border border-transparent bg-[--fixed-bg-color] p-0",
         )}
         onClick={() => window.open(reportPDFLink, '_blank')}
     >
-        <div className="z-10 mt-0 pl-4 pt-4 font-bold text-[--fixed-bg-color]">
+        <div className="z-10 mt-0 pl-4 pt-4 font-medium text-white">
             {reportName}
         </div>
-        <div className="relative -top-5 w-[30rem] transition duration-200 group-hover/bento:translate-x-2">
+        <div className="relative -top-5 w-[30vw]">
             <img
                 src={previewImgLink}
                 alt=""
-                className="-z-10 -ml-3 -mt-16 h-[19rem] md:w-[rem]"
+                className="-z-10 -ml-3 -mt-16 h-[16rem] md:w-[rem]"
             />
             <div className="z-10 -mt-20 pl-4 font-sans font-bold text-[--fixed-bg-color] dark:text-neutral-200">
                 {reportDate}

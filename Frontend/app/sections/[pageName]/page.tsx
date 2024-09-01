@@ -42,7 +42,6 @@ function Page({ params }: any) {
         theme="colored"
         />
             <Sidebar/>
-
             {currentPage == "myCart" &&  <MyCartMain/>}
             {currentPage === "history" && <ReportMain/>}
             {currentPage == "expenses" &&  <VitalsMain/>}

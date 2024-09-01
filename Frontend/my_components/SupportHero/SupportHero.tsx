@@ -1,6 +1,7 @@
 import { ReportLayout, ReportLayoutItem } from "@/components/ui/ReportLayout";
 import { ReportsSchema } from "@/Data/ReportsData";
 import React from "react";
+import HealthChat from "../healthchat-ai/HealthChat";
 
 interface Props {
   data?: ReportsSchema[];
@@ -16,7 +17,7 @@ interface Props {
 function SupportHero({ data }: Props) {
   return (
     <>
-        
+        <HealthChat/>
     </>
   );
 }

@@ -32,12 +32,4 @@ export const ReportsData: ReportsSchema[] = [
         location: "City Medical Center",
         reportPDFLink: "https://example.com/reports/patient3_report.pdf",
     },
-    {
-        id: "r4",
-        previewImgLink: "/images/rep1.png",
-        reportName: "Blood Test",
-        reportDate: "2022-04-01",
-        location: "Community Hospital",
-        reportPDFLink: "https://example.com/reports/patient4_report.pdf"
-    }
 ]
