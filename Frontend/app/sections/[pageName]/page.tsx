@@ -7,12 +7,12 @@ import './page.css'
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import MyCartMain from '@/my_components/myCartMain/myCartMain';
-import axios from '@/utils/axios';
-import { RENDER_BACKEND_URI } from '@/CONSTANTS';
 import ReportMain from '@/my_components/reportMain/ReportMain';
 import VitalsMain from '@/my_components/vitalsMain/VitalsMain';
 import SupportMain from '@/my_components/SupportMain/SupportMain';
 import DocViewMain from '@/my_components/DocViewMain/DocViewMain';
+import { BACKEND_URI } from '@/CONSTANTS';
+import axios from 'axios';
 
 function Page({ params }: any) {
     const dispatcher = useDispatch();
@@ -20,7 +20,7 @@ function Page({ params }: any) {
     useEffect(() => {
         // try {
         //     // Verify access token
-        //     const accessTokenResponse = axios.post(`${RENDER_BACKEND_URI}/users/verifyAccessToken`);
+        //     const accessTokenResponse = axios.post(`${BACKEND_URI}/auth/verifyAccessToken`);
         //   } catch (error) {
         //   }
         dispatcher(setCurrentPage({currentPage: currentPage}));
