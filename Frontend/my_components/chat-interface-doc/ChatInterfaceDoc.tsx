@@ -8,6 +8,11 @@ interface MessageProps {
   isPatient: boolean;
 }
 
+interface Props{
+    // name: string | any;
+    img: string | any;
+}
+
 interface Message {
     text: string;
     sender: 'doctor' | 'user';
@@ -21,7 +26,7 @@ interface Message {
 //   );
 // };
 
-const ChatInterfaceDoc: React.FC = () => {
+const ChatInterfaceDoc = ({img} : Props) => {
 
     const [messages, setMessages] = useState<Message[]>([
         { text: 'Good afternoon, Naren', sender: 'user' },
@@ -49,9 +54,12 @@ const ChatInterfaceDoc: React.FC = () => {
         <div className='flex' >
             <div className="sn-patient-info">
                 <Image
-                src={cuteGirl}
+                // src={cuteGirl}
+                src={img}
                 alt="Patient"
-                className="sn-patient-image"
+                className="sn-patient-image  "
+                width={300}
+                height={400}
                 />
                 <div className="sn-patient-details">
                 <p>Sex: Female</p>

@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import ChatInterface from "@/my_components/chat-interface/ChatInterface";
+import ChatInterfaceDoc from "@/my_components/chat-interface-doc/ChatInterfaceDoc";
+// import ChatInterface from "@/my_components/chat-interface/ChatInterface";
 import {
   Modal,
   ModalContent,
@@ -92,6 +93,7 @@ export const DocViewLayoutItem = ({
               {/* <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader> */}
               <ModalBody>
                 {/* <ChatInterface name={name} img={img} /> */}
+                <ChatInterfaceDoc img={img} ></ChatInterfaceDoc>
               </ModalBody>
               {/* <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
