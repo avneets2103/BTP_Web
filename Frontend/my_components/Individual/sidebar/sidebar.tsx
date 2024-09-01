@@ -1,26 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { BACKEND_URI, sidebarMenu } from "@/CONSTANTS";
+import { sidebarMenu } from "@/CONSTANTS";
 import { sidebarMenuItems } from "@/Interfaces";
-import { setCurrentList, setCurrentPage } from "@/RTK/features/sidebar";
+import { setCurrentPage } from "@/RTK/features/sidebar";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import Cookies from "js-cookie";
 import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-} from "@nextui-org/react";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
   Button,
-  Input,
 } from "@nextui-org/react";
-import EmojiPicker from "emoji-picker-react";
-import { handleAddList, getListArray } from "@/Helpers/sidebar";
+import { getListArray } from "@/Helpers/sidebar";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Checkbox, Link} from "@nextui-org/react";
 import { logout } from "@/Helpers/logout";
 
@@ -32,12 +21,12 @@ interface listItem {
 }
 
 const Sidebar: React.FC = () => {
+  const [isDoctor, setIsDoctor] = useState(false);
   const dispatcher = useDispatch();
   const Router = useRouter();
   const currentPage = useSelector((state: any) => state.sidebar.currentPage);
   const { theme, setTheme } = useTheme();
   const [selectedKeys, setSelectedKeys] = useState(new Set<string>([""]));
-  const [showPopover, setShowPopover] = useState(false);
   const [listNameEntered, setListNameEntered] = useState(true);
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
@@ -50,7 +39,6 @@ const Sidebar: React.FC = () => {
     emoji: "",
     budget: "",
   });
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   useEffect(() => {
     if(newListInfo.name !== ""){
@@ -88,29 +76,32 @@ const Sidebar: React.FC = () => {
           </div>
           <div className="flex w-full flex-col items-center justify-center rounded-[25px] bg-color1 py-[0.2rem] drop-shadow-md">
             {sidebarMenu.map((item: sidebarMenuItems, index: number) => {
-              if (item.path === currentPage) {
+              if(item.patient == !isDoctor){
+                if (item.path === currentPage) {
+                  return (
+                    <div
+                      key={index}
+                      className="flex h-[2.8rem] w-[2.8rem] flex-col items-center justify-center rounded-[50%] bg-secondaryColor border-textColorDark border-[1px]"
+                    >
+                      <img src={item.iconS} alt={item.name} className="w-[40%]" />
+                    </div>
+                  );
+                }
                 return (
                   <div
                     key={index}
-                    className="flex h-[2.8rem] w-[2.8rem] flex-col items-center justify-center rounded-[50%] bg-secondaryColor border-textColorDark border-[1px]"
+                    className="flex h-[2.8rem] w-[2.8rem] flex-col items-center justify-center rounded-[50%] bg-color1"
+                    onClick={() => {
+                      dispatcher(setCurrentPage({ currentPage: item.path }));
+                      console.log(item.path);
+                      Router.push(`/sections/${item.path}`);
+                    }}
                   >
-                    <img src={item.iconS} alt={item.name} className="w-[40%]" />
+                    <img src={item.iconNS} alt={item.name} className="w-[40%]" />
                   </div>
                 );
               }
-              return (
-                <div
-                  key={index}
-                  className="flex h-[2.8rem] w-[2.8rem] flex-col items-center justify-center rounded-[50%] bg-color1"
-                  onClick={() => {
-                    dispatcher(setCurrentPage({ currentPage: item.path }));
-                    console.log(item.path);
-                    Router.push(`/sections/${item.path}`);
-                  }}
-                >
-                  <img src={item.iconNS} alt={item.name} className="w-[40%]" />
-                </div>
-              );
+              return <></>
             })}
           </div>
         </div>

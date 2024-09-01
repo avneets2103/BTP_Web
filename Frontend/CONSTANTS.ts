@@ -16,30 +16,35 @@ const sidebarMenu:Array<sidebarMenuItems>= [
         path: "myCart",
         iconS: "../icons/doc.s.png",
         iconNS: "../icons/doc.ns.png",
+        patient: true,
     },
     {
         name: "My Reports",
         path: "history",
         iconS: "../icons/rep.s.png",
         iconNS: "../icons/rep.ns.png",
+        patient: true,
     },
     {
         name: "Health Vitals",
         path: "expenses",
         iconS: "../icons/vitals.s.png",
         iconNS: "../icons/vitals.ns.png",
+        patient: true,
     },
     {
         name: "24x7 Support",
         path: "wishlist",
         iconS: "../icons/sup.s.png",
         iconNS: "../icons/sup.ns.png",
+        patient: true,
     },
     {
         name: "My Patients",
         path: "priceTracker",
         iconS: "../icons/doc.s.png",
         iconNS: "../icons/doc.ns.png",
+        patient: false,
     },
 ]
 

@@ -8,6 +8,7 @@ interface sidebarMenuItems {
     path: string,
     iconS: string,
     iconNS: string,
+    patient: Boolean,
 }
 
 export type {
