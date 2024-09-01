@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewTop from '../DocViewTop/DocViewTop'
-import DocViewHero from '../DocViewHero/DocViewhero'
 import { PatientData } from '@/Data/PatientData'
+import DocViewHero from '../DocViewHero/DocViewHero'
 
 interface Props {}
 
