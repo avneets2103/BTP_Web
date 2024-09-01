@@ -21,7 +21,7 @@ interface listItem {
 }
 
 const Sidebar: React.FC = () => {
-  const [isDoctor, setIsDoctor] = useState(false);
+  const [isDoctor, setIsDoctor] = useState(Cookies.get("isDoctor")==="true" || false);
   const dispatcher = useDispatch();
   const Router = useRouter();
   const currentPage = useSelector((state: any) => state.sidebar.currentPage);
@@ -134,7 +134,7 @@ const Sidebar: React.FC = () => {
               <ModalBody>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="flat" onPress={async()=>{
+                <Button className="bg-purple-200" variant="flat" onPress={async()=>{
                   logout();
                   onClose();
                   Router.push("/login");

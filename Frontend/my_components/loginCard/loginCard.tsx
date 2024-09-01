@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, KeyboardEvent, useEffect } from 'react';
 import { Input } from "@nextui-org/react";
-import { BACKEND_URI, minPassLength, otpGap, otpLength, RENDER_BACKEND_URI } from '@/CONSTANTS';
+import { BACKEND_URI, minPassLength, otpGap, otpLength, refreshTokenExpiration, RENDER_BACKEND_URI } from '@/CONSTANTS';
 import OtpInput from "react-otp-input";
 import Link from 'next/link';
 import Cookies from "js-cookie";
@@ -97,8 +97,9 @@ function LoginCard() {
                     verifyBody
                 );
                 tokenCookies(res.data.data.accessToken, res.data.data.refreshToken);
-                console.log(res.data.data.accessToken);
-                console.log(res.data.data.refreshToken);
+                Cookies.set("isDoctor", res.data.data.user.isDoctor, {
+                    expires: refreshTokenExpiration,
+                })
                 ToastInfo("OTP verified");
                 Router.push("/sections/myCart");
             } catch (error) {
