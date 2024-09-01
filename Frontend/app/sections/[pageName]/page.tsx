@@ -11,8 +11,8 @@ import ReportMain from '@/my_components/reportMain/ReportMain';
 import VitalsMain from '@/my_components/vitalsMain/VitalsMain';
 import SupportMain from '@/my_components/SupportMain/SupportMain';
 import DocViewMain from '@/my_components/DocViewMain/DocViewMain';
-import { BACKEND_URI } from '@/CONSTANTS';
-import axios from 'axios';
+// import { BACKEND_URI } from '@/CONSTANTS';
+// import axios from 'axios';
 
 function Page({ params }: any) {
     const dispatcher = useDispatch();

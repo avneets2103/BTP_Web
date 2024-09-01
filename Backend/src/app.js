@@ -28,4 +28,8 @@ app.use("/api/v1/patient", patientRouter);
 import doctorRouter from "./Routes/doctor.routes.js"
 app.use("/api/v1/doctor", doctorRouter);
 
+// ping route
+import pingRouter from "./Routes/ping.routes.js"
+app.use("/api/v1/ping", pingRouter);
+
 export {app}
