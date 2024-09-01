@@ -10,10 +10,21 @@ interface Message {
 
 const HealthChat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
-    { text: 'Good afternoon, Naren', sender: 'doctor' },
-    { text: 'I wanted to know if you are allergic to paracetamol?', sender: 'doctor' },
-    { text: 'It can be causing your rashes', sender: 'doctor' },
-    { text: 'If yes, then replace it with Advil', sender: 'doctor' },
+    // { text: 'Good afternoon, Naren', sender: 'doctor' },
+    // { text: 'I wanted to know if you are allergic to paracetamol?', sender: 'doctor' },
+    // { text: 'It can be causing your rashes', sender: 'doctor' },
+    // { text: 'If yes, then replace it with Advil', sender: 'doctor' },
+    // { text: 'If yes, then replace it with Advil', sender: 'doctor' },
+    // { text: 'If yes, then replace it with Advil', sender: 'doctor' },
+    {text: 'Hey, how are you?', sender:'doctor'},
+    {text: 'I am feeling a pain near my stomach', sender:'user'},
+    {text: 'Is the pain sharp or dispersed? ', sender:'doctor'},
+    {text:'Also tell, what region exactly around the stomach ? ', sender:'doctor'},
+    {text: 'Its disprered pain, near the navel', sender:'user'},
+    {text: 'Did you take the prescribed antacid by Dr. House in the last visit? ', sender:'doctor'},
+    {text: 'Noo... I forgot!', sender:'user'},
+    {text: "Okay, No problem. when you take that, you won't feel any pain near your stomach :) " , sender: 'doctor'},
+    
   ]);
   const [input, setInput] = useState<string>('');
 
@@ -28,7 +39,7 @@ const HealthChat: React.FC = () => {
   return (
     <div className="sn-chat-container">
       <div className="sn-chat-body">
-        <p className='sn-convo-start-date m-auto font-bold ' >HealthChat AI</p>
+        <p className='sn-convo-start-date font-bold ' >HealthChat AI</p>
         <p className='sn-convo-start-date m-auto ' >Powered</p>
         {messages.map((message, index) => (
           <div key={index} className={`sn-chat-message sn-${message.sender}-message`}>

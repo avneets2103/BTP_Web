@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
-import ChatInterface from "@/my_components/chat-interface/ChatInterface";
+import ChatInterfaceDoc from "@/my_components/chat-interface-doc/ChatInterfaceDoc";
+import MedicalReport from "@/my_components/medical-report/MedicalReport";
+// import ChatInterface from "@/my_components/chat-interface/ChatInterface";
 import {
   Modal,
   ModalContent,
@@ -84,14 +86,16 @@ export const DocViewLayoutItem = ({
         </div>
       </div>
 
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl" closeButton={<button className="sn-close-button  ml-auto mr-4 ">✖</button>}>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl" closeButton={<button className="sn-close-button  ml-auto mr-4 ">✖</button>} style={{maxWidth: '1000px'}} >
       
-        <ModalContent>
+        <ModalContent style={{ maxWidth: '1000px' }}>
           {(onClose) => (
             <>
               {/* <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader> */}
-              <ModalBody>
+              <ModalBody style={{ maxWidth: '1000px' }}>
                 {/* <ChatInterface name={name} img={img} /> */}
+                {/* <ChatInterfaceDoc img={img} ></ChatInterfaceDoc> */}
+                <MedicalReport img={img} ></MedicalReport>
               </ModalBody>
               {/* <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
