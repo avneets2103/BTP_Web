@@ -6,8 +6,8 @@ import { ThemeProvider } from "next-themes";
 import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
-  title: "smartKart",
-  description: "Making your shopping decisions smarter!",
+  title: "HackSmiths",
+  description: "Making diagnosis better and faster!",
 };
 
 export default function RootLayout({

@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 const mailOptions = {
     from: {
-        name: "smartkart",
+        name: "HackSmiths",
         address: process.env.MAIL_USER
     },
     to: "avneet.bedi.ug21@nsut.ac.in",

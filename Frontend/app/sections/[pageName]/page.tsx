@@ -18,11 +18,11 @@ function Page({ params }: any) {
     const dispatcher = useDispatch();
     const currentPage = params.pageName;
     useEffect(() => {
-        try {
-            // Verify access token
-            const accessTokenResponse = axios.post(`${RENDER_BACKEND_URI}/users/verifyAccessToken`);
-          } catch (error) {
-          }
+        // try {
+        //     // Verify access token
+        //     const accessTokenResponse = axios.post(`${RENDER_BACKEND_URI}/users/verifyAccessToken`);
+        //   } catch (error) {
+        //   }
         dispatcher(setCurrentPage({currentPage: currentPage}));
         console.log(currentPage);
     });
