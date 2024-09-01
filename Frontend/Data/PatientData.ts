@@ -15,8 +15,8 @@ export interface PatientSchema{
 export const PatientData: PatientSchema[] = [
     {
         id: "p1",
-        sex: "Male",
-        age: "25yo",
+        sex: "Female",
+        age: "22yo",
         img: "/images/marij1.png",
         currentCondition: "Hypertension",
         bloodGroup: "O+",
@@ -25,11 +25,11 @@ export const PatientData: PatientSchema[] = [
         assistiveDiagnosis: "Hypertension",
         reportsList: [],
         doctorsList: ["d1", "d2"],
-        name: "John Doe"
+        name: "Janie Doe"
     },
     {
         id: "p2",
-        sex: "Female",
+        sex: "Male",
         age: "30yo",
         img: "/images/marij2.png",
         currentCondition: "Diabetes",
@@ -39,11 +39,11 @@ export const PatientData: PatientSchema[] = [
         assistiveDiagnosis: "Diabetes",
         reportsList: [],
         doctorsList: ["d3", "d4"],
-        name: "Jane Smith"
+        name: "Rajiv Shah"
     },
     {
         id: "p3",
-        sex: "Male",
+        sex: "Female",
         age: "45yo",
         img: "/images/marij3.png",
         currentCondition: "Asthma",
@@ -53,12 +53,12 @@ export const PatientData: PatientSchema[] = [
         assistiveDiagnosis: "Asthma",
         reportsList: [],
         doctorsList: ["d1", "d3"],
-        name: "Michael Johnson"
+        name: "Michaela Smith"
     },
     {
         id: "p4",
-        sex: "Female",
-        age: "50yo",
+        sex: "Male",
+        age: "20yo",
         img: "/images/marij4.png",
         currentCondition: "Osteoporosis",
         bloodGroup: "B+",
@@ -67,6 +67,6 @@ export const PatientData: PatientSchema[] = [
         assistiveDiagnosis: "Osteoporosis",
         reportsList: [],
         doctorsList: ["d2", "d4"],
-        name: "Emily Davis"
+        name: "Eric Davis"
     }
 ]

@@ -81,18 +81,7 @@ export const DocLayoutItem = ({
         <ModalContent>
           {(onClose) => (
             <>
-              {/* <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader> */}
-              <ModalBody>
-                <ChatInterface name={name} img={img} />
-              </ModalBody>
-              {/* <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
-                </Button>
-              </ModalFooter> */}
+              <ChatInterface name={name} img={img} />
             </>
           )}
         </ModalContent>

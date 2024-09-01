@@ -46,7 +46,7 @@ const HealthChat: React.FC = () => {
   }, [messages]); // Runs whenever messages change
 
   return (
-    <div className="sn-chat-container max-h-[80vh] flex flex-col">
+    <div className="sn-chat-container bg-color1 max-h-[80vh] flex flex-col">
       <p className='sn-convo-start-date font-medium flex items-center justify-center my-3' >HealthChat AI Powered</p>
       <div ref={chatBodyRef} className="sn-chat-body max-h-[60vh] overflow-y-scroll">
         {messages.map((message, index) => (

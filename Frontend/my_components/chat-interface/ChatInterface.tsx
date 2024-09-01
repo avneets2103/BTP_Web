@@ -48,10 +48,10 @@ const ChatInterface = ({ name, img }: Props) => {
   }, [messages]); // Runs whenever messages change
 
   return (
-    <div className="">
+    <div className="bg-color1">
       <div className="sn-chat-header">
         <Image src={img} alt="Doctor's Profile" className="sn-doctor-profile" width={15} height={15} />
-        <span className="sn-doctor-name">{name}</span>
+        <span className="sn-doctor-name text-textColorDark">{name}</span>
       </div>
       <div ref={chatBodyRef} className="sn-chat-body max-h-[20rem] overflow-y-scroll">
         <p className='sn-convo-start-date m-auto font-bold'>Today</p>

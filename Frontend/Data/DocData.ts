@@ -19,11 +19,11 @@ export const DocData: DocSchema[] = [
     },
     {
         id: "d2",
-        name: "Dr. Samuel Thompson",
-        speciality: "Dermatology",
-        qualifications: "MBBS, MD, Dermatologist",
+        name: "Dr. Gregory House",
+        speciality: "Diagnostician",
+        qualifications: "MD, Nephorologist",
         imageLink: "/images/Doc2.png",
-        experience: "8",
+        experience: "24",
     },
     {
         id: "d3",
@@ -35,9 +35,9 @@ export const DocData: DocSchema[] = [
     },
     {
         id: "d4",
-        name: "Dr. Michael Johnson",
-        speciality: "Neurology",
-        qualifications: "MBBS, MD, Neurologist",
+        name: "Dr. James Wilson",
+        speciality: "Oncologist",
+        qualifications: "MBBS, MD, Oncology",
         imageLink: "/images/Doc4.png",
         experience: "14",
     }

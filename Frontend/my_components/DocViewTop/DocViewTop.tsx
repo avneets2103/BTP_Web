@@ -211,7 +211,7 @@ function DocViewTop() {
           ref={inputRef}
           isClearable
           radius="sm"
-          placeholder="Search Reports"
+          placeholder="Search Patient"
           startContent={
             <div>
               <img src="../icons/search.png" className="w-[15px]" alt="logo" />

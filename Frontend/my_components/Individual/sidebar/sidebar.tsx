@@ -72,143 +72,7 @@ const Sidebar: React.FC = () => {
               className="w-full p-[5px]"
             />
           </div>
-          {/* <div className="flex w-full flex-col items-center justify-center gap-[0.8rem] rounded-[25px] bg-color1 py-[1rem] drop-shadow-md">
-            <Popover
-              placement="bottom-start"
-              showArrow
-              offset={10}
-              backdrop="opaque"
-              isOpen={showPopover}
-              onClose={() => setShowPopover(false)}
-            >
-              <PopoverTrigger>
-                <div
-                  className="flex w-full items-center justify-center"
-                  onClick={() => setShowPopover(true)}
-                >
-                  <img
-                    src="../icons/addition.png"
-                    alt="add"
-                    className="w-[34%]"
-                  />
-                </div>
-              </PopoverTrigger>
-              <PopoverContent className="w-[240px]">
-                {(titleProps) => (
-                  <div className="relative w-full px-1 py-2">
-                    <p
-                      className="text-small font-bold text-foreground"
-                      {...titleProps}
-                    >
-                      Add New List
-                    </p>
-                    <div className="mt-2 flex w-full flex-col gap-2">
-                      <Input
-                        isInvalid={!listNameEntered}
-                        errorMessage="Please enter List Name"
-                        isClearable
-                        labelPlacement="inside"
-                        value={newListInfo.name}
-                        onChange={(e) =>
-                          setNewListInfo({
-                            ...newListInfo,
-                            name: e.target.value,
-                          })
-                        }
-                        label="Name"
-                        size="sm"
-                        variant="bordered"
-                      />
-                      <Input
-                        type="number"
-                        value={newListInfo.budget}
-                        onChange={(e) =>
-                          setNewListInfo({
-                            ...newListInfo,
-                            budget: e.target.value,
-                          })
-                        }
-                        label="Budget"
-                        size="sm"
-                        variant="bordered"
-                      />
-                      <div className="relative flex w-full gap-1">
-                        <Button
-                          size="lg"
-                          isIconOnly
-                          color="primary"
-                          onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                          className="w-1/4"
-                        >
-                          {newListInfo.emoji === "" ? (
-                            <img
-                              src="../icons/heartEmoji.png"
-                              alt="emoji"
-                              className="w-[20px]"
-                            />
-                          ) : (
-                            newListInfo.emoji
-                          )}
-                        </Button>
-                        {showEmojiPicker && (
-                          <EmojiPicker
-                            className="emoji-picker"
-                            onEmojiClick={(emoji) => {
-                              setNewListInfo({
-                                ...newListInfo,
-                                emoji: emoji.emoji,
-                              });
-                              setShowEmojiPicker(false);
-                            }}
-                            reactionsDefaultOpen={false}
-                          />
-                        )}
-                        <Button
-                          color="default"
-                          size="lg"
-                          className="width-3/4"
-                          onClick={()=>handleAddList(newListInfo, setNewListInfo, setListNameEntered, setListArray, setSelectedKeys, setShowPopover, listArray, dispatcher)}
-                        >
-                          Add your List
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </PopoverContent>
-            </Popover>
-            <Dropdown>
-              <DropdownTrigger>
-                <img
-                  src="../icons/list.NS.png"
-                  alt="list"
-                  className="w-[40%]"
-                />
-              </DropdownTrigger>
-              <DropdownMenu
-                aria-label="Single selection example"
-                variant="faded"
-                disallowEmptySelection
-                selectionMode="single"
-                selectedKeys={selectedKeys}
-                onSelectionChange={(keys) =>
-                  setSelectedKeys(keys as Set<string>)
-                }
-                className="custom-dropdown"
-              >
-                {listArray.map((option) => (
-                  <DropdownItem
-                    key={option.key}
-                    startContent={
-                      <span>{option.emoji}</span>
-                    }
-                    onClick={()=>{dispatcher(setCurrentList({ currentList: option.key }))}}
-                  >
-                    {option.name}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
+          <div className="flex w-full flex-col items-center justify-center gap-[0.8rem] rounded-[25px] bg-color1 py-[1rem] drop-shadow-md">
             <img
               src={
                 theme === "dark"
@@ -221,14 +85,14 @@ const Sidebar: React.FC = () => {
                 setTheme(theme === "light" ? "dark" : "light");
               }}
             />
-          </div> */}
+          </div>
           <div className="flex w-full flex-col items-center justify-center rounded-[25px] bg-color1 py-[0.2rem] drop-shadow-md">
             {sidebarMenu.map((item: sidebarMenuItems, index: number) => {
               if (item.path === currentPage) {
                 return (
                   <div
                     key={index}
-                    className="flex h-[2.8rem] w-[2.8rem] flex-col items-center justify-center rounded-[50%] bg-secondaryColor"
+                    className="flex h-[2.8rem] w-[2.8rem] flex-col items-center justify-center rounded-[50%] bg-secondaryColor border-textColorDark border-[1px]"
                   >
                     <img src={item.iconS} alt={item.name} className="w-[40%]" />
                   </div>

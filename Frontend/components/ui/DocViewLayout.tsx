@@ -65,20 +65,20 @@ export const DocViewLayoutItem = ({
   return (
     <div
       className={cn(
-        "group/bento row-span-1 flex cursor-pointer flex-col justify-between space-y-4 overflow-clip rounded-xl border border-transparent bg-white p-0 shadow-input transition duration-200 hover:shadow-xl dark:border-white/[0.2] dark:bg-black dark:shadow-none",
+        "group/bento row-span-1 flex cursor-pointer flex-col justify-between space-y-4 overflow-clip rounded-xl border border-transparent bg-white p-0 shadow-input",
       )}
       onClick={onOpen}
     >
-      <div className="z-10 mt-0 pl-4 pt-4 font-bold text-[--fixed-bg-color]">
+      <div className="z-10 mt-0 pl-4 pt-4 font-medium text-[--fixed-bg-color]">
         {name}
       </div>
-      <div className="relative -top-6 w-[30rem] transition duration-200 group-hover/bento:translate-x-2">
+      <div className="relative -top-6 w-[30rem]">
         <img
           src={img}
           alt=""
           className="-z-10 -ml-3 -mt-16 h-[19rem] md:w-[rem]"
         />
-        <div className="z-10 -mt-20 pl-4 font-sans font-bold text-[--fixed-bg-color] dark:text-neutral-200">
+        <div className="z-10 -mt-20 pl-4 font-sans font-medium text-[--fixed-bg-color] dark:text-neutral-200">
           {sex}
         </div>
         <div className="z-10 pl-4 font-sans text-xs font-normal text-[--fixed-bg-color] dark:text-neutral-300">
@@ -86,25 +86,13 @@ export const DocViewLayoutItem = ({
         </div>
       </div>
 
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl" closeButton={<button className="sn-close-button  ml-auto mr-4 ">✖</button>} style={{maxWidth: '1000px'}} >
-      
-        <ModalContent style={{ maxWidth: '1000px' }}>
+      <Modal isOpen={isOpen} size="5xl" onOpenChange={onOpenChange} closeButton={<button className="sn-close-button ml-auto mr-4 ">✖</button>} >
+        <ModalContent>
           {(onClose) => (
             <>
-              {/* <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader> */}
-              <ModalBody style={{ maxWidth: '1000px' }}>
-                {/* <ChatInterface name={name} img={img} /> */}
-                {/* <ChatInterfaceDoc img={img} ></ChatInterfaceDoc> */}
+              <ModalBody>
                 <MedicalReport img={img} ></MedicalReport>
               </ModalBody>
-              {/* <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
-                </Button>
-              </ModalFooter> */}
             </>
           )}
         </ModalContent>
