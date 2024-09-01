@@ -1,47 +1,44 @@
 import React, { useState } from 'react';
 import cuteGirl from '@/public/images/cute-girl-image.png';
 import Image from 'next/image';
-// import { Message } from 'postcss';
 
-// interface MessageProps {
-//   text: string;
-//   isPatient: boolean;
-// }
+interface Props{
+  img: string|any;
+}
 
-// interface Message {
-//     text: string;
-//     sender: 'doctor' | 'user';
-// }
 
-// const Message: React.FC<MessageProps> = ({ text, isPatient }) => {
-//   return (
-//     <div className={`sn-message ${isPatient ? 'sn-patient' : 'sn-doctor'}`}>
-//       {text}
-//     </div>
-//   );
-// };
+interface MessageProps {
+  text: string;
+  isPatient: boolean;
+}
 
-const MedicalReport: React.FC = () => {
+
+interface Message {
+    text: string;
+    sender: 'doctor' | 'user';
+}
+
+const MedicalReport = ({img} : Props) => {
     const [selectedTab, setSelectedTab] = useState('Diagnosis');
+    const [isMessage, setIsMessage] = useState(false);
 
 
-    // const [messages, setMessages] = useState<Message[]>([
-    //     { text: 'Good afternoon, Naren', sender: 'user' },
-    //     { text: 'I wanted to know if you are allergic to paracetamol?', sender: 'user' },
-    //     { text: 'It can be causing your rashes', sender: 'user' },
-    //     { text: 'If yes, then replace it with Advil', sender: 'user' },
-    // ]);
+    const [messages, setMessages] = useState<Message[]>([
+      { text: 'Good afternoon, Naren', sender: 'user' },
+      { text: 'I wanted to know if you are allergic to paracetamol?', sender: 'user' },
+      { text: 'It can be causing your rashes', sender: 'user' },
+      { text: 'If yes, then replace it with Advil', sender: 'user' },
+  ]);
 
-    // const [input, setInput] = useState<string>('');
+  const [input, setInput] = useState<string>('');
 
-    // const handleSendMessage = () => {
-    //     if (input.trim() === '') return;
+  const handleSendMessage = () => {
+      if (input.trim() === '') return;
 
-    //     const newMessage: Message = { text: input.trim(), sender: 'user' };
-    //     setMessages([...messages, newMessage]);
-    //     setInput('');
-    // };
-
+      const newMessage: Message = { text: input.trim(), sender: 'user' };
+      setMessages([...messages, newMessage]);
+      setInput('');
+  };
 
 
     const renderContent = () => {
@@ -84,20 +81,28 @@ const MedicalReport: React.FC = () => {
           default:
             return null;
         }
-      };
+   };
+
+
+  const handleMessage = () => {
+    setIsMessage(true);
+  }
 
 
   return (
-    <div className="sn-ChatInterfaceDoc-container flex flex-col bg-white text-black ">
+    <div className="sn-ChatInterfaceDoc-container flex flex-col bg-white text-black w-[100%] ">
         <div className='sn-chat-doc-header' >
             <h3 className="sn-ChatInterfaceDoc-header font-bold text-center pb-4 ">Ms. Khushi Shah</h3>
         </div>
         <div className='flex' >
             <div className="sn-patient-info">
                 <Image
-                src={cuteGirl}
+                // src={cuteGirl}
+                src={img}
                 alt="Patient"
                 className="sn-patient-image"
+                width={300}
+                height={400}
                 />
                 <div className="sn-patient-details">
                 <p>Sex: Female</p>
@@ -105,69 +110,47 @@ const MedicalReport: React.FC = () => {
                 <p>Condition: Lupus</p>
                 <p>Blood Group: O-</p>
                 <span>📞</span>
-                <span>💬</span>
+                <span onClick={handleMessage} className='cursor-pointer' >💬</span>
                 </div>
-                {/* <div className="sn-patient-contact">
-                
-                </div> */}
             </div>
-            {/* <div className="sn-ChatInterfaceDoc-content">
-                <p className="sn-ChatInterfaceDoc-date">Today</p>
-                <Message text="Good afternoon, Naren" isPatient={true} />
-                <Message text="I wanted to know if you are allergic to paracetamol?" isPatient={true} />
-                <Message text="It can be causing your rashes" isPatient={true} />
-                <Message text="If yes, then replace it with Advil" isPatient={true} />
-                <button className="sn-remove-patient-button">Remove Patient</button>
-            </div> */}
-            {/* import React from 'react';
-import './MedicalReport.css';  // Import the CSS file
 
-const MedicalReport = () => {
-  return ( */}
 
-            {/* switch(selectedTab){ */}
-            {/* <div className="sn-container bg-[#f0f0f0] p-4 mr-4 mb-4 w-[75%] ">
-                <div className="sn-header flex center justify-center bg-[#d9d9d9] rounded-lg m-2 ">
-                    <button className="sn-tab">Reports</button>
-                    <button className="sn-tab">Diagnosis</button>
-                    <button className="sn-tab">Health Vitals</button>
+            {isMessage && <div className="sn-doc-chat-container ">
+                {/* <div className="sn-chat-header">
+                    <Image src={profilePic} alt="Doctor's Profile" className="sn-doctor-profile" />
+                    <span className="sn-doctor-name">Dr. Anita Dixit</span>
+                    <button className="sn-close-button  ml-auto mr-4 ">✖</button>
+                </div> */}
+                <div className="sn-chat-body ">
+                    <p className='sn-convo-start-date m-auto font-bold pb-4 ' >Today</p>
+                    {messages.map((message, index) => (
+                    <div key={index} className={`sn-chat-message sn-${message.sender}-message`}>
+                        <span>{message.text}</span>
+                    </div>
+                    ))}
                 </div>
-
-                <div className="sn-section">
-                    <h2 className="sn-title">Medical History</h2>
-                    <p className="sn-text">
-                    22-year-old with a medical history that includes childhood chickenpox, an appendectomy at age 13, mild anemia managed with supplements, and mild asthma controlled with an inhaler. She has seasonal pollen allergies and a known allergy to penicillin. She has a family history of hypertension, diabetes, high cholesterol, osteoporosis, and heart disease. She leads an active lifestyle, enjoying yoga and jogging, and maintains a mostly vegetarian diet. Recently, she has managed mild anxiety related to academic pressures through mindfulness and counseling. Her immunizations are up-to-date, including the COVID-19 vaccine, and she experiences regular menstrual cycles with no significant gynecological concerns.
-                    </p>
+                <div className="sn-chat-footer flex-col ">
+                    <div className='sn-text-input w-[100%] p-1 ' >
+                        <input
+                        type="text"
+                        placeholder="Type a message..."
+                        className="sn-chat-input w-[89%] text-black "
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        />
+                        <button className="sn-send-button w-10 " onClick={handleSendMessage}>
+                        ➤
+                        </button>
+                    </div>
+                    <div className='sn-functionality-buttons self-end p-1 px-5 ' >
+                        <button className="sn-action-button sn-remove-doctor">Remove Patient</button>
+                        {/* <button className="sn-action-button sn-book-appointment">Book appointment</button> */}
+                    </div>
                 </div>
-
-                <div className="sn-section">
-                    <h2 className="sn-title">Current Symptoms</h2>
-                    <p className="sn-text">
-                    The patient is experiencing a high body temperature ranging from 100-104°F (38-40°C), accompanied by chills and sweating. They report headaches, body aches, and joint pain, leading to a feeling of fatigue and weakness. Respiratory symptoms include a sore throat, cough, and congestion. The patient also has gastrointestinal complaints such as nausea, vomiting, and diarrhea. Additional symptoms include loss of appetite, a runny or stuffy nose, red eyes, and occasionally, a skin rash. These symptoms appeared suddenly and have persisted for several days.
-                    </p>
-                </div>
-
-                <div className="sn-section">
-                    <h2 className="sn-title">Assistive Diagnosis</h2>
-                    <p className="sn-text">
-                    Based on the symptoms observed, my diagnosis is viral fever. The patient is exhibiting a high body temperature between 100-104°F (38-40°C), along with chills, sweating, headaches, body aches, and joint pain, which are common signs of viral infections. Additionally, the presence of respiratory symptoms such as a sore throat, cough, and congestion, along with gastrointestinal issues like nausea, vomiting, and diarrhea, suggests a systemic viral infection. The sudden onset of these symptoms, combined with fatigue, loss of appetite, runny or stuffy nose, red eyes, and occasional skin rash, further supports this diagnosis. These symptoms are characteristic of viral fever, which is typically caused by common viruses such as influenza, adenovirus, or enterovirus.
-                    </p>
-                </div>
-
-                <div className="sn-section">
-                    <h2 className="sn-title">Treatment Plan</h2>
-                    <p className="sn-text">
-                    The patient is advised to take antiviral medication and maintain proper hydration. Rest is essential, along with taking over-the-counter antipyretics like acetaminophen to manage the fever. The patient should monitor symptoms closely and return for a follow-up if the condition does not improve.
-                    </p>
-                </div>
-            </div> */}
-                {/* //   ); */}
-                {/* }; */}
-
-                {/* export default MedicalReport; */}
+            </div>}
 
 
-            <div className="sn-container bg-[#f0f0f0] p-4 mr-4 mb-4 w-[75%]">
+            {!isMessage && <div className="sn-container bg-[#f0f0f0] p-4 mr-4 mb-4 w-[75%]">
                 <div className="sn-header flex center justify-center bg-[#d9d9d9] rounded-lg m-2">
                     <button
                     className={`sn-tab ${selectedTab === 'Reports' ? 'sn-tab-active' : ''}`}
@@ -190,7 +173,7 @@ const MedicalReport = () => {
                 </div>
 
                 {renderContent()}
-            </div>
+            </div>}
 
         </div>
     </div>
