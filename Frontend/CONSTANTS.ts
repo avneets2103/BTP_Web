@@ -1,8 +1,9 @@
 import { sidebarMenuItems } from "./Interfaces";
 
 const minPassLength = 6;
-const BACKEND_URI="http://localhost:4000/api/v1" 
+// const BACKEND_URI="http://localhost:4000/api/v1" 
 // const BACKEND_URI = "https://medical-sih-app.onrender.com/api/v1";
+const BACKEND_URI = "https://btp-web-ci2r.vercel.app/api/v1";
 const RENDER_BACKEND_URI= "https://smartkart-server.onrender.com/api/v1";
 const otpLength = 4;
 const otpGap = 60;
