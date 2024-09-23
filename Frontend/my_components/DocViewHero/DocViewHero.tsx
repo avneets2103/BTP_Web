@@ -1,28 +1,29 @@
-import { DocViewLayout, DocViewLayoutItem } from "@/components/ui/DocViewLayout";
-import { ReportLayout, ReportLayoutItem } from "@/components/ui/ReportLayout";
-import { PatientSchema } from "@/Data/PatientData";
+import { PatientSchema } from "@/Interfaces";
+import { DocViewLayout, DocViewLayoutItem } from "@/my_components/DocViewHero/DocViewLayout";
+import { ReportLayout, ReportLayoutItem } from "@/my_components/ReportLayout";
+;
 import React from "react";
 
 interface Props {
   data: PatientSchema[];
+  searchPat: string;
 }
 
-// id?: string;
-//     sex?: string;
-//     age?: string;
-//     img?: string;
-//     currentCondition?: string;
-//     bloodGroup?: string;
-//     medicalHistorySummary?: string;
-//     currentSymptomsSummary?: string;
-//     assistiveDiagnosis?: string;
-//     reportsList?: any;
-//     doctorsList?: any;
-
-function DocViewHero({ data }: Props) {
+function DocViewHero({ data, searchPat }: Props) {
+  const filteredData = data.filter((doc: PatientSchema) => {
+    const lowerCaseSearchDoc = searchPat.toLowerCase();
+    return (
+      doc.name.toLowerCase().includes(lowerCaseSearchDoc) ||
+      doc.sex.toLowerCase().includes(lowerCaseSearchDoc) ||
+      doc.age.toLowerCase().includes(lowerCaseSearchDoc) ||
+      doc.currentCondition?.toLowerCase().includes(lowerCaseSearchDoc) ||
+      doc.bloodGroup.toLowerCase().includes(lowerCaseSearchDoc)
+    );
+  });
+  
   return (
     <DocViewLayout className="w-full">
-      {data.map(
+      {filteredData.map(
         ({
           id,
           name,
@@ -40,7 +41,7 @@ function DocViewHero({ data }: Props) {
           <DocViewLayoutItem
             key={id}
             id={id}
-            name= {name}
+            name={name}
             sex={sex}
             age={age}
             img={img}
@@ -52,7 +53,7 @@ function DocViewHero({ data }: Props) {
             reportsList={reportsList}
             doctorsList={doctorsList}
           />
-        ),
+        )
       )}
     </DocViewLayout>
   );

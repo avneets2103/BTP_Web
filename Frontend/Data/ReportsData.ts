@@ -1,11 +1,4 @@
-export interface ReportsSchema {
-    id?: string;
-    previewImgLink?: string;
-    reportName?: string;
-    reportDate?: string;
-    location?: string;
-    reportPDFLink?: string;
-}
+import { ReportsSchema } from "@/Interfaces";
 
 export const ReportsData: ReportsSchema[] = [
     {

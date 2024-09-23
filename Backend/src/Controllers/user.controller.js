@@ -158,7 +158,11 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             .json(
                 new ApiResponse(
                     200,
-                    { accessToken, refreshToken },
+                    { 
+                        accessToken: accessToken, 
+                        refreshToken: refreshToken,
+                        isDoctor: req.user.isDoctor,
+                    },
                     'New access token generated successfully'
                 )
             )
@@ -344,7 +348,9 @@ const verifyAccessToken = asyncHandler(async (req, res) => {
         .json(
             new ApiResponse(
                 200,
-                null,
+                {
+                    isDoctor: req.user.isDoctor,
+                },
                 `Access token is present`
             )
         )

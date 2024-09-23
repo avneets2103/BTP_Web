@@ -1,17 +1,4 @@
-export interface PatientSchema{
-    id?: string;
-    name: string;
-    sex?: string;
-    age?: string;
-    img?: string;
-    currentCondition?: string;
-    bloodGroup?: string;
-    medicalHistorySummary?: string;
-    currentSymptomsSummary?: string;
-    assistiveDiagnosis?: string;
-    reportsList?: any;
-    doctorsList?: any;
-}
+import { PatientSchema } from "@/Interfaces";
 export const PatientData: PatientSchema[] = [
     {
         id: "p1",

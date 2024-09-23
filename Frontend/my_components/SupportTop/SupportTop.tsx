@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import SectionDisplay from "../Individual/sectionDisplay/sectionDisplay";
+import SectionDisplay from "../sectionDisplay/sectionDisplay";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setColumns,

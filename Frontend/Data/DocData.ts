@@ -1,12 +1,4 @@
-export interface DocSchema{
-    id?: string;
-    name?: string;
-    speciality?:string;
-    qualifications?: string;
-    imageLink?: string;
-    experience?: string;
-    patientsList?: Array<string>;  
-}
+import { DocSchema } from "@/Interfaces";
 
 export const DocData: DocSchema[] = [
     {

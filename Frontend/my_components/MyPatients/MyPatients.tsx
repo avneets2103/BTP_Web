@@ -1,21 +1,17 @@
 import React, { useEffect } from 'react'
-// import ReportHero from '../ReportHero/ReportHero'
-import ReportTop from '../reportTop/ReportTop'
-import { ReportsData } from '@/Data/ReportsData'
-import ReportHero from '../ReportHero/ReportHero'
-import VitalsTop from '../vitalsTop/VitalsTop'
-import VitalsHero from '../vitalsHero/VitalsHero'
-import { useRouter } from 'next/navigation'
-import axios from '@/utils/axios'
-import { BACKEND_URI } from '@/CONSTANTS'
-import { logout } from '@/Helpers/logout'
-// import CartHero from '../cartHero/cartHero'
-
+import DocViewTop from '../DocViewTop/DocViewTop'
+import { PatientData } from '@/Data/PatientData'
+import DocViewHero from '../DocViewHero/DocViewHero'
+import { useRouter } from 'next/navigation';
+import { BACKEND_URI } from '@/CONSTANTS';
+import axios from '@/utils/axios';
+import { logout } from '@/Helpers/logout';
 
 interface Props {}
 
-function VitalsMain(props: Props) {
+function MyPatients(props: Props) {
     const Router = useRouter();
+    const [searchPat, setSearchPat] = React.useState<string>("");
     useEffect(() => {
         const checkTokens = async () => {
             try {
@@ -24,11 +20,11 @@ function VitalsMain(props: Props) {
               );
               if (accessTokenResponse.status !== 200) {
                 Router.push("/login");
-                logout() 
+                logout();
                 return;
               }
-              if(accessTokenResponse.data.data.isDoctor){
-                  Router.push("sections/myPatients");
+              if(!accessTokenResponse.data.data.isDoctor){
+                  Router.push("/sections/myDoctors");
               }
             } catch (error) {
               Router.push("/login");
@@ -42,10 +38,10 @@ function VitalsMain(props: Props) {
 
     return (
         <div className='flex-grow flex flex-col width-full h-full mr-6'>
-            <VitalsTop/>
-            <VitalsHero />
+            <DocViewTop searchPat = {searchPat} setSearchPat = {setSearchPat}/>
+            <DocViewHero data={PatientData} searchPat = {searchPat}/>
         </div>
     )
 }
 
-export default VitalsMain
+export default MyPatients

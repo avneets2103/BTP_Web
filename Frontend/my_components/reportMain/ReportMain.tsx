@@ -1,16 +1,43 @@
 import React, { useEffect, useState } from 'react'
 // import ReportHero from '../ReportHero/ReportHero'
 import ReportTop from '../reportTop/ReportTop'
-import { ReportsData, ReportsSchema } from '@/Data/ReportsData'
+
 import ReportHero from '../ReportHero/ReportHero'
-import axios from 'axios'
+import axios from '@/utils/axios'
 import { BACKEND_URI } from '@/CONSTANTS'
+import { useRouter } from 'next/navigation'
+import { logout } from '@/Helpers/logout'
+import { ReportsSchema } from '@/Interfaces'
+import { ReportsData } from '@/Data/ReportsData'
 // import CartHero from '../cartHero/cartHero'
 
 
 interface Props {}
 
 function ReportMain(props: Props) {
+    const Router = useRouter();
+    useEffect(() => {
+        const checkTokens = async () => {
+            try {
+              const accessTokenResponse = await axios.post(
+                `${BACKEND_URI}/auth/verifyAccessToken`,
+              );
+              if (accessTokenResponse.status !== 200) {
+                Router.push("/login");
+                logout() 
+                return;
+              }
+              if(accessTokenResponse.data.data.isDoctor){
+                  Router.push("sections/myPatients");
+              }
+            } catch (error) {
+              Router.push("/login");
+              logout()
+              console.log("Access token invalid, trying refresh token...");
+            }
+        };
+        checkTokens();
+    }, [Router])
     const {} = props
     const [reportData, setReportData] = useState(ReportsData);
     useEffect(()=> {

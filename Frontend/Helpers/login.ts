@@ -43,7 +43,7 @@ const handleReset = async (otpGap: number, time: number, setTime: Function, setO
       email: Cookies.get("email") || "",
     };
     await axios.post(
-      `${RENDER_BACKEND_URI}/users/resendOTP`,  
+      `${BACKEND_URI}/auth/resendOTP`,  
       body
     );
     ToastInfo("Email sent containing new otp!");
@@ -65,7 +65,7 @@ const handleGenerateNewPassword = async (email: string, setForgotPass: Function,
     const body = {
       "email": email
     }
-    await axios.post(`${RENDER_BACKEND_URI}/users/generateNewPassword`, body);
+    await axios.post(`${BACKEND_URI}/auth/generateNewPassword`, body);
     ToastInfo("New password generated");
     setForgotPass(false);
     setOTP(false);

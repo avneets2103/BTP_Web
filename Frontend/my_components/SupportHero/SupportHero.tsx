@@ -1,7 +1,8 @@
-import { ReportLayout, ReportLayoutItem } from "@/components/ui/ReportLayout";
-import { ReportsSchema } from "@/Data/ReportsData";
+import { ReportLayout, ReportLayoutItem } from "@/my_components/ReportLayout";
+
 import React from "react";
 import HealthChat from "../healthchat-ai/HealthChat";
+import { ReportsSchema } from "@/Interfaces";
 
 interface Props {
   data?: ReportsSchema[];

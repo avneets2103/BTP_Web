@@ -1,5 +1,5 @@
-import { ReportLayout, ReportLayoutItem } from "@/components/ui/ReportLayout";
-import { ReportsSchema } from "@/Data/ReportsData";
+import { ReportsSchema } from "@/Interfaces";
+import { ReportLayout, ReportLayoutItem } from "@/my_components/ReportLayout";
 import React from "react";
 
 interface Props {

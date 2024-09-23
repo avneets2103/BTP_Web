@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import SectionDisplay from "../Individual/sectionDisplay/sectionDisplay";
+import SectionDisplay from "../sectionDisplay/sectionDisplay";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setColumns,
@@ -68,7 +68,13 @@ const cols: Column[] = [
   },
 ];
 
-function DocViewTop() {
+interface Props{
+  searchPat: string,
+  setSearchPat: React.Dispatch<React.SetStateAction<string>>,
+}
+
+function DocViewTop(props: Props) {
+  const { searchPat, setSearchPat } = props;
   const inputRef = useRef<HTMLInputElement>(null);
   usePreventScroll(inputRef);
   const stateCols = useSelector((state: any) => state.cart.columns);
@@ -76,7 +82,6 @@ function DocViewTop() {
   const listId = useSelector((state: any) => state.sidebar.currentList);
   const dispatcher = useDispatch();
   const selectedTab = useSelector((state: any) => state.cart.customized);
-  const searchValue = useSelector((state: any) => state.cart.searchString);
   const [productLink, setProductLink] = useState("");
   const [key, setKey] = useState("");
   const [value, setValue] = useState("");
@@ -180,30 +185,6 @@ function DocViewTop() {
       <div className="flex gap-4">
         <SectionDisplay />
         <div className="flex items-center rounded-[10px] bg-color1">
-          {/* <div
-            className={
-              selectedTab
-                ? "m-[2px] mr-0 w-[7rem] rounded-[10px] p-2 pr-2 text-center text-sm text-textColorDark"
-                : "m-1 mr-0 w-[7rem] rounded-[10px] bg-secondaryColor p-2 pr-2 text-center text-sm text-primaryColor"
-            }
-            onClick={() => {
-              dispatcher(setCustomized(0));
-            }}
-          >
-            Standard
-          </div>
-          <div
-            className={
-              !selectedTab
-                ? "m-[2px] ml-0 w-[7rem] rounded-[10px] p-2 pr-2 text-center text-sm text-textColorDark"
-                : "m-1 ml-0 w-[7rem] rounded-[10px] bg-secondaryColor p-2 pr-2 text-center text-sm text-primaryColor"
-            }
-            onClick={() => {
-              dispatcher(setCustomized(1));
-            }}
-          >
-            Customized
-          </div> */}
         </div>
       </div>
       <div className="flex h-[7vh] items-end gap-2">
@@ -217,8 +198,8 @@ function DocViewTop() {
               <img src="../icons/search.png" className="w-[15px]" alt="logo" />
             </div>
           }
-          value={searchValue}
-          onChange={(e) => dispatcher(setSearchString(e.target.value))}
+          value={searchPat}
+          onChange={(e) => setSearchPat(e.target.value)}
         />
         <div className="flex items-center gap-2">
           {selectedTab ? (

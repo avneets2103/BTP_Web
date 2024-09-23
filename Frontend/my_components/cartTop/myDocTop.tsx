@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import SectionDisplay from "../Individual/sectionDisplay/sectionDisplay";
+import SectionDisplay from "../sectionDisplay/sectionDisplay";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setColumns,
@@ -63,12 +63,17 @@ const cols: Column[] = [
   },
 ];
 
-function CartTop() {
+interface Props{
+  searchDoc: string,
+  setSearchDoc: React.Dispatch<React.SetStateAction<string>>
+}
+
+function MyDocTop (props: Props) {
+  const { searchDoc, setSearchDoc } = props
   const inputRef = useRef<HTMLInputElement>(null);
   usePreventScroll(inputRef);
   const listId = useSelector((state: any) => state.sidebar.currentList);
   const dispatcher = useDispatch();
-  const searchValue = useSelector((state: any) => state.cart.searchString);
   const [productLink, setProductLink] = useState("");
   const [key, setKey] = useState("");
   const [value, setValue] = useState("");
@@ -119,8 +124,8 @@ function CartTop() {
               <img src="../icons/search.png" className="w-[15px]" alt="logo" />
             </div>
           }
-          value={searchValue}
-          onChange={(e) => dispatcher(setSearchString(e.target.value))}
+          value={searchDoc}
+          onChange={(e) => setSearchDoc(e.target.value)}
         />
         <div className="flex items-center gap-2">
           <div
@@ -233,4 +238,4 @@ function CartTop() {
   );
 }
 
-export default CartTop;
+export default MyDocTop;
