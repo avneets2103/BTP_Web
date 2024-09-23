@@ -1,4 +1,4 @@
-# AI-Enhanced Healthcare Diagnostics and Management System
+# Assistive Differential Diagnosis using Context-Aware LLM
 
 ## 1. Technology Stack
 
@@ -52,22 +52,3 @@ The **AI-Enhanced Healthcare Diagnostics and Management System** aims to streaml
 - **Doctor Burden:** India faces a significant shortage of doctors, leading to high patient loads and burnout.
 - **Patient Access:** Rural patients often face long travel distances to access healthcare.
 - **Healthcare Costs:** Misdiagnoses and delayed diagnoses lead to increased costs and inefficiencies.
-
-## 6. Target Audience
-
-- **Hospitals:** Streamline diagnostics and patient record management.
-- **Doctors:** Enhance diagnostic accuracy and patient management.
-- **Patients:** Receive accurate diagnoses and personalized treatment.
-
-## 7. Business Plan
-
-### Market Analysis
-India’s growing healthcare needs require innovative solutions to address high patient loads and diagnostic challenges.
-
-### Unique Selling Proposition (USP)
-Our AI-powered tool provides real-time diagnostic support and comprehensive patient records, enhancing accuracy and efficiency.
-
-### Marketing and Outreach
-Partner with hospitals and doctors to leverage our app’s advanced features for improved healthcare delivery.
-
-Thank you for your interest in the **AI-Enhanced Healthcare Diagnostics and Management System**!
