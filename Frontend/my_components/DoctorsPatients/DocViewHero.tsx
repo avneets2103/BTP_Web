@@ -1,8 +1,9 @@
 import { PatientSchema } from "@/Interfaces";
-import { DocViewLayout, DocViewLayoutItem } from "@/my_components/myPatients/DocViewLayout";
+
 import { ReportLayout, ReportLayoutItem } from "@/my_components/myReports/ReportLayout";
 ;
 import React from "react";
+import { DocViewLayout, DocViewLayoutItem } from "./DocViewLayout";
 
 interface Props {
   data: PatientSchema[];

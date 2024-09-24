@@ -15,7 +15,7 @@ import { logout } from "@/Helpers/logout";
 import { setCurrentPage } from "@/RTK/features/sidebar";
 import { useRouter } from "next/navigation";
 import VitalsMain from "@/my_components/healthVitals/heathVitals";
-import DoctorsPatient from "@/my_components/myPatients/DoctorsPatient";
+import DoctorsPatient from "@/my_components/DoctorsPatients/DoctorsPatient";
 
 function Page({ params }: any) {
   const Router = useRouter();
@@ -87,11 +87,11 @@ function Page({ params }: any) {
         theme="colored"
       />
       <Sidebar />
-      {currentPage == "myDoctors" && <MyDoctors />}
+      {currentPage === "myDoctors" && <MyDoctors />}
       {currentPage === "myReports" && <ReportMain />}
-      {currentPage == "healthVitals" && <VitalsMain />}
-      {currentPage == "medicalSupport" && <SupportMain/>}
-      {currentPage == "myPatients" && <DoctorsPatient />}
+      {currentPage === "healthVitals" && <VitalsMain />}
+      {currentPage === "medicalSupport" && <SupportMain/>}
+      {currentPage === "myPatients" && <DoctorsPatient />}
     </div>
   );
 }export default Page;
