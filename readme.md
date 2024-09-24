@@ -1,4 +1,4 @@
-# Assistive Differential Diagnosis using Context-Aware LLM_
+# Assistive Differential Diagnosis using Context-Aware LLM
 
 ## 1. Technology Stack
 
