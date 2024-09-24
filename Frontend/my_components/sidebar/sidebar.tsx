@@ -15,8 +15,6 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-  Checkbox,
-  Link,
 } from "@nextui-org/react";
 import { logout } from "@/Helpers/logout";
 import axios from "@/utils/axios";
@@ -169,10 +167,12 @@ const Sidebar: React.FC = () => {
               <ModalHeader className="flex flex-col gap-1">
                 Settings
               </ModalHeader>
-              <ModalBody></ModalBody>
+              <ModalBody>
+                
+              </ModalBody>
               <ModalFooter>
                 <Button
-                  className="bg-purple-200"
+                  className="bg-purple-200 text-black"
                   variant="flat"
                   onPress={async () => {
                     logout();

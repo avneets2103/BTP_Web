@@ -7,14 +7,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Sidebar from "@/my_components/sidebar/sidebar";
 import MyDoctors from "@/my_components/myDoctors/myDoctors";
-import ReportMain from "@/my_components/reportMain/ReportMain";
-import VitalsMain from "@/my_components/vitalsMain/VitalsMain";
-import SupportMain from "@/my_components/SupportMain/SupportMain";
-import MyPatients from "@/my_components/MyPatients/MyPatients";
+import ReportMain from "@/my_components/myReports/meReports";
+import SupportMain from "@/my_components/medicalSupport/medicalSupport";
+import MyPatients from "@/my_components/myPatients/MyPatients";
 import { BACKEND_URI } from "@/CONSTANTS";
 import { logout } from "@/Helpers/logout";
 import { setCurrentPage } from "@/RTK/features/sidebar";
 import { useRouter } from "next/navigation";
+import VitalsMain from "@/my_components/healthVitals/heathVitals";
 
 /**
  * This is the main component for the sections of the app. It renders the
@@ -93,7 +93,7 @@ function Page({ params }: any) {
       {currentPage == "myDoctors" && <MyDoctors />}
       {currentPage === "myReports" && <ReportMain />}
       {currentPage == "healthVitals" && <VitalsMain />}
-      {currentPage == "medicalSupport" && <SupportMain />}
+      {currentPage == "medicalSupport" && <SupportMain/>}
       {currentPage == "myPatients" && <MyPatients />}
     </div>
   );

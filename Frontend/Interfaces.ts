@@ -37,12 +37,27 @@ interface PatientSchema{
 }
 
 interface ReportsSchema {
-    id?: string;
+    id: string;
     previewImgLink?: string;
-    reportName?: string;
-    reportDate?: string;
-    location?: string;
-    reportPDFLink?: string;
+    reportName: string;
+    reportDate: string;
+    location: string;
+    reportPDFLink: string;
+}
+
+interface GraphSchema{
+    id: string;
+    name: string;
+    data?: {
+        date: string;
+        value: number;
+    }[];
+    description?: string;
+} 
+
+interface Message {
+    text: string;
+    sender: 'not_user' | 'user';
 }
 
 export type {
@@ -51,4 +66,6 @@ export type {
     DocSchema,
     PatientSchema,
     ReportsSchema,
+    GraphSchema,
+    Message
 }

@@ -1,15 +1,20 @@
 import React, { useEffect } from 'react'
-import MyDocTop from './myDocTop'
-import DocHero from './DocHero'
-import { DocData } from '@/Data/DocData'
+// import ReportHero from '../ReportHero/ReportHero'
+import ReportTop from '../myReports/ReportTop'
+import { ReportsData } from '@/Data/ReportsData'
+import ReportHero from '../myReports/ReportHero'
+import VitalsTop from './VitalsTop'
+import VitalsHero from './VitalsHero'
+import { useRouter } from 'next/navigation'
 import axios from '@/utils/axios'
 import { BACKEND_URI } from '@/CONSTANTS'
-import { useRouter } from 'next/navigation'
 import { logout } from '@/Helpers/logout'
+import { HealthGraphs } from '@/Data/HealthGraphs'
+// import CartHero from '../cartHero/cartHero'
 
-function MyDoctors() {
+
+function VitalsMain() {
     const Router = useRouter();
-    const [searchDoc, setSearchDoc] = React.useState<string>("");
     useEffect(() => {
         const checkTokens = async () => {
             try {
@@ -18,7 +23,7 @@ function MyDoctors() {
               );
               if (accessTokenResponse.status !== 200) {
                 Router.push("/login");
-                logout();
+                logout() 
                 return;
               }
               if(accessTokenResponse.data.data.isDoctor){
@@ -26,18 +31,20 @@ function MyDoctors() {
               }
             } catch (error) {
               Router.push("/login");
-              logout();
+              logout()
               console.log("Access token invalid, trying refresh token...");
             }
         };
         checkTokens();
     }, [Router])
+    const [searchVitals, setSearchVitals] = React.useState<string>("");
+
     return (
         <div className='flex-grow flex flex-col width-full h-full mr-6'>
-            <MyDocTop searchDoc = {searchDoc} setSearchDoc = {setSearchDoc}/>
-            <DocHero data={DocData} searchDoc = {searchDoc}/>
+            <VitalsTop searchVitals={searchVitals} setSearchVitals={setSearchVitals}/>
+            <VitalsHero searchVitals={searchVitals} data={HealthGraphs}/>
         </div>
     )
 }
 
-export default MyDoctors
+export default VitalsMain

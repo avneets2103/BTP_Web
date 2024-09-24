@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react'
-import DocViewTop from '../DocViewTop/DocViewTop'
+import DocViewTop from './DocViewTop'
 import { PatientData } from '@/Data/PatientData'
-import DocViewHero from '../DocViewHero/DocViewHero'
+import DocViewHero from './DocViewHero'
 import { useRouter } from 'next/navigation';
 import { BACKEND_URI } from '@/CONSTANTS';
 import axios from '@/utils/axios';
 import { logout } from '@/Helpers/logout';
 
-interface Props {}
-
-function MyPatients(props: Props) {
+function MyPatients() {
     const Router = useRouter();
     const [searchPat, setSearchPat] = React.useState<string>("");
     useEffect(() => {
@@ -34,7 +32,6 @@ function MyPatients(props: Props) {
         };
         checkTokens();
     }, [Router])
-    const {} = props
 
     return (
         <div className='flex-grow flex flex-col width-full h-full mr-6'>

@@ -36,12 +36,43 @@ const addDoctor = asyncHandler(async (req, res) => {
         // Verify the token
         const decoded = jwt.verify(doctorGeneratedOneTimeToken, process.env.DOCTOR_TOKEN_SECRET);
         const doctorId = decoded._id; // Assuming the doctor ID is stored as _id in the token payload
+        const patientId = decoded.patientId;
         
+        if(patientId !== req.user._id.toString()) {
+            throw new ApiError(401, 'Unauthorized access');
+        }
+
         // Find the user (patient) by ID
-        const user = await User.findById(req.user._id).populate('patientDetails');
-        if (!user || !user.patientDetails) {
+        let user = await User.findById(req.user._id).populate('patientDetails');
+        if (!user) {
             throw new ApiError(404, 'Patient not found');
         }
+        if(!user.patientDetails){
+            if (req.user.isDoctor) {
+                throw new ApiError(403, 'Doctors cannot create patient details');
+            }
+    
+            // Create a new patient document
+            const newPatient = new Patient({
+                sex: "",
+                age: 18,
+                name: "",
+                currentCondition: "",
+                bloodGroup: "",
+                medicalHistorySummary: "",
+                currentSymptomsSummary: "",
+                assistiveDiagnosis: "",
+                doctorsList: [],
+                reportsList: [],
+            });
+    
+            // Save the patient
+            await newPatient.save();
+    
+            // Update the user's patientDetails field
+            user = await User.findById(req.user._id).populate('patientDetails');
+        }
+        console.log(user);
         
         // Find the doctor by the decoded doctorId
         const doctor = await User.findById(doctorId);

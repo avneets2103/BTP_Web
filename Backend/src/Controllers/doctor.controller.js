@@ -5,15 +5,14 @@ import { User } from '../Models/user.model.js';
 import { Patient } from '../Models/patient.model.js';
 import { Doctor } from '../Models/doctor.model.js';
 import jwt from 'jsonwebtoken';
+import { sendingMail } from '../Utils/messagingService.js';
 
-const generateDoctorToken = async (id) => {
+const generateDoctorToken = async (id, patient) => {
     try {
-        // if(!req.user.isDoctor){
-        //     throw new ApiError(401, 'Unauthorized access');
-        // }
         const doctorToken = await jwt.sign(
             {
                 _id: id,
+                patientId: patient._id
             },
             process.env.DOCTOR_TOKEN_SECRET,
             {
@@ -54,7 +53,14 @@ const getPatientList = asyncHandler(async (req, res) => {
 
 const generatePatientCode = asyncHandler(async (req, res) => {
     try {
-        const doctorToken = await generateDoctorToken(req.user._id.toString());
+        const {patientMail} = req.body;
+        const patient = await User.findOne({email: patientMail});
+        if (!patient) {
+            throw new ApiError(404, 'Patient not found');
+        }
+
+        const doctorToken = await generateDoctorToken(req.user._id.toString(), patient);
+        sendingMail(patientMail, "Doctor Token", 'Your Doctor Token is:', `${doctorToken}`);
         return res.status(200).json(
             new ApiResponse(200, doctorToken, 'Patient code generated successfully')
         );

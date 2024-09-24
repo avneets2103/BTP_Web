@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react'
-import MyDocTop from './myDocTop'
-import DocHero from './DocHero'
-import { DocData } from '@/Data/DocData'
+import React, { useEffect, useState } from 'react'
+import ReportTop from './ReportTop'
+import ReportHero from './ReportHero'
 import axios from '@/utils/axios'
 import { BACKEND_URI } from '@/CONSTANTS'
 import { useRouter } from 'next/navigation'
 import { logout } from '@/Helpers/logout'
+import { ReportsSchema } from '@/Interfaces'
+import { ReportsData } from '@/Data/ReportsData'
 
-function MyDoctors() {
+interface Props {}
+
+function ReportMain(props: Props) {
     const Router = useRouter();
-    const [searchDoc, setSearchDoc] = React.useState<string>("");
+    const [reportSearch, setReportSearch] = React.useState<string>("");
     useEffect(() => {
         const checkTokens = async () => {
             try {
@@ -18,7 +21,7 @@ function MyDoctors() {
               );
               if (accessTokenResponse.status !== 200) {
                 Router.push("/login");
-                logout();
+                logout() 
                 return;
               }
               if(accessTokenResponse.data.data.isDoctor){
@@ -26,18 +29,19 @@ function MyDoctors() {
               }
             } catch (error) {
               Router.push("/login");
-              logout();
+              logout()
               console.log("Access token invalid, trying refresh token...");
             }
         };
         checkTokens();
-    }, [Router])
+    }, [Router]);
+
     return (
         <div className='flex-grow flex flex-col width-full h-full mr-6'>
-            <MyDocTop searchDoc = {searchDoc} setSearchDoc = {setSearchDoc}/>
-            <DocHero data={DocData} searchDoc = {searchDoc}/>
+            <ReportTop reportSearch = {reportSearch} setReportSearch = {setReportSearch}/>
+            <ReportHero data={ReportsData} reportSearch = {reportSearch}/>
         </div>
     )
 }
 
-export default MyDoctors
+export default ReportMain
