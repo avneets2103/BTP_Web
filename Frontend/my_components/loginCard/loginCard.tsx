@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, KeyboardEvent, useEffect } from 'react';
 import { Input } from "@nextui-org/react";
-import { BACKEND_URI, minPassLength, otpGap, otpLength, refreshTokenExpiration, RENDER_BACKEND_URI } from '@/CONSTANTS';
+import { BACKEND_URI, minPassLength, otpGap, otpLength, refreshTokenExpiration } from '@/CONSTANTS';
 import OtpInput from "react-otp-input";
 import Link from 'next/link';
 import Cookies from "js-cookie";

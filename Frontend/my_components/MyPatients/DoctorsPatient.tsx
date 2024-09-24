@@ -7,7 +7,7 @@ import { BACKEND_URI } from '@/CONSTANTS';
 import axios from '@/utils/axios';
 import { logout } from '@/Helpers/logout';
 
-function MyPatients() {
+function DoctorsPatient() {
     const Router = useRouter();
     const [searchPat, setSearchPat] = React.useState<string>("");
     useEffect(() => {
@@ -41,4 +41,4 @@ function MyPatients() {
     )
 }
 
-export default MyPatients
+export default DoctorsPatient

@@ -1,7 +1,4 @@
 import { cn } from "@/lib/utils";
-import ChatInterfaceDoc from "@/my_components/chat-interface-doc/ChatInterfaceDoc";
-
-// import ChatInterface from "@/my_components/chat-interface/ChatInterface";
 import {
   Modal,
   ModalContent,

@@ -1,4 +1,4 @@
-import React, {useState, useRef } from "react";
+import React, {useState } from "react";
 import SectionDisplay from "../sectionDisplay/sectionDisplay";
 import { Input } from "@nextui-org/input";
 import {
@@ -11,7 +11,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import axios from "@/utils/axios";
-import { BACKEND_URI, RENDER_BACKEND_URI } from "@/CONSTANTS";
+import { BACKEND_URI } from "@/CONSTANTS";
 import { ToastErrors, ToastInfo } from "@/Helpers/toastError";
 import { CircularProgress } from "@nextui-org/react";
 

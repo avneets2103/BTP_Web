@@ -9,12 +9,13 @@ import Sidebar from "@/my_components/sidebar/sidebar";
 import MyDoctors from "@/my_components/myDoctors/myDoctors";
 import ReportMain from "@/my_components/myReports/meReports";
 import SupportMain from "@/my_components/medicalSupport/medicalSupport";
-import MyPatients from "@/my_components/myPatients/MyPatients";
+
 import { BACKEND_URI } from "@/CONSTANTS";
 import { logout } from "@/Helpers/logout";
 import { setCurrentPage } from "@/RTK/features/sidebar";
 import { useRouter } from "next/navigation";
 import VitalsMain from "@/my_components/healthVitals/heathVitals";
+import DoctorsPatient from "@/my_components/myPatients/DoctorsPatient";
 
 function Page({ params }: any) {
   const Router = useRouter();
@@ -90,7 +91,7 @@ function Page({ params }: any) {
       {currentPage === "myReports" && <ReportMain />}
       {currentPage == "healthVitals" && <VitalsMain />}
       {currentPage == "medicalSupport" && <SupportMain/>}
-      {currentPage == "myPatients" && <MyPatients />}
+      {currentPage == "myPatients" && <DoctorsPatient />}
     </div>
   );
 }export default Page;

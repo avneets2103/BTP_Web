@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BACKEND_URI, minPassLength, otpLength, RENDER_BACKEND_URI } from "@/CONSTANTS";
+import { BACKEND_URI, minPassLength } from "@/CONSTANTS";
 import { ToastErrors, ToastInfo } from "./toastError";
 import Cookies from "js-cookie";
 
