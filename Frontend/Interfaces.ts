@@ -8,6 +8,7 @@ interface sidebarMenuItems {
     path: string,
     iconS: string,
     iconNS: string,
+    iconNSD: string,
     patient: Boolean,
 }
 

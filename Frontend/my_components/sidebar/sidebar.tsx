@@ -129,7 +129,7 @@ const Sidebar: React.FC = () => {
                     }}
                   >
                     <img
-                      src={item.iconNS}
+                      src={theme==="dark"?item.iconNSD:item.iconNS}
                       alt={item.name}
                       className="w-[40%]"
                     />

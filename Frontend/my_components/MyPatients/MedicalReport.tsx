@@ -140,7 +140,7 @@ const MedicalReport = ({ img, id }: Props) => {
       </div>
       <div className="w-[85%] flex flex-col">
         <div className="w-full flex flex-col items-center">
-          <div className="flex gap-2 bg-black w-[200px] flex justify-center p-2 rounded-[20px]">
+          <div className="flex gap-2 bg-bgColor w-[200px] flex justify-center p-2 rounded-[20px]">
             {patientTabs.map((tab) => (
               <Button
                 isIconOnly
@@ -160,41 +160,6 @@ const MedicalReport = ({ img, id }: Props) => {
       </div>
     </div>
   );
-  
 };
 
 export default MedicalReport;
-
-{/* <div className="flex">
-        <div className="flex w-[20%] flex-col items-center gap-1">
-          <img
-            src={img}
-            alt="Patient"
-            className="w-[90%] rounded-[20px] shadow-ourBoxShadow"
-          />
-          
-        </div>
-        <div className="bg-backgroundColor flex w-[80%] flex-col items-center rounded-[20px] p-4">
-          <div className="center flex w-[50%] justify-center gap-3 rounded-[10px] bg-[#d9d9d9] p-1 opacity-80">
-            <button
-              className={`p-[5px] text-textColorLight ${selectedTab === "Reports" ? "bg-[#F0F0F0] border-[1px] border-white rounded-[10px]" : ""}`}
-              onClick={() => setSelectedTab("Reports")}
-            >
-              Reports
-            </button>
-            <button
-              className={`p-[5px] text-textColorLight ${selectedTab === "Diagnosis" ? "bg-[#F0F0F0] border-[1px] border-white rounded-[10px]" : ""}`}
-              onClick={() => setSelectedTab("Diagnosis")}
-            >
-              Diagnosis
-            </button>
-            <button
-              className={`p-[5px] text-textColorLight ${selectedTab === "Health Vitals" ? "bg-[#F0F0F0] border-[1px] border-white rounded-[10px]" : ""}`}
-              onClick={() => setSelectedTab("Health Vitals")}
-            >
-              Health Vitals
-            </button>
-          </div>
-          {renderContent()}
-        </div>
-      </div> */}

@@ -16,6 +16,7 @@ const sidebarMenu:Array<sidebarMenuItems>= [
         path: "myDoctors",
         iconS: "../icons/doc.s.png",
         iconNS: "../icons/doc.ns.png",
+        iconNSD: "../icons/doc.ns.D.png",
         patient: true,
     },
     {
@@ -23,6 +24,7 @@ const sidebarMenu:Array<sidebarMenuItems>= [
         path: "myReports",
         iconS: "../icons/rep.s.png",
         iconNS: "../icons/rep.ns.png",
+        iconNSD: "../icons/rep.ns.D.png",
         patient: true,
     },
     {
@@ -30,6 +32,7 @@ const sidebarMenu:Array<sidebarMenuItems>= [
         path: "healthVitals",
         iconS: "../icons/vitals.s.png",
         iconNS: "../icons/vitals.ns.png",
+        iconNSD: "../icons/vitals.ns.D.png",
         patient: true,
     },
     {
@@ -37,13 +40,15 @@ const sidebarMenu:Array<sidebarMenuItems>= [
         path: "medicalSupport",
         iconS: "../icons/sup.s.png",
         iconNS: "../icons/sup.ns.png",
+        iconNSD: "../icons/sup.ns.D.png",
         patient: true,
     },
     {
         name: "My Patients",
         path: "myPatients",
-        iconS: "../icons/doc.s.png",
-        iconNS: "../icons/doc.ns.png",
+        iconS: "../icons/patient.s.png",
+        iconNS: "../icons/patient.ns.png",
+        iconNSD: "../icons/patient.ns.D.png",
         patient: false,
     },
 ]
