@@ -16,10 +16,6 @@ import { setCurrentPage } from "@/RTK/features/sidebar";
 import { useRouter } from "next/navigation";
 import VitalsMain from "@/my_components/healthVitals/heathVitals";
 
-/**
- * This is the main component for the sections of the app. It renders the
- * sidebar and the corresponding page based on the current page name.
- */
 function Page({ params }: any) {
   const Router = useRouter();
   const dispatcher = useDispatch();
