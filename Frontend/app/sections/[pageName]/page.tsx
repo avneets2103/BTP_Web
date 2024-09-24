@@ -23,11 +23,11 @@ import VitalsMain from "@/my_components/healthVitals/heathVitals";
 function Page({ params }: any) {
   const Router = useRouter();
   const dispatcher = useDispatch();
-  const currentPage = params.pageName;
+  const currentPage = params?.pageName;
 
   useEffect(() => {
     /*** Set the current page name in the Redux store. */
-    dispatcher(setCurrentPage({ currentPage: currentPage }));
+    dispatcher(setCurrentPage({ currentPage: currentPage ?? "" }));
 
     /**
      * If the current page is not one of the valid pages, check if the access token
@@ -48,7 +48,7 @@ function Page({ params }: any) {
           const accessTokenResponse = await axios.post(
             `${BACKEND_URI}/auth/verifyAccessToken`,
           );
-          if (accessTokenResponse.status !== 200) {
+          if (accessTokenResponse?.status !== 200) {
             // If the access token is invalid, log the user out and
             // redirect them to the login page
             Router.push("/login");
@@ -57,7 +57,7 @@ function Page({ params }: any) {
             return;
           }
           // If the user is a doctor, redirect them to the My Patients page
-          if (accessTokenResponse.data.data.isDoctor) {
+          if (accessTokenResponse?.data?.data?.isDoctor) {
             Router.push("/sections/myPatients");
           } else {
             // If the user is a patient, redirect them to the My Doctors page
@@ -73,7 +73,11 @@ function Page({ params }: any) {
       };
       checkTokens();
     }
-  }, []);
+  }, [currentPage, Router, dispatcher]);
+
+  if (!currentPage) {
+    return null;
+  }
 
   return (
     <div className="flex h-screen w-full bg-bgColor">
@@ -97,4 +101,5 @@ function Page({ params }: any) {
       {currentPage == "myPatients" && <MyPatients />}
     </div>
   );
-}export default Page;
+}
+export default Page;
