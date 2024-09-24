@@ -16,7 +16,7 @@ function SectionDisplay() {
 
     return (
         <div className='flex flex-col h-[7%]'>
-            <p className='text-[10px] text-textColorLight'>Home</p>
+            <p className='text-[10px] text-textColorLight'>This is</p>
             <p className='text-2xl font-medium'>{displayName}</p>
         </div>
     )

@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import Cookies from "js-cookie";
 import { Button } from "@nextui-org/react";
-import { getListArray } from "@/Helpers/sidebar";
 import {
   Modal,
   ModalContent,
@@ -28,6 +27,7 @@ interface listItem {
 
 const Sidebar: React.FC = () => {
   const Router = useRouter();
+  const dispatcher = useDispatch();
   useEffect(() => {
     const checkTokens = async () => {
       try {
@@ -52,29 +52,9 @@ const Sidebar: React.FC = () => {
   const [isDoctor, setIsDoctor] = useState(
     Cookies.get("isDoctor") === "true" || false,
   );
-  const dispatcher = useDispatch();
   const currentPage = useSelector((state: any) => state.sidebar.currentPage);
   const { theme, setTheme } = useTheme();
-  const [selectedKeys, setSelectedKeys] = useState(new Set<string>([""]));
-  const [listNameEntered, setListNameEntered] = useState(true);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  const options: listItem[] = [];
-  const [listArray, setListArray] = useState(options);
-  const [newListInfo, setNewListInfo] = useState({
-    key: "",
-    name: "",
-    emoji: "",
-    budget: "",
-  });
-  useEffect(() => {
-    if (newListInfo.name !== "") {
-      setListNameEntered(true);
-    }
-  }, [newListInfo.name]);
-  useEffect(() => {
-    getListArray(setListArray, setSelectedKeys, dispatcher);
-  }, []);
 
   return (
     <div className="flex h-screen w-[6rem] min-w-[6rem] items-center justify-center">
@@ -152,6 +132,7 @@ const Sidebar: React.FC = () => {
             />
           </div>
           <div className="flex h-[2.8rem] w-[2.8rem] flex-col items-center justify-center rounded-[50%] bg-color1">
+            {/* TODO: Image of user */}
             <img
               src={`../icons/avatar${Number(Cookies.get("avatarNumber")) || 1}.png`}
               alt={"avatar"}
