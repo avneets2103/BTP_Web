@@ -5,11 +5,12 @@ import { User } from '../Models/user.model.js'
 import jwt from 'jsonwebtoken'
 import {sendingMail} from '../Utils/messagingService.js'
 import speakeasy from 'speakeasy';
-import { randomString, generateOTP } from '../Utils/helpers.js'
+import { randomString, generateOTP, makeUniqueFileName } from '../Utils/helpers.js'
 let otpExpiry = 0;
 import {emailOTP, emailNewPassword} from '../constants.js'
 import { Patient } from '../Models/patient.model.js'
 import { Doctor } from '../Models/doctor.model.js'
+import { getObjectURL, putObjectURL } from '../Utils/s3.js'
 
 const generateAccessAndRefreshToken = async (userId) => {
     try {
@@ -69,16 +70,16 @@ const registerLoginUser = asyncHandler(async (req, res) => {
                 password: password,
                 email: email,
             })
-
+            
             const check = await User.findById(user._id).select(
                 '-password -refreshToken'
             )
-
+            
             if (!check) {
                 throw new ApiError(500, 'User not saved')
             }
-    
-            sendWAMessage(check.phone_number, otp);
+
+            sendingMail(check.email, 'OTP', 'Welcome!', emailOTP(otp));
 
             return res
                 .status(200)
@@ -189,6 +190,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     } catch (error) {}
 })
 
+// for admin only
 const deleteUserByEmail = asyncHandler(async (req, res) => {
     const { email } = req.body
 
@@ -341,6 +343,7 @@ const generateNewPassword = asyncHandler(async (req, res) => {
     }
 })
 
+// to verify access token
 const verifyAccessToken = asyncHandler(async (req, res) => {
     console.log("Access token verified");
     return res
@@ -356,11 +359,12 @@ const verifyAccessToken = asyncHandler(async (req, res) => {
         )
 })
 
+// for hospital to set a doctor and also set his details
 const setDoctor = asyncHandler(async (req, res) => {
     try {
-        const {email} = req.body;
+        const {name, speciality , qualifications, experience, email, imageName, imageType} = req.body;
         if (email.trim().length == 0 ) {
-            throw new ApiError(400, 'Email not sent')
+            throw new ApiError(400, 'Email not recieved')
         }   
         const user = await User.findOne({
             $or: [{ email }],
@@ -368,14 +372,52 @@ const setDoctor = asyncHandler(async (req, res) => {
         if(!user){
             throw new ApiError(400, 'User not found');
         }
+
+        const allowedImageTypes = [
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+            'image/gif',
+            'image/bmp',
+            'image/tiff',
+            'image/tif'
+        ];
+        if (!allowedImageTypes.includes(imageType.toLowerCase())) {
+            throw new ApiError(400, 'Invalid image type. Only JPEG, JPG, PNG, GIF, BMP, TIFF, and TIF are allowed.');
+        }
+
+        // Extract file extension from MIME type
+        const fileExtension = imageType.split('/')[1];
+
+        // Add file extension to image name
+        const nameOfFile = `${makeUniqueFileName(imageName, user._id.toString())}.${fileExtension}`;
+
+        const url = await putObjectURL(nameOfFile, imageType, 600);
+        user.imageLink = nameOfFile;
+
+        // Create a new doctor document
+        const newDoctor = new Doctor({
+            speciality,
+            qualifications,
+            experience,
+        });
+        await newDoctor.save();
+        
+        // Save the patient
         user.isDoctor = true;
-        await user.save({ validateBeforeSave: false })
+        user.name = name;
+        user.doctorDetails = newDoctor._id;
+        await user.save({ validateBeforeSave: false });
         return res
             .status(200)
             .json(
                 new ApiResponse(
                     200,
-                    null,
+                    {
+                        doctor: user,
+                        imageLink: url,
+                        doctorDetails: newDoctor
+                    },
                     `User with email ${email} set as doctor successfully`
                 )
             )
@@ -385,9 +427,12 @@ const setDoctor = asyncHandler(async (req, res) => {
     }
 })
 
+// for logged in users
 const getUserData = asyncHandler(async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
+        const imageLink = user.imageLink;
+        user.imageLink = await getObjectURL(imageLink);
         return res
             .status(200)
             .json(
@@ -402,6 +447,7 @@ const getUserData = asyncHandler(async (req, res) => {
     }
 })
 
+// for logged in patients
 const savePatientDetails = asyncHandler(async (req, res) => {
     try {
         // Ensure the user is not a doctor
@@ -411,31 +457,19 @@ const savePatientDetails = asyncHandler(async (req, res) => {
 
         const { name, sex, age, bloodGroup } = req.body;
 
-        // Check if the user already has patient details
-        const existingPatient = await Patient.findOne({ user: req.user._id });
-        if (existingPatient) {
-            throw new ApiError(400, 'Patient details already exist');
-        }
-
         const user = await User.findById(req.user._id);
-        user.name = name;
-        await user.save();
-
+        
         // Create a new patient document
         const newPatient = new Patient({
-            user: req.user._id,
             sex,
             age,
             bloodGroup
         });
-
-        // Save the patient
         await newPatient.save();
-
-        // Update the user's patientDetails field
-        await User.findByIdAndUpdate(req.user._id, {
-            patientDetails: newPatient._id
-        });
+        
+        user.name = name;
+        user.patientDetails = newPatient._id;
+        await user.save();
 
         return res.status(201).json(
             new ApiResponse(201, newPatient, 'Patient details saved successfully')
@@ -445,46 +479,84 @@ const savePatientDetails = asyncHandler(async (req, res) => {
     }
 });
 
-const saveDoctorDetails = asyncHandler(async (req, res) => {
-    try {
-        // if (!req.user.isDoctor) {
-        //     throw new ApiError(403, 'Doctors cannot create patient details');
-        // }
-        const {name, speciality , qualifications, experience} = req.body;
-        
-        // Check if the user already has patient details
-        const existingDoctor = await Doctor.findOne({ user: req.user._id });
-        if (existingDoctor) {
-            throw new ApiError(400, 'Doctor details already exist');
-        }
-        
+// for logged in users
+const profilePhotoUploadSignedURL = asyncHandler(async (req, res) => {
+    try{
         const user = await User.findById(req.user._id);
-        user.name = name;
-        await user.save();
-        
-        // Create a new patient document
-        const newDoctor = new Doctor({
-            user: req.user._id,
-            speciality,
-            experience,
-            qualifications
-        });
-        
-        // Save the patient
-        await newDoctor.save();
-        
-        // Update the user's patientDetails field
-        const newuser = await User.findByIdAndUpdate(req.user._id, {
-            doctorDetails: newDoctor._id
-        });
-        console.log(newuser);
+        const {imageName, imageType} = req.body;
 
-        return res.status(201).json(
-            new ApiResponse(201, newDoctor, 'Doctor details saved successfully')
+        // Validate image type
+        const allowedImageTypes = [
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+            'image/gif',
+            'image/bmp',
+            'image/tiff',
+            'image/tif'
+        ];
+        if (!allowedImageTypes.includes(imageType.toLowerCase())) {
+            throw new ApiError(400, 'Invalid image type. Only JPEG, JPG, PNG, GIF, BMP, TIFF, and TIF are allowed.');
+        }
+
+        // Extract file extension from MIME type
+        const fileExtension = imageType.split('/')[1];
+
+        // Add file extension to image name
+        const nameOfFile = `${makeUniqueFileName(imageName, user._id.toString())}.${fileExtension}`;
+
+        const url = await putObjectURL(nameOfFile, imageType, 600);
+        user.imageLink = nameOfFile;
+        await user.save();
+        return res.status(200).json(new ApiResponse(
+            200, 
+            url, 
+            'Profile photo signed URL created successfully'
+        )
         );
+    } catch (error){
+        throw new ApiError(500, 'Something went wrong in profilePhotoSignedURL');
     }
-    catch (error) {
-        throw new ApiError(500, 'Something went wrong in saveDoctorDetails');
+})
+
+// get all users email and isDoctor in a list
+const getAllUsers = asyncHandler(async (req, res) => {
+    try {
+        const users = await User.find();
+        const filteredDocData = [];
+        const filteredPatData = [];
+        let docC = 0, patC = 0;
+        for (const user of users) {
+            if(user.isDoctor) {
+                docC++;
+                filteredDocData.push({
+                    email: user.email,
+                    name: user.name || ""
+                })
+            }else{
+                patC++;
+                filteredPatData.push({
+                    email: user.email,
+                    name: user.name || ""
+                })
+            }
+        }
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(
+                    200,
+                    {
+                        doctorCount: docC,
+                        patientCount: patC,
+                        doctorData: filteredDocData,
+                        patientData: filteredPatData
+                    },
+                    'All users retrieved successfully'
+                )
+            )
+    } catch (error) {
+        throw new ApiError(500, 'Something went wrong in getAllUsers')
     }
 })
 
@@ -501,5 +573,6 @@ export {
     setDoctor,
     getUserData,
     savePatientDetails,
-    saveDoctorDetails
+    profilePhotoUploadSignedURL,
+    getAllUsers
 }

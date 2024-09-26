@@ -12,7 +12,8 @@ import {
     setDoctor,
     getUserData,
     savePatientDetails,
-    saveDoctorDetails,
+    profilePhotoUploadSignedURL,
+    getAllUsers
  } from "../Controllers/user.controller.js";
 import { verifyJWT } from "../Middlewares/auth.middleware.js";
 
@@ -25,6 +26,7 @@ router.route("/generateNewPassword").post(generateNewPassword);
 router.route("/refreshAccessToken").post(refreshAccessToken);
 router.route("/setDoctor").post(setDoctor);
 router.route("/deleteUser").post(deleteUserByEmail);
+router.route("/getAllUsers").post(getAllUsers);
 
 // secured routs
 router.route("/verifyAccessToken").post(verifyJWT, verifyAccessToken);
@@ -32,6 +34,6 @@ router.route("/logout").post(verifyJWT, logoutUser);
 router.route("/changePassword").post(verifyJWT, changeCurrentPassword);
 router.route("/getUserData").post(verifyJWT, getUserData);
 router.route("/savePatientDetails").post(verifyJWT, savePatientDetails);
-router.route("/saveDoctorDetails").post(verifyJWT, saveDoctorDetails);
+router.route("/profilePhotoUploadSignedURL").post(verifyJWT, profilePhotoUploadSignedURL)
 
 export default router;

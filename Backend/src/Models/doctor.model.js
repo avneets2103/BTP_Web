@@ -9,9 +9,6 @@ const doctorSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    imageLink: {
-        type: String,
-    },
     experience: {
         type: String,
         required: true,

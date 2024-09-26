@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport({
   secure: false, // Use TLS
   auth: {
     user: `avneets2103@gmail.com`,
-    pass: `rwtgpbbneaxwoyze`
+    pass: process.env.MAIL_PASSWORD
   },
 });
 

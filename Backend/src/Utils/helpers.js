@@ -20,7 +20,13 @@ const generateOTP = (secretBase32) => {
     return token;
 }
 
+const makeUniqueFileName = (fileName, userMail) => {
+    const date = new Date();
+    return userMail + '_' + fileName + '_' + date.getTime();
+}
+
 export {
     randomString,
-    generateOTP
+    generateOTP,
+    makeUniqueFileName
 }
