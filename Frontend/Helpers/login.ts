@@ -11,7 +11,7 @@ function passIsValid(password: string): boolean {
     return password.length >= minPassLength || password.length === 0;
 }
 
-const handleLogin = async(isInvalid: boolean, password: string, email: string, setOtpPage: Function) => { 
+const handleLogin = async(isInvalid: boolean, password: string, email: string, setOtpPage: Function, setnewPatientSignup: Function) => { 
     if(!isInvalid && (password.length >= minPassLength)) {
         try {
             const user = {
@@ -19,6 +19,7 @@ const handleLogin = async(isInvalid: boolean, password: string, email: string, s
                 password: password,
             };
             const loginRes = await axios.post(`${BACKEND_URI}/auth/login`, user); 
+            Cookies.set("newUser", loginRes.data.data.newUser);
             setOtpPage(true);
           } catch (error: any) {
             ToastErrors("Invalid Login Credentials!");

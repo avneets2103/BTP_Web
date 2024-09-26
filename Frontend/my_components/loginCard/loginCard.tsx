@@ -18,7 +18,11 @@ import { ToastErrors, ToastInfo } from '@/Helpers/toastError';
 import axios from 'axios';
 import { tokenCookies } from '@/Helpers/cookieHandling';
 
-function LoginCard() {
+interface Props{
+    setNewPatientSignup: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function LoginCard({setNewPatientSignup}:Props) {
     const Router = useRouter();
     // required variables and states
     const [email, setEmail] = useState<string>("");
@@ -68,7 +72,7 @@ function LoginCard() {
     const handlePasswordKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
           e.preventDefault();
-          handleLogin(isInvalid, password, email, setOtpPage); 
+          handleLogin(isInvalid, password, email, setOtpPage, setNewPatientSignup); 
           Cookies.set("email", email, {
             expires: 1,
           });
@@ -101,7 +105,11 @@ function LoginCard() {
                     expires: refreshTokenExpiration,
                 })
                 ToastInfo("OTP verified");
-                Router.push("/sections/myCart");
+                if(Cookies.get("newUser") === "true"){
+                    setNewPatientSignup(true);
+                }else{
+                    Router.push("/sections/myCart");
+                }
             } catch (error) {
                 ToastErrors("Invalid OTP");
             }

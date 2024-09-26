@@ -34,6 +34,6 @@ router.route("/logout").post(verifyJWT, logoutUser);
 router.route("/changePassword").post(verifyJWT, changeCurrentPassword);
 router.route("/getUserData").post(verifyJWT, getUserData);
 router.route("/savePatientDetails").post(verifyJWT, savePatientDetails);
-router.route("/profilePhotoUploadSignedURL").post(verifyJWT, profilePhotoUploadSignedURL)
+router.route("/profilePhotoUploadSignedURL").post(verifyJWT, profilePhotoUploadSignedURL);
 
 export default router;

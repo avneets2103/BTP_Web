@@ -45,7 +45,7 @@ const registerLoginUser = asyncHandler(async (req, res) => {
         // otp creation
         const secretBase32 = process.env.otp_secret_key;  
         let otp = generateOTP(secretBase32);
-        otpExpiry = Date.now() + (60000*5);
+        otpExpiry = Date.now() + (6000*5);
 
         if (exsistingUser) {
             const passValid = await exsistingUser.isPasswordCorrect(password)
@@ -60,7 +60,10 @@ const registerLoginUser = asyncHandler(async (req, res) => {
                 .json(
                     new ApiResponse(
                         200,
-                        { user: sendingUser},
+                        { 
+                            user: sendingUser,
+                            newUser: false,
+                        },
                         'User logged in successfully'
                     )
                 )
@@ -86,7 +89,10 @@ const registerLoginUser = asyncHandler(async (req, res) => {
                 .json(
                     new ApiResponse(
                         200,
-                        { user: check },
+                        { 
+                            user: check,
+                            newUser: true,
+                        },
                         'User signed up successfully'
                     )
                 )
@@ -362,7 +368,7 @@ const verifyAccessToken = asyncHandler(async (req, res) => {
 // for hospital to set a doctor and also set his details
 const setDoctor = asyncHandler(async (req, res) => {
     try {
-        const {name, speciality , qualifications, experience, email, imageName, imageType} = req.body;
+        const {name, speciality , qualifications, experience, email, imageType} = req.body;
         if (email.trim().length == 0 ) {
             throw new ApiError(400, 'Email not recieved')
         }   
@@ -390,7 +396,8 @@ const setDoctor = asyncHandler(async (req, res) => {
         const fileExtension = imageType.split('/')[1];
 
         // Add file extension to image name
-        const nameOfFile = `${makeUniqueFileName(imageName, user._id.toString())}.${fileExtension}`;
+        const date = new Date();
+        const nameOfFile = `${user._id.toString() + '_profilephoto_' + date.getTime()}.${fileExtension}`;
 
         const url = await putObjectURL(nameOfFile, imageType, 600);
         user.imageLink = nameOfFile;
@@ -483,8 +490,7 @@ const savePatientDetails = asyncHandler(async (req, res) => {
 const profilePhotoUploadSignedURL = asyncHandler(async (req, res) => {
     try{
         const user = await User.findById(req.user._id);
-        const {imageName, imageType} = req.body;
-
+        const {imageType} = req.body;
         // Validate image type
         const allowedImageTypes = [
             'image/jpeg',
@@ -503,7 +509,7 @@ const profilePhotoUploadSignedURL = asyncHandler(async (req, res) => {
         const fileExtension = imageType.split('/')[1];
 
         // Add file extension to image name
-        const nameOfFile = `${makeUniqueFileName(imageName, user._id.toString())}.${fileExtension}`;
+        const nameOfFile = `${makeUniqueFileName("profilephoto", user._id.toString())}.${fileExtension}`;
 
         const url = await putObjectURL(nameOfFile, imageType, 600);
         user.imageLink = nameOfFile;
