@@ -5,9 +5,10 @@ import { DocSchema } from '@/Interfaces';
 interface Props {
     data: DocSchema[];
     searchDoc: string;
+    setDocList: React.Dispatch<React.SetStateAction<DocSchema[]>>
 }
 
-function DocHero({data, searchDoc}: Props) {
+function DocHero({data, searchDoc, setDocList}: Props) {
     const filteredData = data.filter((doc: DocSchema) => {
       const lowerCaseSearchDoc = searchDoc.toLowerCase();
       return (
@@ -29,7 +30,8 @@ function DocHero({data, searchDoc}: Props) {
             img={doc.imageLink}
             qualification={doc.qualifications}
             experience={doc.experience}
-            patientsList={doc.patientsList}
+            hospitalNumber={doc.hospitalNumber}
+            setDocList={setDocList}
           />
         ))}
       </DocLayout>

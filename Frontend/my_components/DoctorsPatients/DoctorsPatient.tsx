@@ -1,15 +1,19 @@
+"use client"
 import React, { useEffect } from 'react'
 import DocViewTop from './DocViewTop'
-import { PatientData } from '@/Data/PatientData'
 import DocViewHero from './DocViewHero'
 import { useRouter } from 'next/navigation';
 import { BACKEND_URI } from '@/CONSTANTS';
 import axios from '@/utils/axios';
 import { logout } from '@/Helpers/logout';
+import { PatientSchema } from '@/Interfaces';
+import { getPatList } from '@/Helpers/apiCalls';
+
 
 function DoctorsPatient() {
     const Router = useRouter();
     const [searchPat, setSearchPat] = React.useState<string>("");
+    const [patList, setPatList] = React.useState<Array<PatientSchema>>([]);
     useEffect(() => {
         const checkTokens = async () => {
             try {
@@ -31,12 +35,13 @@ function DoctorsPatient() {
             }
         };
         checkTokens();
+        getPatList(setPatList);
     }, [Router])
 
     return (
         <div className='flex-grow flex flex-col width-full h-full mr-6'>
             <DocViewTop searchPat = {searchPat} setSearchPat = {setSearchPat}/>
-            <DocViewHero data={PatientData} searchPat = {searchPat}/>
+            <DocViewHero data={patList} searchPat = {searchPat} setPatList={setPatList}/>
         </div>
     )
 }

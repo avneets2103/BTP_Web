@@ -13,7 +13,8 @@ import {
     getUserData,
     savePatientDetails,
     profilePhotoUploadSignedURL,
-    getAllUsers
+    getAllUsers,
+    updatePassword
  } from "../Controllers/user.controller.js";
 import { verifyJWT } from "../Middlewares/auth.middleware.js";
 
@@ -35,5 +36,6 @@ router.route("/changePassword").post(verifyJWT, changeCurrentPassword);
 router.route("/getUserData").post(verifyJWT, getUserData);
 router.route("/savePatientDetails").post(verifyJWT, savePatientDetails);
 router.route("/profilePhotoUploadSignedURL").post(verifyJWT, profilePhotoUploadSignedURL);
+router.route("/updatePassword").post(verifyJWT, updatePassword);
 
 export default router;

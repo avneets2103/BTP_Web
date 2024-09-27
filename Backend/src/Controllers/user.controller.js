@@ -404,6 +404,8 @@ const setDoctor = asyncHandler(async (req, res) => {
 
         // Create a new doctor document
         const newDoctor = new Doctor({
+            name, 
+            imageLink: nameOfFile,
             speciality,
             qualifications,
             experience,
@@ -421,7 +423,8 @@ const setDoctor = asyncHandler(async (req, res) => {
                 new ApiResponse(
                     200,
                     {
-                        doctor: user,
+                        user: user,
+                        doctor: newDoctor,
                         imageLink: url,
                         doctorDetails: newDoctor
                     },
@@ -437,15 +440,30 @@ const setDoctor = asyncHandler(async (req, res) => {
 // for logged in users
 const getUserData = asyncHandler(async (req, res) => {
     try {
+        let response = {};
         const user = await User.findById(req.user._id)
-        const imageLink = user.imageLink;
-        user.imageLink = await getObjectURL(imageLink);
+        response.name = user.name;
+        response.email = user.email;
+        response.isDoctor = user.isDoctor;
+        response.imageLink = await getObjectURL(user.imageLink);
+        if(user.isDoctor){
+            const doctor = await Doctor.findById(user.doctorDetails);
+            response.speciality = doctor.speciality;
+            response.qualification = doctor.qualifications;
+            response.experience = doctor.experience;
+            response.hospitalNumber = doctor.hostpitalNumber;
+        }else{
+            const patient = await Patient.findById(user.patientDetails);
+            response.age = patient.age;
+            response.sex = patient.sex;
+            response.bloodGroup = patient.bloodGroup;
+        }
         return res
             .status(200)
             .json(
                 new ApiResponse(
                     200,
-                    user,
+                    response,
                     'User data successfully'
                 )
             )
@@ -468,6 +486,8 @@ const savePatientDetails = asyncHandler(async (req, res) => {
         
         // Create a new patient document
         const newPatient = new Patient({
+            name,
+            imageLink: "",
             sex,
             age,
             bloodGroup
@@ -514,6 +534,11 @@ const profilePhotoUploadSignedURL = asyncHandler(async (req, res) => {
         const url = await putObjectURL(nameOfFile, imageType, 600);
         user.imageLink = nameOfFile;
         await user.save();
+
+        const userPatientDetails = await Patient.findById(user.patientDetails);
+        userPatientDetails.imageLink = nameOfFile;
+        await userPatientDetails.save();
+
         return res.status(200).json(new ApiResponse(
             200, 
             url, 
@@ -537,13 +562,15 @@ const getAllUsers = asyncHandler(async (req, res) => {
                 docC++;
                 filteredDocData.push({
                     email: user.email,
-                    name: user.name || ""
+                    name: user.name || "",
+                    doctorDetails: await Doctor.findById(user.doctorDetails)
                 })
             }else{
                 patC++;
                 filteredPatData.push({
                     email: user.email,
-                    name: user.name || ""
+                    name: user.name || "",
+                    patientDetails: await Patient.findById(user.patientDetails)
                 })
             }
         }
@@ -566,6 +593,20 @@ const getAllUsers = asyncHandler(async (req, res) => {
     }
 })
 
+const updatePassword = asyncHandler(async (req, res) => {
+    try {
+        const { password } = req.body;
+        const user = await User.findById(req.user._id);
+        user.password = password;
+        await user.save();
+        return res.status(200).json(
+            new ApiResponse(200, null, 'Password updated successfully')
+        );
+    } catch (error) {
+        throw new ApiError(500, 'Something went wrong in updatePassword');
+    }
+})
+
 export {
     registerLoginUser,
     logoutUser,
@@ -580,5 +621,6 @@ export {
     getUserData,
     savePatientDetails,
     profilePhotoUploadSignedURL,
-    getAllUsers
+    getAllUsers,
+    updatePassword
 }

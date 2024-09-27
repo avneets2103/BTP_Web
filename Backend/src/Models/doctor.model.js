@@ -1,6 +1,13 @@
 import mongoose from 'mongoose'
 
 const doctorSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        trim: true
+    },
+    imageLink: {
+        type: String,
+    },
     speciality: {
         type: String,   
         trim: true
@@ -19,6 +26,9 @@ const doctorSchema = new mongoose.Schema({
             ref: 'Patient',
         }
     ],
+    hostpitalNumber: {
+        type: String,
+    }
 }, {timestamps:true})
 
 export const Doctor = mongoose.model('Doctor', doctorSchema)

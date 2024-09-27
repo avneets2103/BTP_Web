@@ -23,7 +23,7 @@ export default function RootLayout({
           <body>
           <NextUIProvider>
             <ThemeProvider defaultTheme="light" enableSystem={false} attribute="class"> 
-              <ReduxProvider>           
+              <ReduxProvider>  
                   {children}
                   <Analytics/>
               </ReduxProvider>

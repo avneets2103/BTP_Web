@@ -19,7 +19,7 @@ interface DocSchema{
     qualifications: string;
     imageLink: string;
     experience: string;
-    patientsList?: Array<string>;  
+    hospitalNumber: string, 
 }
 
 interface PatientSchema{
@@ -27,14 +27,13 @@ interface PatientSchema{
     name: string;
     sex: string;
     age: string;
-    img: string;
-    currentCondition?: string;
+    imageLink: string;
     bloodGroup: string;
+    currentCondition?: string;
     medicalHistorySummary?: string;
     currentSymptomsSummary?: string;
     assistiveDiagnosis?: string;
     reportsList?: any;
-    doctorsList?: any;
 }
 
 interface ReportsSchema {

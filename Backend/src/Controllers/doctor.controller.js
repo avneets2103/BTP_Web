@@ -6,12 +6,13 @@ import { Patient } from '../Models/patient.model.js';
 import { Doctor } from '../Models/doctor.model.js';
 import jwt from 'jsonwebtoken';
 import { sendingMail } from '../Utils/messagingService.js';
+import { getObjectURL } from '../Utils/s3.js';
 
-const generateDoctorToken = async (id, patient) => {
+const generateDoctorToken = async (doctor, patient) => {
     try {
         const doctorToken = await jwt.sign(
             {
-                _id: id,
+                doctorId: doctor._id,
                 patientId: patient._id
             },
             process.env.DOCTOR_TOKEN_SECRET,
@@ -19,6 +20,11 @@ const generateDoctorToken = async (id, patient) => {
                 expiresIn: process.env.DOCTOR_TOKEN_EXPIRY
             }
         )
+        console.log({
+            "doctorId": doctor._id,
+            "patientId": patient._id
+        })
+        console.log("doctor Token generated in generateDoctorToken: ")
         console.log(doctorToken);
         return doctorToken;
     } catch (error) {
@@ -38,13 +44,19 @@ const getPatientList = asyncHandler(async (req, res) => {
         }
 
         const doctor = await Doctor.findById(user.doctorDetails._id).populate('patientsList');
-
         if (!doctor) {
             throw new ApiError(404, 'Doctor details not found');
         }
 
+        const patientList = [];
+        for (const patient of doctor.patientsList) {
+            patient.imageLink = await getObjectURL(patient.imageLink);
+            patient.doctorsList = [];
+            patientList.push(patient);
+        }
+
         return res.status(200).json(
-            new ApiResponse(200, doctor.patientsList, 'Patient list retrieved successfully')
+            new ApiResponse(200, patientList, 'Patient list retrieved successfully')
         );
     } catch (error) {
         throw new ApiError(500, 'Something went wrong in getPatientList');
@@ -53,13 +65,17 @@ const getPatientList = asyncHandler(async (req, res) => {
 
 const generatePatientCode = asyncHandler(async (req, res) => {
     try {
+        console.log("Doctor details: ");
+        console.log(req.user);
         const {patientMail} = req.body;
-        const patient = await User.findOne({email: patientMail});
-        if (!patient) {
+        const patientUser = await User.findOne({email: patientMail});
+        console.log("user data in generatePatientCode using email: ");
+        console.log(patientUser);
+        if (!patientUser) {
             throw new ApiError(404, 'Patient not found');
         }
+        const doctorToken = await generateDoctorToken(req.user.doctorDetails, patientUser.patientDetails);
 
-        const doctorToken = await generateDoctorToken(req.user._id.toString(), patient);
         sendingMail(patientMail, "Doctor Token", 'Your Doctor Token is:', `${doctorToken}`);
         return res.status(200).json(
             new ApiResponse(200, doctorToken, 'Patient code generated successfully')
@@ -89,8 +105,39 @@ const getPatientMedical = asyncHandler(async (req, res) => {
     }
 })
 
+const removePatient = asyncHandler(async (req, res) => {
+    try {
+        const { patientId } = req.body;
+        const user = await User.findById(req.user._id).populate('doctorDetails');
+        if (!user || !user.doctorDetails) {
+            throw new ApiError(404, 'Doctor not found');
+        }
+        const doctor = await Doctor.findById(user.doctorDetails._id);
+        const index = doctor.patientsList.indexOf(patientId);
+        if (index > -1) {
+            doctor.patientsList.splice(index, 1);
+            await doctor.save();
+        }
+        const patient = await Patient.findById(patientId);
+        const index2 = patient.doctorsList.indexOf(user.doctorDetails._id);
+        if (index2 > -1) {
+            patient.doctorsList.splice(index2, 1);
+            await patient.save();
+        }
+        return res.status(200).json(
+            new ApiResponse(200, {
+                patientsList: doctor.patientsList,
+                doctorsList: patient.doctorsList    
+            }, 'Patient removed successfully')
+        );
+    } catch (error) {
+        throw new ApiError(500, 'Something went wrong in removePatient');
+    }    
+});
+
 export {
     getPatientList,
     generatePatientCode,
-    getPatientMedical
+    getPatientMedical,
+    removePatient
 };

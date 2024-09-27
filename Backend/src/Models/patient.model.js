@@ -1,6 +1,13 @@
 import mongoose from 'mongoose';
 
 const patientSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        trim: true
+    },
+    imageLink: {
+        type: String,
+    },
     sex: {
         type: String,
         required: true,

@@ -14,10 +14,13 @@ import axios from "@/utils/axios";
 import { BACKEND_URI } from "@/CONSTANTS";
 import { ToastErrors, ToastInfo } from "@/Helpers/toastError";
 import { CircularProgress } from "@nextui-org/react";
+import { DocSchema } from "@/Interfaces";
+import { getDocList } from "@/Helpers/apiCalls";
 
 interface Props{
   searchDoc: string,
-  setSearchDoc: React.Dispatch<React.SetStateAction<string>>
+  setSearchDoc: React.Dispatch<React.SetStateAction<string>>,
+  setDocList: React.Dispatch<React.SetStateAction<DocSchema[]>>,
 }
 
 /**
@@ -27,7 +30,7 @@ interface Props{
  * @returns {JSX.Element} The top of the doctor view page containing the search bar and a button to add a new doctor
  */
 function MyDocTop (props: Props) {
-  const { searchDoc, setSearchDoc } = props;
+  const { searchDoc, setSearchDoc, setDocList } = props;
   const [doctorCode, setDoctorCode] = useState(""); // the doctor one time add token
   const { isOpen, onOpen, onOpenChange } = useDisclosure(); // state for the modal
   const [loading, setLoading] = useState(false); // state for the loading animation
@@ -46,6 +49,7 @@ function MyDocTop (props: Props) {
           "doctorGeneratedOneTimeToken": doctorCode
         },
       );
+      getDocList(setDocList);
       ToastInfo("Doctor added succussfully");
     } catch (e) {
       ToastErrors("Add Doctor Failed");

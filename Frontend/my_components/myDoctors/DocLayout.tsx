@@ -1,13 +1,14 @@
+import { getDocList, removeDoctor } from "@/Helpers/apiCalls";
+import { ToastInfo } from "@/Helpers/toastError";
+import { DocSchema } from "@/Interfaces";
 import { cn } from "@/lib/utils";
 import {
   Modal,
   ModalContent,
-  ModalHeader,
   ModalBody,
   ModalFooter,
   Button,
   useDisclosure,
-  Input,
 } from "@nextui-org/react";
 
 export const DocLayout = ({
@@ -36,41 +37,48 @@ export const DocLayoutItem = ({
   img,
   qualification,
   experience,
-  patientsList,
+  hospitalNumber,
+  setDocList
 }: {
-  id?: string;
-  name?: string;
-  speciality?: string;
-  img?: string;
-  qualification?: string;
-  experience?: string;
-  patientsList?: Array<string> | any;
+  id: string;
+  name: string;
+  speciality: string;
+  img: string;
+  qualification: string;
+  experience: string;
+  hospitalNumber: string;
+  setDocList: React.Dispatch<React.SetStateAction<DocSchema[]>>
 }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(hospitalNumber);
+      ToastInfo("Appointment Desk Number Copied");
+    } catch (err) {
+      console.error("Failed to copy the text to clipboard", err);
+    }
+  };
   return (
     <div
       className={cn(
-        "br-black group/bento row-span-1 flex w-[13.4vw] cursor-pointer flex-col justify-between space-y-4 overflow-clip rounded-xl border border-transparent bg-white p-0 shadow-input transition duration-200 hover:shadow-xl dark:border-white/[0.2] dark:bg-black dark:shadow-none",
+        "br-black group/bento row-span-1 flex w-[13.4vw] cursor-pointer flex-col justify-between space-y-4 overflow-hidden rounded-xl bg-white p-0 shadow-input transition duration-200 hover:shadow-xl  dark:bg-black dark:shadow-none",
       )}
-      onClick={onOpen}
+      onClick={() => {
+        getDocList(setDocList);
+        onOpen();
+      }
+      }
     >
-      <div className="z-10 mt-0 pl-4 pt-4 font-medium text-white">
-        {name}
-      </div>
-      <div className="relative -top-4 w-[20rem]">
-        <img
-          src={img}
-          alt="doctor image"
-          className="-z-10 -ml-3 -mt-16 h-[19rem] md:w-[rem]"
-        />
-        <div className="z-10 -mt-20 pl-4 font-sans font-bold text-white">
-          {speciality}
-        </div>
-        <div className="z-10 pl-4 font-sans text-xs font-normal text-white">
-          {qualification}
-        </div>
-        <div className="z-10 pl-4 font-sans text-xs font-normal text-white">
-          {experience}yrs Experience
+      <div className="w-full h-full relative">
+        <img src={img} alt="doctor" className="h-full -z-5 absolute"/>
+        <div className="h-full w-full bg-black opacity-30 -z-5 absolute flex"></div>
+        <div className="h-full w-full z-0 absolute flex justify-between flex-col p-3 text-[whitesmoke]">
+          <p>{name.slice(0, Math.min(name.length, 25))}</p>
+          <div>
+            <p>{speciality.slice(0, Math.min(speciality.length, 25))}</p>
+            <p>{qualification.slice(0, Math.min(speciality.length, 25))}</p>
+            <p>{experience.slice(0, Math.min(speciality.length, 25))} of Experience</p>
+          </div>
         </div>
       </div>
 
@@ -84,8 +92,12 @@ export const DocLayoutItem = ({
             <>
               <ModalBody>
                 <div className="flex items-center gap-2">
-                <img src={img} alt="doctor's image" className="h-[40px] w-[40px] rounded-[35px]"/>
-                <p>{name}</p>
+                  <img
+                    src={img}
+                    alt="doctor's image"
+                    className="h-[40px] w-[40px] rounded-[35px]"
+                  />
+                  <p>{name}</p>
                 </div>
               </ModalBody>
               <ModalFooter>
@@ -93,17 +105,17 @@ export const DocLayoutItem = ({
                   <Button
                     className="mx-auto text-primaryColor"
                     variant="flat"
-                    onPress={() => {
-                      // handleRemoveDoctor();
-                    }}
+                    onPress={()=>removeDoctor(id, setDocList)}
                   >
                     Remove Doctor
                   </Button>
                   <Button
                     className="mx-auto bg-primaryColor text-white"
                     variant="flat"
+                    // call using hospitalNumber
                     onPress={() => {
-                      // handle calling his hospital
+                      copyToClipboard();
+                      window.location.href = `tel:${hospitalNumber}`;
                     }}
                   >
                     Book Appointment

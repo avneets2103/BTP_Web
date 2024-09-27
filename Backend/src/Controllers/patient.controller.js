@@ -5,6 +5,7 @@ import { User } from '../Models/user.model.js'; // Ensure correct import paths
 import { Patient } from '../Models/patient.model.js';
 import { Doctor } from '../Models/doctor.model.js';
 import jwt from 'jsonwebtoken';
+import { getObjectURL } from '../Utils/s3.js';
 
 const getDoctorList = asyncHandler(async (req, res) => {
     try {
@@ -20,12 +21,49 @@ const getDoctorList = asyncHandler(async (req, res) => {
             throw new ApiError(404, 'Patient details not found');
         }
 
+        const doctorList = [];
+        for (const doctor of patient.doctorsList) {
+            doctor.imageLink = await getObjectURL(doctor.imageLink);
+            doctor.patientsList = [];
+            doctorList.push(doctor);
+        }
+        doctorList.reverse();
         return res.status(200).json(
-            new ApiResponse(200, patient.doctorsList, 'Doctor list retrieved successfully')
+            new ApiResponse(200, doctorList, 'Doctor list retrieved successfully')
         );
     } catch (error) {
         console.error("Error in getDoctorList:", error); // Log the actual error for better debugging
         throw new ApiError(500, 'Something went wrong in getDoctorList');
+    }
+});
+
+const removeDoctor = asyncHandler(async (req, res) => {
+    try {
+        const { doctorId } = req.body;
+        const user = await User.findById(req.user._id).populate('patientDetails');
+        if (!user || !user.patientDetails) {
+            throw new ApiError(404, 'Patient not found');
+        }
+        const patient = await Patient.findById(user.patientDetails._id);
+        const index = patient.doctorsList.indexOf(doctorId);
+        if (index > -1) {
+            patient.doctorsList.splice(index, 1);
+            await patient.save();
+        }
+        const doctor = await Doctor.findById(doctorId);
+        const index2 = doctor.patientsList.indexOf(patient._id);
+        if (index2 > -1) {
+            doctor.patientsList.splice(index2, 1);
+            await doctor.save();
+        }
+        return res.status(200).json(
+            new ApiResponse(200, {
+                doctorsList: patient.doctorsList,
+                patientsList: doctor.patientsList
+            }, 'Doctor removed successfully')
+        );
+    } catch (error) {
+        throw new ApiError(500, 'Something went wrong in removeDoctor');
     }
 });
 
@@ -35,68 +73,33 @@ const addDoctor = asyncHandler(async (req, res) => {
 
         // Verify the token
         const decoded = jwt.verify(doctorGeneratedOneTimeToken, process.env.DOCTOR_TOKEN_SECRET);
-        const doctorId = decoded._id; // Assuming the doctor ID is stored as _id in the token payload
-        const patientId = decoded.patientId;
+        const doctorId = decoded.doctorId; // doctor's doctor ID
+        const patientId = decoded.patientId; // patient's patient ID
         
-        if(patientId !== req.user._id.toString()) {
+        if(patientId !== req.user.patientDetails._id.toString()) {
             throw new ApiError(401, 'Unauthorized access');
         }
+        
+        const patient = await Patient.findById(patientId);
+        const doctor = await Doctor.findById(doctorId);
+        console.log(doctor);
 
-        // Find the user (patient) by ID
-        let user = await User.findById(req.user._id).populate('patientDetails');
-        if (!user) {
-            throw new ApiError(404, 'Patient not found');
-        }
-        if(!user.patientDetails){
-            if (req.user.isDoctor) {
-                throw new ApiError(403, 'Doctors cannot create patient details');
-            }
-    
-            // Create a new patient document
-            const newPatient = new Patient({
-                sex: "",
-                age: 18,
-                name: "",
-                currentCondition: "",
-                bloodGroup: "",
-                medicalHistorySummary: "",
-                currentSymptomsSummary: "",
-                assistiveDiagnosis: "",
-                doctorsList: [],
-                reportsList: [],
-            });
-    
-            // Save the patient
-            await newPatient.save();
-    
-            // Update the user's patientDetails field
-            user = await User.findById(req.user._id).populate('patientDetails');
-        }
-        console.log(user);
-        
-        // Find the doctor by the decoded doctorId
-        const doctor = await User.findById(doctorId);
-        if (!doctor) {
-            throw new ApiError(404, 'Doctor not found');
-        }
-        
-        // Add doctor to patient's doctorsList
-        const patient = await Patient.findById(user.patientDetails._id);
-        if (!patient.doctorsList.includes(doctor._id)) {
-            patient.doctorsList.push(doctor._id);
+        if (!patient.doctorsList.includes(doctorId)) {
+            patient.doctorsList.push(doctorId);
             await patient.save();
         }
-        
-        const doc = await Doctor.findById(doctor.doctorDetails._id);
-        // Add patient to doctor's patientsList
-        if (!doc.patientsList.includes(patient._id)) {
-            doc.patientsList.push(patient._id);
-            await doc.save();
+
+        if (!doctor.patientsList.includes(patientId)) {
+            doctor.patientsList.push(patientId);
+            await doctor.save();
         }
 
         // Return the doctor's data
         return res.status(200).json(
-            new ApiResponse(200, doctor, 'Doctor added successfully')
+            new ApiResponse(200, {
+                doctorPatients: doctor.patientsList,
+                patientDoctors: patient.doctorsList
+            }, 'Doctor added successfully')
         );
     } catch (error) {
         if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
@@ -159,4 +162,5 @@ export {
     addDoctor,
     getReportList,
     addReport,
+    removeDoctor
 };

@@ -1,23 +1,21 @@
+"use client"
 import { PatientSchema } from "@/Interfaces";
-
-import { ReportLayout, ReportLayoutItem } from "@/my_components/myReports/ReportLayout";
-;
 import React from "react";
-import { DocViewLayout, DocViewLayoutItem } from "./DocViewLayout";
+import DocViewLayout from "./DocViewLayout";
+import DocViewLayoutItem from "./DocViewLayoutItem";
 
 interface Props {
   data: PatientSchema[];
   searchPat: string;
+  setPatList: React.Dispatch<React.SetStateAction<Array<PatientSchema>>>
 }
 
-function DocViewHero({ data, searchPat }: Props) {
+function DocViewHero({ data, searchPat, setPatList }: Props) {
   const filteredData = data.filter((doc: PatientSchema) => {
     const lowerCaseSearchDoc = searchPat.toLowerCase();
     return (
       doc.name.toLowerCase().includes(lowerCaseSearchDoc) ||
       doc.sex.toLowerCase().includes(lowerCaseSearchDoc) ||
-      doc.age.toLowerCase().includes(lowerCaseSearchDoc) ||
-      doc.currentCondition?.toLowerCase().includes(lowerCaseSearchDoc) ||
       doc.bloodGroup.toLowerCase().includes(lowerCaseSearchDoc)
     );
   });
@@ -30,14 +28,8 @@ function DocViewHero({ data, searchPat }: Props) {
           name,
           sex,
           age,
-          img,
-          currentCondition,
+          imageLink,
           bloodGroup,
-          medicalHistorySummary,
-          currentSymptomsSummary,
-          assistiveDiagnosis,
-          reportsList,
-          doctorsList,
         }) => (
           <DocViewLayoutItem
             key={id}
@@ -45,14 +37,9 @@ function DocViewHero({ data, searchPat }: Props) {
             name={name}
             sex={sex}
             age={age}
-            img={img}
-            currentCondition={currentCondition}
+            img={imageLink}
             bloodGroup={bloodGroup}
-            medicalHistorySummary={medicalHistorySummary}
-            currentSymptomsSummary={currentSymptomsSummary}
-            assistiveDiagnosis={assistiveDiagnosis}
-            reportsList={reportsList}
-            doctorsList={doctorsList}
+            setPatList={setPatList}
           />
         )
       )}

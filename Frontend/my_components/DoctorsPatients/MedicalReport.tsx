@@ -5,12 +5,16 @@ import React, { useState } from "react";
 import { ReportsData } from "@/Data/ReportsData";
 import MyPatientReportHero from "./myPatientsReports";
 import DiagnosisAI from "./diagnosisAI";
+import { removePatient } from "@/Helpers/apiCalls";
+import { PatientSchema } from "@/Interfaces";
 interface Props {
   img: string | any;
   id: string;
+  setPatList: React.Dispatch<React.SetStateAction<Array<PatientSchema>>>;
+  onClose: Function;
 }
 
-const MedicalReport = ({ img, id }: Props) => {
+const MedicalReport = ({ img, id, setPatList, onClose }: Props) => {
   const { theme, setTheme } = useTheme();
   const [selectedTab, setSelectedTab] = useState("Diagnosis");
   const patientTabs = [
@@ -135,7 +139,12 @@ const MedicalReport = ({ img, id }: Props) => {
           </div>
         </div>
         <div className="w-full flex justify-start">
-          <Button className="w-full">Remove Patient</Button>
+          <Button className="w-full" onPress={
+            ()=>{
+              removePatient(id, setPatList);
+              onClose();
+            }
+          }>Remove Patient</Button>
         </div>
       </div>
       <div className="w-[85%] flex flex-col">
