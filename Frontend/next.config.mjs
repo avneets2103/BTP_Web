@@ -2,7 +2,8 @@
 const nextConfig = {
     images: {
         domains: [
-          "api.microlink.io", // Microlink Image Preview
+          "api.microlink.io",
+          "medical-btp-app.s3.eu-north-1.amazonaws.com"
         ],
       },
 };

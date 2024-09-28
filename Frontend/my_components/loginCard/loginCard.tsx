@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import { ToastErrors, ToastInfo } from '@/Helpers/toastError';
 import axios from 'axios';
 import { tokenCookies } from '@/Helpers/cookieHandling';
+import Image from 'next/image';
 
 interface Props{
     setNewPatientSignup: React.Dispatch<React.SetStateAction<boolean>>
@@ -134,7 +135,7 @@ function LoginCard({setNewPatientSignup}:Props) {
             georama-r
             shadow-ourBoxShadow
             '>
-                <img src="./icons/logo.png" alt="logo"
+                <Image width={100} height={100} src="/icons/logo.png" alt="logo"
                 className='w-[50px]' 
                 />
                 <div className='flex flex-col items-center justify-center'>
@@ -214,14 +215,14 @@ function LoginCard({setNewPatientSignup}:Props) {
             shadow-ourBoxShadow
             '>
                 <Link href="/login">
-                    <img src="./icons/back.png" alt="back" 
+                    <Image width={100} height={100} src="/icons/back.png" alt="back" 
                     className='w-[30px] absolute top-[1rem] left-[1rem]'
                     onClick={() => {setForgotPass(false)}}
                 /> 
                     
                 </Link>
 
-                <img src="./icons/logo.png" alt="logo"
+                <Image width={100} height={100} src="/icons/logo.png" alt="logo"
                 className='w-[50px]' 
                 />
                 <div className='flex flex-col items-center justify-center'>
@@ -284,14 +285,14 @@ function LoginCard({setNewPatientSignup}:Props) {
         shadow-ourBoxShadow
         '>
             <Link href="/login">
-                <img src="./icons/back.png" alt="back" 
+                <Image width={100} height={100} src="/icons/back.png" alt="back" 
                 className='w-[30px] absolute top-[1rem] left-[1rem]'
                 onClick={() => {setOtpPage(false)}}
             /> 
                 
             </Link>
 
-            <img src="./icons/logo.png" alt="logo"
+            <Image width={100} height={100} src="/icons/logo.png" alt="logo"
             className='w-[50px]' 
             />
             <div className='flex flex-col items-center justify-center'>

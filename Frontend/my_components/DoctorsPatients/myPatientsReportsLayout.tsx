@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import {
   useDisclosure,
 } from "@nextui-org/react";
+import Image from "next/image";
 
 
 export const MyPatientReportLayout = ({
@@ -50,7 +51,7 @@ return (
             {reportName}
         </div>
         <div className="relative -top-5 w-[30vw]">
-            <img
+            <Image width={100} height={100}
                 src={"/images/rep1.png"}
                 alt=""
                 className="-z-10 -ml-3 -mt-16 h-[16rem] md:w-[rem]"

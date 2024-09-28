@@ -10,6 +10,7 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
+import Image from "next/image";
 
 export const DocLayout = ({
   className,
@@ -70,7 +71,7 @@ export const DocLayoutItem = ({
       }
     >
       <div className="w-full h-full relative">
-        <img src={img} alt="doctor" className="h-full -z-5 absolute"/>
+        <Image width={100} height={100} src={img} alt="doctor" className="h-full w-full -z-5 absolute"/>
         <div className="h-full w-full bg-black opacity-30 -z-5 absolute flex"></div>
         <div className="h-full w-full z-0 absolute flex justify-between flex-col p-3 text-[whitesmoke]">
           <p>{name.slice(0, Math.min(name.length, 25))}</p>
@@ -92,7 +93,7 @@ export const DocLayoutItem = ({
             <>
               <ModalBody>
                 <div className="flex items-center gap-2">
-                  <img
+                  <Image width={100} height={100}
                     src={img}
                     alt="doctor's image"
                     className="h-[40px] w-[40px] rounded-[35px]"

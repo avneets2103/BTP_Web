@@ -14,6 +14,7 @@ import axios from "@/utils/axios";
 import { BACKEND_URI } from "@/CONSTANTS";
 import { ToastErrors, ToastInfo } from "@/Helpers/toastError";
 import { CircularProgress } from "@nextui-org/react";
+import Image from "next/image";
 
 interface Props{
   searchPat: string,
@@ -44,7 +45,7 @@ function DocViewTop(props: Props) {
           placeholder="Search Patient" // placeholder text
           startContent={ // icon on the left of the input
             <div>
-              <img src="../icons/search.png" className="w-[15px]" alt="logo" />
+              <Image width={100} height={100} src="/icons/search.png" className="w-[15px]" alt="logo" />
             </div>
           }
           value={searchPat} // the current search query
@@ -57,7 +58,7 @@ function DocViewTop(props: Props) {
               onOpen();
             }}
           >
-            <img src="../icons/additionH.png" className="w-[15px]" alt="logo" />
+            <Image width={100} height={100} src="/icons/additionH.png" className="w-[15px]" alt="logo" />
           </div>
         </div>
         <Modal
@@ -84,8 +85,8 @@ function DocViewTop(props: Props) {
                       placeholder="Enter patient's mail id"
                       startContent={
                         <div>
-                          <img
-                            src="../icons/mail.png"
+                          <Image width={100} height={100}
+                            src="/icons/mail.png"
                             className="w-[15px]"
                             alt="logo"
                           />

@@ -19,6 +19,7 @@ import { logout } from "@/Helpers/logout";
 import axios from "@/utils/axios";
 import { getUserDetails, updatePassword } from "@/Helpers/apiCalls";
 import { ToastErrors, ToastInfo } from "@/Helpers/toastError";
+import Image from "next/image";
 
 const Sidebar: React.FC = () => {
   const Router = useRouter();
@@ -107,18 +108,18 @@ const Sidebar: React.FC = () => {
       <div className="flex h-full w-[3rem] flex-col justify-between gap-[2rem] py-[1rem]">
         <div className="flex flex-col items-center justify-center gap-[0.7rem]">
           <div>
-            <img
-              src="../icons/logo.png"
+            <Image width={100} height={100}
+              src="/icons/logo.png"
               alt="logo"
               className="w-full p-[5px]"
             />
           </div>
           <div className="flex w-full flex-col items-center justify-center gap-[0.8rem] rounded-[25px] bg-color1 py-[1rem] drop-shadow-md">
-            <img
+            <Image width={100} height={100}
               src={
                 theme === "dark"
-                  ? "../icons/darkMode.png"
-                  : "../icons/lightMode.png"
+                  ? "/icons/darkMode.png"
+                  : "/icons/lightMode.png"
               }
               alt="Theme"
               className="w-[40%]"
@@ -136,7 +137,7 @@ const Sidebar: React.FC = () => {
                       key={item.path+"S" || index} // Ensure key is unique
                       className="flex h-[2.8rem] w-[2.8rem] flex-col items-center justify-center rounded-[50%] border-[1px] border-textColorDark bg-secondaryColor"
                     >
-                      <img
+                      <Image width={100} height={100}
                         src={item.iconS}
                         alt={item.name}
                         className="w-[40%]"
@@ -153,7 +154,7 @@ const Sidebar: React.FC = () => {
                         Router.push(`/sections/${item.path}`);
                       }}
                     >
-                      <img
+                      <Image width={100} height={100}
                         src={theme === "dark" ? item.iconNSD : item.iconNS}
                         alt={item.name}
                         className="w-[40%]"
@@ -170,15 +171,15 @@ const Sidebar: React.FC = () => {
           <div
             className="flex h-[2.8rem] w-[2.8rem] flex-col items-center justify-center rounded-[50%] bg-color1"
           >
-            <img
-              src={"../icons/setting.NS.png"}
+            <Image width={100} height={100}
+              src={"/icons/setting.NS.png"}
               alt={"settings"}
               className="w-[40%]"
             />
           </div>
           <div className="flex h-[2.8rem] w-[2.8rem] flex-col items-center justify-center rounded-[50%] bg-color1">
-            <img
-              src={`../icons/avatar${Number(Cookies.get("avatarNumber")) || 10}.png`}
+            <Image width={100} height={100}
+              src={`/icons/avatar${Number(Cookies.get("avatarNumber")) || 10}.png`}
               alt={"avatar"}
               className="w-[95%]"
             />

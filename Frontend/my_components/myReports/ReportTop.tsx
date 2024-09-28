@@ -17,6 +17,7 @@ import { CircularProgress } from "@nextui-org/react";
 import { FileUploadLimited } from "@/components/ui/file-upload-limited";
 import { getReportsList } from "@/Helpers/apiCalls";
 import { ReportsSchema } from "@/Interfaces";
+import Image from "next/image";
 
 interface Props{
   reportSearch: string,
@@ -113,7 +114,7 @@ function ReportTop(props: Props) {
           placeholder="Search Reports"
           startContent={
             <div>
-              <img src="../icons/search.png" className="w-[15px]" alt="logo" />
+              <Image width={100} height={100} src="/icons/search.png" className="w-[15px]" alt="logo" />
             </div>
           }
           value={reportSearch}
@@ -126,7 +127,7 @@ function ReportTop(props: Props) {
               onOpen();
             }}
           >
-            <img src="../icons/additionH.png" className="w-[15px]" alt="logo" />
+            <Image width={100} height={100} src="/icons/additionH.png" className="w-[15px]" alt="logo" />
           </div>
         </div>
         <Modal

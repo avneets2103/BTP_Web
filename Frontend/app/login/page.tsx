@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { Button, image } from "@nextui-org/react";
 import { ToastErrors, ToastInfo } from "@/Helpers/toastError";
 import { FileUploadLimited } from "@/components/ui/file-upload-limited";
+import Image from "next/image";
 
 function Page() {
   const Router = useRouter();
@@ -320,8 +321,10 @@ function Page() {
               {/* The fixed text on the login page*/}
               <DemoCard />
               {/* The right most image */}
-              <img
+              <Image
                 src="./icons/HeartImg.svg"
+                width={100}
+                height={100}
                 alt="heartImage"
                 className="hide-on-small m-[-1rem] w-[25%] min-w-40"
               />{" "}

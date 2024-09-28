@@ -16,6 +16,7 @@ import { ToastErrors, ToastInfo } from "@/Helpers/toastError";
 import { CircularProgress } from "@nextui-org/react";
 import { DocSchema } from "@/Interfaces";
 import { getDocList } from "@/Helpers/apiCalls";
+import Image from "next/image";
 
 interface Props{
   searchDoc: string,
@@ -70,7 +71,7 @@ function MyDocTop (props: Props) {
           placeholder="Search Doctors" // placeholder text
           startContent={ // icon on the left of the input
             <div>
-              <img src="../icons/search.png" className="w-[15px]" alt="logo" />
+              <Image width={100} height={100} src="/icons/search.png" className="w-[15px]" alt="logo" />
             </div>
           }
           value={searchDoc} // the current search query
@@ -83,7 +84,7 @@ function MyDocTop (props: Props) {
               onOpen();
             }}
           >
-            <img src="../icons/additionH.png" className="w-[15px]" alt="logo" />
+            <Image width={100} height={100} src="/icons/additionH.png" className="w-[15px]" alt="logo" />
           </div>
         </div>
         <Modal
@@ -110,8 +111,8 @@ function MyDocTop (props: Props) {
                         placeholder="Enter Unique Code" // placeholder text
                         startContent={ // icon on the left of the input
                           <div>
-                            <img
-                              src="../icons/web.png"
+                            <Image width={100} height={100}
+                              src="/icons/web.png"
                               className="w-[15px]"
                               alt="logo"
                             />
