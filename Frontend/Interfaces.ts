@@ -59,6 +59,16 @@ interface Message {
     sender: 'not_user' | 'user';
 }
 
+interface PatientDataSchema {
+    sex: string;
+    age: string;
+    bloodGroup: string;
+    condition: string;
+    medicalHistory: string,
+    currentSymptoms: string,
+    reportsList: ReportsSchema[],
+}
+
 export type {
     sidebarRTK,
     sidebarMenuItems, 
@@ -66,5 +76,7 @@ export type {
     PatientSchema,
     ReportsSchema,
     GraphSchema,
-    Message
+    Message,
+    PatientDataSchema,
+    
 }

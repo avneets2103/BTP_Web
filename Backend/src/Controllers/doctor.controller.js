@@ -92,12 +92,27 @@ const getPatientMedical = asyncHandler(async (req, res) => {
         if (!patient) {
             throw new ApiError(404, 'Patient not found');
         }
+        if (!patient.doctorsList.includes(req.user.doctorDetails._id)) {
+            throw new ApiError(401, 'Unauthorized access');
+        }
+        const reportList = [];
+        for (const report of patient.reportsList) {
+        console.log(report);
+        report.reportPDFLink = await getObjectURL(report.reportPDFLink);
+        reportList.push(report);
+        }
+        reportList.reverse();
+        const response = {
+            sex: patient.sex,
+            age: patient.age,
+            bloodGroup: patient.bloodGroup,
+            condition: patient.assistiveDiagnosis || "",
+            medicalHistory: patient.medicalHistorySummary || "",
+            currentSymptoms: patient.currentSymptomsSummary || "",
+            reportsList: reportList,
+        }
         return res.status(200).json(
-            new ApiResponse(200, {
-                medicalHistory: patient.medicalHistorySummary,
-                currentSymptoms: patient.currentSymptomsSummary,
-                assistiveDiagnosis: patient.assistiveDiagnosis,
-            }, 'Patient medical history retrieved successfully')
+            new ApiResponse(200, response, 'Patient medical history retrieved successfully')
         );
 
     }catch (error) {

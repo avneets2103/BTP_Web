@@ -5,21 +5,13 @@ import { MyPatientReportLayout, MyPatientReportLayoutItem } from "./myPatientsRe
 
 interface Props {
   data: ReportsSchema[];
-  reportSearch: string;
 }
 
 function MyPatientReportHero(props: Props) {
-  const {reportSearch, data} = props;
-  const filteredData = data.filter((doc: ReportsSchema) => {
-    const lowerCaseSearchDoc = reportSearch.toLowerCase();
-    return (
-      doc.reportName.toLowerCase().includes(lowerCaseSearchDoc) ||
-      doc.location.toLowerCase().includes(lowerCaseSearchDoc)
-    );
-  });
+  const {data} = props;
   return (
     <MyPatientReportLayout className="w-full">
-      {filteredData.map(
+      {data.map(
         ({
           id,
           reportName,

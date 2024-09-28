@@ -1,22 +1,35 @@
 import { Button, ButtonGroup } from "@nextui-org/react";
 import { icons } from "@tabler/icons-react";
 import { useTheme } from "next-themes";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ReportsData } from "@/Data/ReportsData";
 import MyPatientReportHero from "./myPatientsReports";
 import DiagnosisAI from "./diagnosisAI";
-import { removePatient } from "@/Helpers/apiCalls";
-import { PatientSchema } from "@/Interfaces";
+import { getPatientMedical, removePatient } from "@/Helpers/apiCalls";
+import { PatientDataSchema, PatientSchema } from "@/Interfaces";
+import Image from "next/image";
+import { VitalsLayout, VitalsLayoutItem } from "../healthVitals/VitalsLayout";
+import { HealthGraphs } from "@/Data/HealthGraphs";
+import { DoctorVitalsLayout, DoctorVitalsLayoutItem } from "./DoctorVitalsLayout";
+import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 interface Props {
+  name: string;
   img: string | any;
   id: string;
   setPatList: React.Dispatch<React.SetStateAction<Array<PatientSchema>>>;
   onClose: Function;
 }
 
-const MedicalReport = ({ img, id, setPatList, onClose }: Props) => {
+const MedicalReport = ({ name, img, id, setPatList, onClose }: Props) => {
+  const [prompt, setPrompt] = useState("");
   const { theme, setTheme } = useTheme();
-  const [selectedTab, setSelectedTab] = useState("Diagnosis");
+  const [selectedTab, setSelectedTab] = useState("Summarization");
+  const placeholders = [
+    "Prompt what you want to make?",
+    "Patient's Insulin dosage since the past 5 years?",
+    "Patient's protein levels in the past 3 months?",
+    "Patient's Blood pressure in the past 10 reports?",
+  ];
   const patientTabs = [
     {
       name: "Reports",
@@ -39,13 +52,24 @@ const MedicalReport = ({ img, id, setPatList, onClose }: Props) => {
       iconD: "/icons/diagnosisD.png",
     }
   ]
-  // TODO: Get data from backend based on the patient id
+  const [patientData, setPatientData] = useState<PatientDataSchema>({
+    sex: "",
+    age: "",
+    bloodGroup: "",
+    condition: "",
+    currentSymptoms: "",
+    medicalHistory: "",
+    reportsList: [],
+  });
+  useEffect(() => {
+    getPatientMedical(id, setPatientData);
+  }, [])
 
   const renderContent = () => {
     switch (selectedTab) {
       case "Reports":
         return (
-          <MyPatientReportHero reportSearch={""} data={ReportsData}/>
+          <MyPatientReportHero data={patientData.reportsList}/>
         );
       case "Summarization":
         return (
@@ -53,49 +77,43 @@ const MedicalReport = ({ img, id, setPatList, onClose }: Props) => {
             <div>
               <h2 className="text-[20px] font-bold text-textColorDark">Medical History</h2>
               <p>
-                22-year-old female, has no known allergies and does not take any medications. She has no reported medical conditions or surgical history. She is up-to-date on all recommended vaccinations, including MMR, DTaP, HPV, and annual flu shots. Her family medical history is unremarkable, with no known significant medical conditions. She denies tobacco use, illicit substance use, and only drinks alcohol occasionally. She exercises regularly, 3-4 times per week. Her menstrual history is normal, with menarche at age 12, regular 28-day cycles, and 5-day flow. She has no current complaints or concerns, and her last physical exam and Pap smear were within the past year and 3 years, respectively.
+                {patientData.medicalHistory}
               </p>
             </div>
             <div>
               <h2 className="text-[20px] font-bold text-textColorDark">Current Symptoms</h2>
               <p>
-                Presents with a palpable lump in her right breast, accompanied by nipple discharge and pain in the affected breast. Additionally, she reports swelling and redness in the right breast. These symptoms have been persistent and have prompted her to seek medical attention.
+                {patientData.currentSymptoms}
               </p>
             </div>
           </div>
         )
       case "Graphical Reports":
         return (
-          <>
-            <div className="flex w-full flex-row gap-4">
-                <div className="flex w-[35%] flex-col gap-4">
-                  <img src="/images/BMI.png" alt="" className="w-[100%]" />
-                  <img src="/images/Glucose.png" alt="" className="w-[100%]" />
-                </div>
-                <div className="flex w-[20.3%] flex-col">
-                  <img src="/images/Fat.png" alt="" className="w-full" />
-                </div>
-                <div className="flex w-[20%] flex-col gap-4">
-                  <img src="/images/Schedule.png" alt="" className="w-full" />
-                </div>
-                <div className="flex w-[20%] flex-col gap-4">
-                  <img src="/images/Circle.png" alt="" className="w-full" />
-                </div>
-                <div className="flex w-[35%] flex-col gap-4">
-                  <img src="/images/BMI.png" alt="" className="w-[100%]" />
-                  <img src="/images/Glucose.png" alt="" className="w-[100%]" />
-                </div>
-                <div className="flex w-[20.3%] flex-col">
-                  <img src="/images/Fat.png" alt="" className="w-full" />
-                </div>
-                <div className="flex w-[20%] flex-col gap-4">
-                  <img src="/images/Schedule.png" alt="" className="w-full" />
-                </div>
-                <div className="flex w-[20%] flex-col gap-4">
-                  <img src="/images/Circle.png" alt="" className="w-full" />
-                </div>
-            </div>
-          </>
+          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-5">
+            <PlaceholdersAndVanishInput
+              placeholders={placeholders}
+              onChange={(e)=>setPrompt(e.target.value)}
+              onSubmit={()=> console.log(prompt)}
+            />
+          </div>
+          <DoctorVitalsLayout className="w-full max-h-[65vh] overflow-y-scroll">
+            {HealthGraphs.map(
+              ({
+                id, name, data, description,
+              }) => (
+                <DoctorVitalsLayoutItem
+                  key={id}
+                  id={id}
+                  name={name}
+                  data={data}
+                  description={description}
+                />
+              ),
+            )}
+          </DoctorVitalsLayout>
+          </div>
         );
       case "Diagnosis":
         return (
@@ -114,7 +132,9 @@ const MedicalReport = ({ img, id, setPatList, onClose }: Props) => {
             {selectedTab}
           </div>
           <div className="flex justify-center">
-            <img
+            <Image
+              width={100}
+              height={100}
               src={img}
               alt="Patient"
               className="w-[90%] rounded-[20px] shadow-ourBoxShadow mt-2"
@@ -122,19 +142,19 @@ const MedicalReport = ({ img, id, setPatList, onClose }: Props) => {
           </div>
           <div className="mt-[10px] items-start text-[14px] flex w-[90%] flex-col pl-2">
             <p className="font-semibold text-large">
-              Janie Doe
+              {name}
             </p>
             <p>
-              <span className="font-medium">Sex</span>: Female
+              <span className="font-medium">Sex</span>: {patientData.sex}
             </p>
             <p>
-              <span className="font-medium">Age</span>: 22
+              <span className="font-medium">Age</span>: {patientData.age}
             </p>
             <p>
-              <span className="font-medium">Condition</span>: Lupus
+              <span className="font-medium">Condition</span>: {patientData.condition}
             </p>
             <p>
-              <span className="font-medium">Blood Group</span>: O-
+              <span className="font-medium">Blood Group</span>: {patientData.bloodGroup}
             </p>
           </div>
         </div>
@@ -157,8 +177,8 @@ const MedicalReport = ({ img, id, setPatList, onClose }: Props) => {
                 onClick={() => setSelectedTab(tab.name)}
               >
                 {theme === "dark" ? 
-                <img src={tab.iconD} alt="icon" className="w-[20px]" />: 
-                <img src={tab.iconL} alt="icon" className="w-[20px]" />}
+                <Image width={100} height={100} src={tab.iconD} alt="icon" className="w-[20px]" />:
+                <Image width={100} height={100} src={tab.iconL} alt="icon" className="w-[20px]" />}
               </Button>
             ))}
           </div>

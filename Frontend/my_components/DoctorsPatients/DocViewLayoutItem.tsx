@@ -67,7 +67,7 @@ const DocViewLayoutItem = ({
           {(onClose) => (
             <>
               <ModalBody className="">
-                <MedicalReport img={img} id={id} setPatList={setPatList} onClose={onClose}/>
+                <MedicalReport name={name} img={img} id={id} setPatList={setPatList} onClose={onClose}/>
               </ModalBody>
             </>
           )}

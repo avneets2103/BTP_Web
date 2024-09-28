@@ -1,9 +1,5 @@
 import { cn } from "@/lib/utils";
-import {
-  useDisclosure,
-} from "@nextui-org/react";
 import Image from "next/image";
-
 
 export const MyPatientReportLayout = ({
   className,
@@ -32,14 +28,13 @@ export const MyPatientReportLayoutItem = ({
   location,
   reportPDFLink,
 }: {
-  id?: string;
-  reportName?: string;
-  reportDate?: string;
-  location?: string;
-  reportPDFLink?: string;
+  id: string;
+  reportName: string;
+  reportDate: string;
+  location: string;
+  reportPDFLink: string;
 }) => {
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 return (
     <div
         className={cn(
@@ -47,22 +42,17 @@ return (
         )}
         onClick={() => window.open(reportPDFLink, '_blank')}
     >
-        <div className="z-10 mt-0 pl-4 pt-4 font-medium text-white">
-            {reportName}
+      <div className="w-full h-full relative">
+        <Image width={100} height={100} src={"/images/rep1.png"} alt="report" className="h-full w-full -z-5 absolute"/>
+        <div className="h-full w-full bg-black opacity-20 -z-5 absolute flex"></div>
+        <div className="h-full w-full z-0 absolute flex justify-between flex-col p-3 text-[whitesmoke]">
+          <p className="text-lg font-medium">{reportName.slice(0, Math.min(reportName.length, 25))}</p>
+          <div>
+            <p>{reportDate.slice(0, Math.min(reportDate.length, 25))}</p>
+            <p>{location.slice(0, Math.min(location.length, 25))}</p>
+          </div>
         </div>
-        <div className="relative -top-5 w-[30vw]">
-            <Image width={100} height={100}
-                src={"/images/rep1.png"}
-                alt=""
-                className="-z-10 -ml-3 -mt-16 h-[16rem] md:w-[rem]"
-            />
-            <div className="z-10 -mt-20 pl-4 font-sans font-bold text-white dark:text-neutral-200">
-                {reportDate}
-            </div>
-            <div className="z-10 pl-4 font-sans text-xs font-bold text-white dark:text-neutral-300 ">
-                {location}
-            </div>
-        </div>
+      </div>
     </div>
 );
 };

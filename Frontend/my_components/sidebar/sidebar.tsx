@@ -20,10 +20,64 @@ import axios from "@/utils/axios";
 import { getUserDetails, updatePassword } from "@/Helpers/apiCalls";
 import { ToastErrors, ToastInfo } from "@/Helpers/toastError";
 import Image from "next/image";
+import { FileUploadLimited } from "@/components/ui/file-upload-limited";
+import imageCompression from 'browser-image-compression';
 
 const Sidebar: React.FC = () => {
   const Router = useRouter();
   const dispatcher = useDispatch();
+  const [files, setFiles] = useState<File[]>([]);
+  const [putURL, setPutURL] = useState<string>("");
+
+  const handleFileUpload = async (files: File[]) => {
+    try {
+      const res = await axios.post(
+        `${BACKEND_URI}/auth/profilePhotoUploadSignedURL`,
+        {
+          imageType: files[0].type
+        }
+      )
+      setPutURL(res.data.data);
+      setFiles(files);
+    } catch (error) {
+      ToastErrors("Re-upload file");
+      throw error;
+    }
+    console.log(files);
+  };
+
+  const handleImageSubmit = async () => {
+    try {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 800,
+        useWebWorker: true,
+      };
+      const compressedFile = await imageCompression(files[0], options);
+      const formData = new FormData();
+      formData.append("file", compressedFile);
+  
+      // Use fetch instead of Axios for uploading to the signed URL
+      const response = await fetch(putURL, {
+        method: "PUT",
+        body: files[0], // directly pass the file, not formData
+        headers: {
+          "Content-Type": files[0].type, // Ensure the file content type is correct
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error("Image upload failed!");
+      }
+      Cookies.set("newUser", "false");
+      Router.push("/sections/myDoctors");
+      ToastInfo("Image uploaded successfully");
+    } catch (error) {
+      ToastErrors("Image upload failed! Try again");
+      throw error;
+    }
+  };
+
 
   // Add this state to ensure component is only rendered on client-side
   const [isMounted, setIsMounted] = useState(false);
@@ -212,6 +266,14 @@ const Sidebar: React.FC = () => {
                     Update
                   </Button>
                 </div>
+                <div className="w-full max-w-4xl mx-auto border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg flex flex-col">
+                  <div>
+                    <FileUploadLimited onChange={handleFileUpload} maxFileCount={1}/>
+                  </div>
+                </div>
+                <div className="flex justify-center">
+                    <Button size="md" className="w-[30%]" onPress={handleImageSubmit}>Submit</Button>
+                  </div>
               </ModalBody>
               <ModalFooter>
                 <Button

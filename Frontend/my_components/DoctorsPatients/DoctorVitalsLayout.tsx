@@ -4,7 +4,7 @@ import LineChart from "@/my_components/Charts/charts";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, useDisclosure } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
-export const VitalsLayout = ({
+export const DoctorVitalsLayout = ({
   className,
   children,
 }: {
@@ -14,7 +14,7 @@ export const VitalsLayout = ({
   return (
     <div
       className={cn(
-        "mx-auto grid gap-3 md:auto-rows-[13rem] md:grid-cols-3",
+        "mx-auto grid gap-3 md:auto-rows-[12rem] md:grid-cols-3",
         className,
       )}
     >
@@ -23,7 +23,7 @@ export const VitalsLayout = ({
   );
 };
 
-export const VitalsLayoutItem = ({
+export const DoctorVitalsLayoutItem = ({
   id,
   name,
   data,
