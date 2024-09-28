@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
-import { FileUpload } from "@/components/ui/file-upload";
+import imageCompression from 'browser-image-compression';
 import "./page.css";
 import LoginCard from "@/my_components/loginCard/loginCard";
 import DemoCard from "@/my_components/loginCard/demoCard";
@@ -133,9 +133,14 @@ function Page() {
 
   const handleImageSubmit = async () => {
     try {
-      console.log(putURL)
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 800,
+        useWebWorker: true,
+      };
+      const compressedFile = await imageCompression(files[0], options);
       const formData = new FormData();
-      formData.append("file", files[0]);
+      formData.append("file", compressedFile);
   
       // Use fetch instead of Axios for uploading to the signed URL
       const response = await fetch(putURL, {

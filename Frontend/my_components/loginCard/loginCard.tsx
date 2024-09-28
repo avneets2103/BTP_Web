@@ -72,7 +72,7 @@ function LoginCard({setNewPatientSignup}:Props) {
     const handlePasswordKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
           e.preventDefault();
-          handleLogin(isInvalid, password, email, setOtpPage, setNewPatientSignup); 
+          handleLogin(isInvalid, password, email, setOtpPage); 
           Cookies.set("email", email, {
             expires: 1,
           });

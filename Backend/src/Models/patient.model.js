@@ -55,7 +55,7 @@ const patientSchema = new mongoose.Schema({
             reportPDFLink: {
                 type: String,
                 required: true,
-            }
+            },
         }
     ],
     doctorsList: [

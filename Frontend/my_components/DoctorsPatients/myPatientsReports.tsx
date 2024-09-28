@@ -22,7 +22,6 @@ function MyPatientReportHero(props: Props) {
       {filteredData.map(
         ({
           id,
-          previewImgLink,
           reportName,
           reportDate,
           location,
@@ -31,7 +30,6 @@ function MyPatientReportHero(props: Props) {
           <MyPatientReportLayoutItem
             key={id}
             id={id}
-            previewImgLink={previewImgLink}
             reportName={reportName}
             reportDate={reportDate}
             location={location}

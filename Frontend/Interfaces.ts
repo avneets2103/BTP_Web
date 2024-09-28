@@ -38,7 +38,6 @@ interface PatientSchema{
 
 interface ReportsSchema {
     id: string;
-    previewImgLink?: string;
     reportName: string;
     reportDate: string;
     location: string;
@@ -48,7 +47,7 @@ interface ReportsSchema {
 interface GraphSchema{
     id: string;
     name: string;
-    data?: {
+    data: {
         date: string;
         value: number;
     }[];

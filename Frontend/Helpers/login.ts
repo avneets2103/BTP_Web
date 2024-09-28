@@ -11,7 +11,7 @@ function passIsValid(password: string): boolean {
     return password.length >= minPassLength || password.length === 0;
 }
 
-const handleLogin = async(isInvalid: boolean, password: string, email: string, setOtpPage: Function, setnewPatientSignup: Function) => { 
+const handleLogin = async(isInvalid: boolean, password: string, email: string, setOtpPage: Function) => { 
     if(!isInvalid && (password.length >= minPassLength)) {
         try {
             const user = {

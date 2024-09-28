@@ -21,7 +21,6 @@ function ReportHero(props: Props) {
       {filteredData.map(
         ({
           id,
-          previewImgLink,
           reportName,
           reportDate,
           location,
@@ -30,7 +29,6 @@ function ReportHero(props: Props) {
           <ReportLayoutItem
             key={id}
             id={id}
-            previewImgLink={previewImgLink}
             reportName={reportName}
             reportDate={reportDate}
             location={location}

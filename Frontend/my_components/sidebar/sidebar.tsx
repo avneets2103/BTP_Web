@@ -166,10 +166,9 @@ const Sidebar: React.FC = () => {
             })}
           </div>
         </div>
-        <div className="flex w-full flex-col items-center justify-center rounded-[25px] bg-color1 py-[0.2rem] drop-shadow-md">
+        <div className="flex w-full flex-col items-center justify-center rounded-[25px] bg-color1 py-[0.2rem] drop-shadow-md" onClick={onOpen}>
           <div
             className="flex h-[2.8rem] w-[2.8rem] flex-col items-center justify-center rounded-[50%] bg-color1"
-            onClick={onOpen}
           >
             <img
               src={"../icons/setting.NS.png"}

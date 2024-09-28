@@ -26,14 +26,12 @@ export const MyPatientReportLayout = ({
 
 export const MyPatientReportLayoutItem = ({
   id,
-  previewImgLink,
   reportName,
   reportDate,
   location,
   reportPDFLink,
 }: {
   id?: string;
-  previewImgLink?: string;
   reportName?: string;
   reportDate?: string;
   location?: string;
@@ -53,7 +51,7 @@ return (
         </div>
         <div className="relative -top-5 w-[30vw]">
             <img
-                src={previewImgLink}
+                src={"/images/rep1.png"}
                 alt=""
                 className="-z-10 -ml-3 -mt-16 h-[16rem] md:w-[rem]"
             />

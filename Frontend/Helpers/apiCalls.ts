@@ -1,5 +1,5 @@
 import { BACKEND_URI } from "@/CONSTANTS";
-import { DocSchema, PatientSchema } from "@/Interfaces";
+import { DocSchema, PatientSchema, ReportsSchema } from "@/Interfaces";
 import axios from "@/utils/axios";
 import { Toast, ToastInfo } from "./toastError";
 import exp from "constants";
@@ -88,4 +88,9 @@ const updatePassword = async (password: string) => {
   })
 }
 
-export { getDocList, getPatList, removeDoctor, removePatient, getUserDetails, updatePassword };
+const getReportsList = async (setReportsList: React.Dispatch<React.SetStateAction<ReportsSchema[]>>) => {
+  const response = await axios.post(`${BACKEND_URI}/patient/getReportList`);
+  setReportsList(response.data.data);
+}
+
+export { getDocList, getPatList, removeDoctor, removePatient, getUserDetails, updatePassword, getReportsList };

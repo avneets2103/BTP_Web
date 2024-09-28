@@ -1,7 +1,6 @@
-import { GraphSchema, ReportsSchema } from "@/Interfaces";
-import { ReportLayout, ReportLayoutItem } from "@/my_components/myReports/ReportLayout";
-
+import { GraphSchema } from "@/Interfaces";
 import React from "react";
+import { VitalsLayout, VitalsLayoutItem } from "./VitalsLayout";
 
 interface Props {
   data: GraphSchema[];
@@ -9,11 +8,28 @@ interface Props {
 }
 
 function VitalsHero({ data, searchVitals }: Props) {
-  // TODO: Based on the data, make the graphs using a library like Chart.js
-  // TODO: Based on searchVitals, filter the data and display the relevant graphs
+  const filteredData = data.filter((doc: GraphSchema) => {
+    const lowerCaseSearchDoc = searchVitals.toLowerCase();
+    return (
+      doc.name.toLowerCase().includes(lowerCaseSearchDoc)
+    );
+  });
   return (
-    <>
-    </>
+    <VitalsLayout className="w-full max-h-[82vh] overflow-y-scroll">
+      {filteredData.map(
+        ({
+          id, name, data, description,
+        }) => (
+          <VitalsLayoutItem
+            key={id}
+            id={id}
+            name={name}
+            data={data}
+            description={description}
+          />
+        ),
+      )}
+    </VitalsLayout>
   );
 }
 
