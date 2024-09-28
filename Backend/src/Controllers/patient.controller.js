@@ -94,7 +94,6 @@ const addDoctor = asyncHandler(async (req, res) => {
 
     const patient = await Patient.findById(patientId);
     const doctor = await Doctor.findById(doctorId);
-    console.log(doctor);
 
     if (!patient.doctorsList.includes(doctorId)) {
       patient.doctorsList.push(doctorId);
@@ -142,7 +141,6 @@ const getReportList = asyncHandler(async (req, res) => {
     }
     const reportList = [];
     for (const report of patient.reportsList) {
-      console.log(report);
       report.reportPDFLink = await getObjectURL(report.reportPDFLink);
       reportList.push(report);
     }
@@ -200,7 +198,6 @@ const reportAddSignedURL = asyncHandler(async (req, res) => {
     }
     const patient = await Patient.findById(user.patientDetails._id);
     const nameOfFile = `Reports/${makeUniqueFileName(reportName, user._id.toString())}.pdf`;
-    console.log(nameOfFile);
     const url = await putObjectURL(nameOfFile, "application/pdf", 600);
     await patient.save();
     return res.status(200).json(

@@ -98,7 +98,6 @@ function Page() {
       ToastErrors("Re-upload file");
       throw error;
     }
-    console.log(files);
   };
 
   // form data
@@ -109,12 +108,6 @@ function Page() {
 
   const handleDetailsSubmit = async () => {
     try {
-      console.log({
-        name,
-        sex,
-        age,
-        bloodGroup,
-      })
       const response = await axios.post(
         `${BACKEND_URI}/auth/savePatientDetails`, 
         {

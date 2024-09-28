@@ -114,7 +114,9 @@ function SupportHero() {
           </button>
         </div>
         <div className="flex gap-2 self-end p-2 px-5">
-          <Button className="bg-primaryColor text-[whitesmoke]">
+          <Button className="bg-primaryColor text-[whitesmoke]" onPress={()=>{
+            window.location.href = "tel:102"
+          }}>
             Call Ambulance
           </Button>
         </div>

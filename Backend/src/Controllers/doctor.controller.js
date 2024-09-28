@@ -20,12 +20,6 @@ const generateDoctorToken = async (doctor, patient) => {
                 expiresIn: process.env.DOCTOR_TOKEN_EXPIRY
             }
         )
-        console.log({
-            "doctorId": doctor._id,
-            "patientId": patient._id
-        })
-        console.log("doctor Token generated in generateDoctorToken: ")
-        console.log(doctorToken);
         return doctorToken;
     } catch (error) {
         throw new ApiError(
@@ -65,12 +59,8 @@ const getPatientList = asyncHandler(async (req, res) => {
 
 const generatePatientCode = asyncHandler(async (req, res) => {
     try {
-        console.log("Doctor details: ");
-        console.log(req.user);
         const {patientMail} = req.body;
         const patientUser = await User.findOne({email: patientMail});
-        console.log("user data in generatePatientCode using email: ");
-        console.log(patientUser);
         if (!patientUser) {
             throw new ApiError(404, 'Patient not found');
         }
@@ -97,7 +87,6 @@ const getPatientMedical = asyncHandler(async (req, res) => {
         }
         const reportList = [];
         for (const report of patient.reportsList) {
-        console.log(report);
         report.reportPDFLink = await getObjectURL(report.reportPDFLink);
         reportList.push(report);
         }

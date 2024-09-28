@@ -258,7 +258,6 @@ const verifyOTP = asyncHandler(async (req, res) => {
         }
 
         if (isValid) {
-            console.log("OTP is correct");
             const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
             const loggedInUser = await User.findById(user._id)
             const options = {
@@ -279,7 +278,6 @@ const verifyOTP = asyncHandler(async (req, res) => {
         )
         }
         else {
-            console.log("OTP is incorrect");
             throw new ApiError(400, 'Invalid OTP')
         }
     } catch (error) {
@@ -351,7 +349,6 @@ const generateNewPassword = asyncHandler(async (req, res) => {
 
 // to verify access token
 const verifyAccessToken = asyncHandler(async (req, res) => {
-    console.log("Access token verified");
     return res
         .status(200)
         .json(
@@ -534,10 +531,17 @@ const profilePhotoUploadSignedURL = asyncHandler(async (req, res) => {
         const url = await putObjectURL(nameOfFile, imageType, 600);
         user.imageLink = nameOfFile;
         await user.save();
+        console.log(user);
 
-        const userPatientDetails = await Patient.findById(user.patientDetails);
-        userPatientDetails.imageLink = nameOfFile;
-        await userPatientDetails.save();
+        if(user.isDoctor){
+            const userDoctorDetails = await Doctor.findById(user.doctorDetails);
+            userDoctorDetails.imageLink = nameOfFile;
+            await userDoctorDetails.save();
+        }else{
+            const userPatientDetails = await Patient.findById(user.patientDetails);
+            userPatientDetails.imageLink = nameOfFile;
+            await userPatientDetails.save();
+        }
 
         return res.status(200).json(new ApiResponse(
             200, 
