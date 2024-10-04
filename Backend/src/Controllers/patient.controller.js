@@ -5,7 +5,7 @@ import { User } from "../Models/user.model.js"; // Ensure correct import paths
 import { Patient } from "../Models/patient.model.js";
 import { Doctor } from "../Models/doctor.model.js";
 import jwt from "jsonwebtoken";
-import { getObjectURL, putObjectURL } from "../Utils/s3.js";
+import { extractTextFromPDF, getObjectURL, putObjectURL } from "../Utils/s3.js";
 import { makeUniqueFileName } from "../Utils/helpers.js";
 
 const getDoctorList = asyncHandler(async (req, res) => {
@@ -165,12 +165,16 @@ const addReport = asyncHandler(async (req, res) => {
     }
     const patient = await Patient.findById(user.patientDetails._id);
     ("");
+
+    const reportPDFText = await extractTextFromPDF(reportPDFLink);
+
     // Add report details to patient's reportsList
     const newReport = {
       reportName,
       reportDate,
       location,
       reportPDFLink,
+      reportPDFText
     };
     patient.reportsList.push(newReport);
     await patient.save();

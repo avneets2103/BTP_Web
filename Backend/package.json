@@ -10,8 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.658.1",
-    "@aws-sdk/s3-request-presigner": "^3.658.1",
+    "@aws-sdk/client-s3": "^3.664.0",
+    "@aws-sdk/client-textract": "^3.664.0",
+    "@aws-sdk/s3-request-presigner": "^3.664.0",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "canvas": "^2.11.2",
@@ -30,6 +31,7 @@
     "pdf-lib": "^1.17.1",
     "pdf-poppler": "^0.2.1",
     "pdfjs-dist": "^4.6.82",
+    "serverless-http": "^3.2.0",
     "speakeasy": "^2.0.0",
     "twilio": "^5.2.3"
   },

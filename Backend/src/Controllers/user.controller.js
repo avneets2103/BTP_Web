@@ -526,7 +526,7 @@ const profilePhotoUploadSignedURL = asyncHandler(async (req, res) => {
         const fileExtension = imageType.split('/')[1];
 
         // Add file extension to image name
-        const nameOfFile = `${makeUniqueFileName("profilephoto", user._id.toString())}.${fileExtension}`;
+        const nameOfFile = `ProfilePhoto/${makeUniqueFileName("profilephoto", user._id.toString())}.${fileExtension}`;
 
         const url = await putObjectURL(nameOfFile, imageType, 600);
         user.imageLink = nameOfFile;
