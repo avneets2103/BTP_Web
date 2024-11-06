@@ -26,6 +26,16 @@ const patientSchema = new mongoose.Schema({
         required: true,
         enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
     },
+    absoluteSummary: {
+        type: String,
+        trim: true,
+        default: "",
+    },
+    lastAbsoluteSummary: {
+        type: String,
+        trim: true,
+        default: "",
+    },
     medicalHistorySummary: {
         type: String,
         trim: true,
@@ -57,6 +67,9 @@ const patientSchema = new mongoose.Schema({
                 required: true,
             },
             reportPDFText: {
+                type: String,
+            },
+            reportSummary: {
                 type: String,
             }
         }

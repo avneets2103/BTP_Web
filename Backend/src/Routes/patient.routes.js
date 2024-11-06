@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { verifyJWT } from "../Middlewares/auth.middleware.js";
-import { addDoctor, addReport, getDoctorList, getReportList, removeDoctor, removeReport, reportAddSignedURL } from "../Controllers/patient.controller.js";
+import { addDoctor, addReport, getDoctorList, getReportList, queryReports, removeDoctor, removeReport, reportAddSignedURL } from "../Controllers/patient.controller.js";
 
 const router = Router();
 
@@ -13,5 +13,6 @@ router.route("/addReport").post(verifyJWT, addReport);
 router.route("/removeDoctor").post(verifyJWT, removeDoctor);
 router.route("/reportAddSignedURL").post(verifyJWT, reportAddSignedURL);
 router.route("/removeReport").post(verifyJWT, removeReport);
+router.route("/queryReports").post(verifyJWT, queryReports);
 
 export default router;

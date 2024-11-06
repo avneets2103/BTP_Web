@@ -7,6 +7,7 @@ import { Doctor } from "../Models/doctor.model.js";
 import jwt from "jsonwebtoken";
 import { extractTextFromPDF, getObjectURL, putObjectURL } from "../Utils/s3.js";
 import { makeUniqueFileName } from "../Utils/helpers.js";
+import axios from "axios";
 
 const getDoctorList = asyncHandler(async (req, res) => {
   try {
@@ -168,22 +169,55 @@ const addReport = asyncHandler(async (req, res) => {
 
     const reportPDFText = await extractTextFromPDF(reportPDFLink);
 
+    // knowledge base update here
+    const cntOfReports = patient.reportsList.length;
+    let absText = patient.absoluteSummary;
+    if(cntOfReports > 0 && cntOfReports % 10 === 0){
+      // reset absolute summary
+      let newAbsoluteText = "";
+      newAbsoluteText += patient.lastAbsoluteSummary;
+      let cnt = 9;
+      let index = cntOfReports - 1;
+      while(index-- && cnt--){
+        newAbsoluteText += patient.reportsList[index].reportSummary;
+      }
+      absText = newAbsoluteText;
+    }
+    const reportSummary = await axios.post(`${process.env.FLASK_SERVER}/reports/update_kb`, {
+      reportText: reportPDFText,
+      absoluteText: absText,
+    });
+    if(cntOfReports > 0 && cntOfReports % 10 === 0){
+      patient.lastAbsoluteSummary = reportSummary.data.newAbsoluteText;
+    }
+
     // Add report details to patient's reportsList
     const newReport = {
       reportName,
       reportDate,
       location,
       reportPDFLink,
-      reportPDFText
+      reportPDFText,
+      reportSummary: reportSummary.data.indReportSummary,
     };
     patient.reportsList.push(newReport);
+    patient.absoluteSummary = reportSummary.data.newAbsoluteText;
     await patient.save();
+
+    // report embedding here
+    const reportEmbedding = await axios.post(`${process.env.FLASK_SERVER}/reports/embed_report`, {
+      reportText: reportPDFText,
+      reportId: patient.reportsList[patient.reportsList.length - 1]._id,
+      patientId: patient._id,
+      url: await getObjectURL(reportPDFLink),
+    });
 
     return res.status(200).json(
       new ApiResponse(
         200,
         {
           patient: patient,
+          reportSummary: newReport.reportSummary,
         },
         "Report added successfully"
       )
@@ -250,6 +284,34 @@ const removeReport = asyncHandler(async (req, res) => {
   }
 });
 
+const queryReports = asyncHandler(async (req, res) => {
+  try {
+    let { patientId, queryText } = req.body;
+    if(!req.user.isDoctor){
+      patientId = req.user.patientDetails._id;
+    }
+    const patient = await Patient.findById(patientId);
+    if (!patient) {
+      throw new ApiError(404, "Patient not found");
+    }
+
+    const queryRes = await axios.post(`${process.env.FLASK_SERVER}/reports/generalReportQuery`, {
+      patientId,
+      queryText,
+    });
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, {
+          response: queryRes.data.response,
+          sources: queryRes.data.sources,
+        }, "Report list retrieved successfully")
+      );
+  } catch (error) {
+    throw new ApiError(500, "Something went wrong in getReportList");
+  }
+});
+
 export {
   getDoctorList,
   addDoctor,
@@ -258,4 +320,5 @@ export {
   removeDoctor,
   reportAddSignedURL,
   removeReport,
+  queryReports
 };

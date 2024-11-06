@@ -7,7 +7,7 @@ import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
   title: "AIMedics",
-  description: "Making diagnosis better and faster!",
+  description: "Making diagnosis better and faster!"
 };
 
 export default function RootLayout({
@@ -21,6 +21,7 @@ export default function RootLayout({
             <link rel="icon" href="/icons/favicon.ico" sizes="any" /> 
           </head>
           <body>
+            {/* TODO: Add dark theme */}
           <NextUIProvider>
             <ThemeProvider defaultTheme="light" enableSystem={false} attribute="class"> 
               <ReduxProvider>  
