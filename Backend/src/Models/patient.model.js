@@ -80,6 +80,44 @@ const patientSchema = new mongoose.Schema({
             ref: 'Doctor',
         }
     ],
+    chartsList: [
+        {
+            chartName: {
+                type: String,
+                required: true,
+            },
+            data: [
+                {
+                    type: {
+                        date: {
+                            type: String,
+                            required: true,
+                        },
+                        value: {
+                            type: Number,
+                            required: true,
+                        }
+                    }
+                }
+            ],
+            queryText: {
+                type: String,
+                required: true,
+            },
+            description: {
+                type: String,
+                default: "",
+            },
+            sourceList: [
+                {
+                    type: String,
+                }
+            ],
+            unit: {
+                type: String,
+            }
+        }
+    ]
 }, { timestamps: true });
 
 export const Patient = mongoose.models.Patient || mongoose.model('Patient', patientSchema);

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Message } from "@/Interfaces";
-import { Button } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
+import axios from "@/utils/axios";
+import { BACKEND_URI, FLASK_SERVER } from "@/CONSTANTS";
 
 /**
  * The SupportHero component is a self-contained component that displays a chat interface with the user and the AI.
@@ -13,24 +15,14 @@ function SupportHero() {
    * The conversation state is an array of messages.
    * Each message is an object with a text and a sender.
    */
+  const cleanTextForDisplay = (text:string) => {
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '$1')  // Remove **bold** markers
+      .replace(/\n+/g, ' ');  // Replace newlines with a single space
+  };
+  
   const [conversation, setConversation] = useState<Message[]>([
-    { text: "Hey, how are you?", sender: "not_user" },
-    { text: "I am feeling a pain near my stomach", sender: "user" },
-    { text: "Is the pain sharp or dispersed? ", sender: "not_user" },
-    {
-      text: "Also tell, what region exactly around the stomach ? ",
-      sender: "not_user",
-    },
-    { text: "Its disprered pain, near the navel", sender: "user" },
-    {
-      text: "Did you take the prescribed antacid by Dr. House in the last visit? ",
-      sender: "not_user",
-    },
-    { text: "Noo... I forgot!", sender: "user" },
-    {
-      text: "Okay, No problem. when you take that, you won't feel any pain near your stomach :) ",
-      sender: "not_user",
-    },
+    { text: "Hey, how can I help you?", sender: "not_user" },
   ]);
 
   /**
@@ -43,17 +35,44 @@ function SupportHero() {
    * The inputText state is the text that the user has typed in the input field.
    */
   const [inputText, setInputText] = useState<string>("");
+  const [waitForRes, setWaitForRes] = useState(false);
+  const [context, setContext] = useState("");
 
   /**
    * The handleSendMessage function is called when the user clicks the send button or presses enter.
    * It adds a new message to the conversation state and scrolls the chat body to the bottom.
    */
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (inputText.trim() === "") return;
+    
     const newMessage: Message = { text: inputText.trim(), sender: "user" };
-    setConversation([...conversation, newMessage]);
+    
+    // Add user message to the conversation
+    setConversation((prev) => [...prev, newMessage]);
+    setWaitForRes(true);
     setInputText("");
+  
+    try {
+      const res = await axios.post(`${FLASK_SERVER}/patientChat/chat`, {
+        prompt: inputText,
+        context: context,
+      });
+      
+      // Update context with the new context from response
+      setContext(res.data.newContext);
+      
+      // Create the new message object for the bot response
+      const newMessage2: Message = { text: cleanTextForDisplay(res.data.response), sender: "not_user" };
+      
+      // Add bot response to the conversation without overwriting
+      setConversation((prev) => [...prev, newMessage2]);
+    } catch (error) {
+      console.error("Error sending message:", error);
+    } finally {
+      setWaitForRes(false);
+    }
   };
+  
 
   /**
    * The handleEnter function is called when the user presses enter.
@@ -76,12 +95,13 @@ function SupportHero() {
 
   return (
     <div className="flex max-h-[80vh] flex-col bg-color1">
-      <p className="my-3 flex items-center justify-center font-medium">
+      <p className="my-3 flex items-center justify-center font-medium gap-1">
+        <img src="/icons/aiGenerated.png" alt="" className="w-[20px] h-[20px]"/>
         AI Powered HealthChat
       </p>
       <div
         ref={chatBodyRef}
-        className="flex max-h-[60vh] flex-col overflow-y-scroll p-[15px] text-textColorDark"
+        className="flex max-h-[60vh] flex-col overflow-y-scroll p-[15px] text-textColorDark h-[60vh]"
       >
         {conversation.map((message, index) => (
           <div
@@ -97,27 +117,53 @@ function SupportHero() {
         ))}
       </div>
       <div className="flex flex-col items-center p-[10px] pr-0">
-        <div className="w-[100%] p-1">
-          <input
+        <div className="w-[100%] p-1 flex gap-1">
+          <Input
+            variant="underlined"
+            color={waitForRes?"warning":"primary"}
+            disabled={waitForRes}
             type="text"
-            placeholder="Type a message..."
-            className="bg-lowContrastColor @onFocus:border-primaryColor mr-[10px] w-[94%] rounded-[20px] border-[1px] border-[#ccc] p-[10px] text-black text-textColorDark"
+            placeholder={waitForRes?"Waiting for response...":"Type a message..."}
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={handleEnter}
           />
           <button
-            className="sn-send-button h-10 w-10"
+            className={
+              waitForRes ? " h-10 w-10 text-warning " : "h-10 w-10 text-primaryColor"
+            }
             onClick={handleSendMessage}
           >
-            ➤
+            {waitForRes ? "◼" : "➤"}
           </button>
         </div>
         <div className="flex gap-2 self-end p-2 px-5">
-          <Button className="bg-primaryColor text-[whitesmoke]" onPress={()=>{
+          <Button color="danger" onPress={()=>{
             window.location.href = "tel:102"
           }}>
             Call Ambulance
+          </Button>
+          <Button className="bg-primaryColor text-[whitesmoke]"
+          onClick={async()=>{
+            const dateTime = new Date().toLocaleString();
+            let newReport = dateTime + ": ";
+            for(let i = 0; i < conversation.length; i++){
+              newReport += conversation[i].sender + ": ";
+              newReport += conversation[i].text;
+              newReport += "\n";
+            }
+            axios.post(`${BACKEND_URI}/patient/addChatReport`, {
+              reportDate: dateTime,
+              reportPDFText: newReport,
+            });
+            setContext("");
+            setConversation([
+              { text: "Hey, how can I help you?", sender: "not_user" },
+            ]);
+            setInputText("");
+          }}
+          >
+            End Chat
           </Button>
         </div>
       </div>

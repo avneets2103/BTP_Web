@@ -168,7 +168,7 @@ const Sidebar: React.FC = () => {
               className="w-full p-[5px]"
             />
           </div>
-          <div className="flex w-full flex-col items-center justify-center gap-[0.8rem] rounded-[25px] bg-color1 py-[1rem] drop-shadow-md">
+          <div className="flex w-full flex-col items-center justify-center gap-[0.8rem] rounded-[25px] bg-color1 py-[1rem]">
             <Image width={100} height={100}
               src={
                 theme === "dark"
@@ -182,7 +182,7 @@ const Sidebar: React.FC = () => {
               }}
             />
           </div>
-          <div className="flex w-full flex-col items-center justify-center rounded-[25px] bg-color1 py-[0.2rem] drop-shadow-md">
+          <div className="flex w-full flex-col items-center justify-center rounded-[25px] bg-color1 py-[0.2rem]">
             {sidebarMenu.map((item: sidebarMenuItems, index: number) => {
               if (item.patient == !isDoctor) {
                 if (item.path === currentPage) {

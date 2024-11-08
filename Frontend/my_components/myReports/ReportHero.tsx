@@ -25,6 +25,7 @@ function ReportHero(props: Props) {
           reportDate,
           location,
           reportPDFLink,
+          reportSummary
         }) => (
           <ReportLayoutItem
             key={id}
@@ -33,6 +34,7 @@ function ReportHero(props: Props) {
             reportDate={reportDate}
             location={location}
             reportPDFLink={reportPDFLink}
+            reportSummary={reportSummary}
           />
         ),
       )}

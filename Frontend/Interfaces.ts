@@ -42,8 +42,10 @@ interface ReportsSchema {
     reportDate: string;
     location: string;
     reportPDFLink: string;
+    reportSummary: string;
 }
 
+// TODO: Add queryText, sourceList, unit
 interface GraphSchema{
     id: string;
     name: string;

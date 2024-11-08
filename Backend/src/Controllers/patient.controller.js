@@ -210,6 +210,7 @@ const addReport = asyncHandler(async (req, res) => {
       reportId: patient.reportsList[patient.reportsList.length - 1]._id,
       patientId: patient._id,
       url: await getObjectURL(reportPDFLink),
+      date: reportDate
     });
 
     return res.status(200).json(
@@ -226,6 +227,65 @@ const addReport = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Something went wrong in addReport");
   }
 });
+
+const addChatReport = asyncHandler(async (req, res) => {
+  try {
+    const { reportDate, reportPDFText } = req.body;
+    const user = await User.findById(req.user._id).populate("patientDetails");
+
+    if (!user || !user.patientDetails) {
+      throw new ApiError(404, "Patient not found");
+    }
+    const patient = await Patient.findById(user.patientDetails._id);
+    ("");
+
+    // knowledge base update here
+    const cntOfReports = patient.reportsList.length;
+    let absText = patient.absoluteSummary;
+    if(cntOfReports > 0 && cntOfReports % 10 === 0){
+      // reset absolute summary
+      let newAbsoluteText = "";
+      newAbsoluteText += patient.lastAbsoluteSummary;
+      let cnt = 9;
+      let index = cntOfReports - 1;
+      while(index-- && cnt--){
+        newAbsoluteText += patient.reportsList[index].reportSummary;
+      }
+      absText = newAbsoluteText;
+    }
+    const reportSummary = await axios.post(`${process.env.FLASK_SERVER}/reports/update_kb`, {
+      reportText: reportPDFText,
+      absoluteText: absText,
+    });
+    if(cntOfReports > 0 && cntOfReports % 10 === 0){
+      patient.lastAbsoluteSummary = reportSummary.data.newAbsoluteText;
+    }
+
+    patient.absoluteSummary = reportSummary.data.newAbsoluteText;
+    await patient.save();
+
+    // report embedding here
+    const reportEmbedding = await axios.post(`${process.env.FLASK_SERVER}/reports/embed_report`, {
+      reportText: reportPDFText,
+      reportId: "chat based report",
+      patientId: patient._id,
+      url: "chat based report",
+      date: reportDate
+    });
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          patient: patient,
+        },
+        "Chat Report added successfully"
+      )
+    );
+  } catch (error) {
+    throw new ApiError(500, "Something went wrong in addReport");
+  }
+})
 
 const reportAddSignedURL = asyncHandler(async (req, res) => {
   try {
@@ -312,6 +372,73 @@ const queryReports = asyncHandler(async (req, res) => {
   }
 });
 
+const queryDateVal = asyncHandler(async (req, res) => {
+  try {
+    let { patientId, queryText } = req.body;
+    if(!req.user.isDoctor){
+      patientId = req.user.patientDetails._id;
+    }
+    const patient = await Patient.findById(patientId);
+    if (!patient) {
+      throw new ApiError(404, "Patient not found");
+    }
+
+    const queryRes = await axios.post(`${process.env.FLASK_SERVER}/reports/dateValQuery`, {
+      patientId,
+      queryText,
+    });
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, queryRes.data, "Report list retrieved successfully")
+      );
+  } catch (error) {
+    throw new ApiError(500, "Something went wrong in getReportList");
+  }
+});
+
+const acceptChart = asyncHandler(async (req, res) => {
+  try {
+    const {patientId, chartName, data, queryText, description, sourceList, unit} = req.body;
+    if(!req.user.isDoctor){
+      patientId = req.user.patientDetails._id;
+    }
+    const patient = await Patient.findById(patientId);
+    if (!patient) {
+      throw new ApiError(404, "Patient not found");
+    }
+
+    const chart = await Patient.findOneAndUpdate(
+      { _id: patientId },
+      {
+        $push: {
+          chartsList: {
+            chartName,
+            data,
+            queryText,
+            description,
+            sourceList,
+            unit
+          }
+        }
+      },
+      { new: true }
+    );
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          patient: chart,
+        },
+        "Chart added successfully"
+      )
+    );
+  } catch (error) {
+    throw new ApiError(500, "Something went wrong in Accept Chart");
+  }
+});
+
 export {
   getDoctorList,
   addDoctor,
@@ -320,5 +447,8 @@ export {
   removeDoctor,
   reportAddSignedURL,
   removeReport,
-  queryReports
+  queryReports,
+  queryDateVal, 
+  acceptChart,
+  addChatReport
 };

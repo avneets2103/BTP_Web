@@ -14,7 +14,6 @@ interface Props {}
 function ReportMain(props: Props) {
     const Router = useRouter();
     const [reportSearch, setReportSearch] = React.useState<string>("");
-
     const [reportsList, setReportsList] = useState<ReportsSchema[]>([]);
     useEffect(() => {
         const checkTokens = async () => {
